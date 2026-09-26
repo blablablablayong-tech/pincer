@@ -12,7 +12,7 @@ public enum TranscriptCache {
         /// Session activity when saved; an unchanged session needs no background refresh.
         public var activityMs: Double?
 
-        public static let currentVersion = 4
+        public static let currentVersion = 5
 
         public init(version: Int = Self.currentVersion, items: [ChatItem], complete: Bool, activityMs: Double? = nil) {
             self.version = version

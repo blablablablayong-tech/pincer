@@ -367,6 +367,7 @@ struct TranscriptFindBar: View {
 /// Edit ▸ Find items for the focused chat: Find in Chat (⌘F), Find Next (⌘G), Find Previous (⇧⌘G).
 struct TranscriptFindCommands: Commands {
     @FocusedValue(\.transcriptFind) private var find
+    @FocusedValue(\.replyToLast) private var replyToLast
     @FocusedValue(\.gatewayLogsSearch) private var logsSearch
 
     var body: some Commands {
@@ -382,6 +383,10 @@ struct TranscriptFindCommands: Commands {
             Button("Find Previous") { self.find?.previous() }
                 .keyboardShortcut("g", modifiers: [.command, .shift])
                 .disabled(self.find == nil)
+            Divider()
+            Button("Reply to Last Message") { self.replyToLast?.perform() }
+                .keyboardShortcut("r", modifiers: [.command, .shift])
+                .disabled(self.replyToLast?.isAvailable != true)
         }
     }
 }

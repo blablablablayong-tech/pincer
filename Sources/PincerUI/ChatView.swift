@@ -40,6 +40,7 @@ struct ChatView: View {
             .overlay(alignment: .bottom) {
                 VStack(spacing: 0) {
                     self.errorBar
+                    self.noticeBar
                     self.reasoningHint
                     if let card = self.chat.progressCard {
                         ProgressCardView(chat: self.chat, card: card)
@@ -54,6 +55,8 @@ struct ChatView: View {
                 .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { self.bottomChrome = $0 }
             }
             .animation(.snappy, value: self.chat.errorMessage)
+            .animation(.snappy, value: self.chat.notice)
+            .animation(.snappy, value: self.chat.replyTarget)
             .animation(.snappy, value: self.chat.progressCard)
             .animation(.snappy, value: self.gateway.questions.map(\.id))
         .sheet(item: self.$previewing) { ref in
@@ -70,6 +73,12 @@ struct ChatView: View {
             await self.chat.load()
         }
         .focusedSceneValue(\.transcriptFind, self.find)
+        .focusedSceneValue(\.replyToLast, ReplyToLast(chat: self.chat, agentName: self.agent.name))
+        .task(id: self.chat.notice) {
+            guard self.chat.notice != nil else { return }
+            try? await Task.sleep(for: .seconds(4))
+            self.chat.notice = nil
+        }
         .onAppear { self.find.update(entries: self.chat.entries, reasoningOff: self.reasoningOff) }
         .onChange(of: self.chat.entries) { self.find.update(entries: self.chat.entries, reasoningOff: self.reasoningOff) }
         .onChange(of: self.reasoningOff) { self.find.update(entries: self.chat.entries, reasoningOff: self.reasoningOff) }
@@ -83,6 +92,9 @@ struct ChatView: View {
                     Button("Find Next") { self.find.next() }.keyboardShortcut("g", modifiers: .command)
                     Button("Find Previous") { self.find.previous() }.keyboardShortcut("g", modifiers: [.command, .shift])
                 }
+                Button("Reply to Last Message") { ReplyToLast(chat: self.chat, agentName: self.agent.name).perform() }
+                    .keyboardShortcut("r", modifiers: [.command, .shift])
+                    .disabled(self.chat.latestReplyableId == nil)
             }
             .opacity(0)
             .allowsHitTesting(false)
@@ -129,6 +141,33 @@ struct ChatView: View {
         }
     }
 
+    /// Passing notes that aren't failures, such as a quoted message that's no longer in history.
+    @ViewBuilder private var noticeBar: some View {
+        if let notice = self.chat.notice {
+            HStack(spacing: 10) {
+                Label(notice, systemImage: "info.circle.fill")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                Spacer(minLength: 8)
+                Button {
+                    self.chat.notice = nil
+                } label: {
+                    Image(systemName: "xmark")
+                }
+                .buttonStyle(.borderless)
+                .controlSize(.small)
+                .accessibilityLabel("Dismiss")
+            }
+            .padding(.leading, 14)
+            .padding(.trailing, 10)
+            .padding(.vertical, 6)
+            .glassSurface(in: Capsule())
+            .padding(.horizontal, 14)
+            .padding(.top, 6)
+            .transition(.move(edge: .bottom).combined(with: .opacity))
+        }
+    }
+
     @ViewBuilder private var transcript: some View {
         if self.chat.entries.isEmpty, self.chat.isLoading || !self.chat.hasLoaded {
             // Until history has loaded once (cache still reading, or the Gateway reconnecting after
@@ -156,7 +195,9 @@ struct ChatView: View {
                     agent: self.agent,
                     sessionKey: self.chat.sessionKey,
                     previewImage: { self.previewing = $0 },
-                    saveFile: { file, data in self.exporting = ExportedFile(name: file.name, data: data) }),
+                    saveFile: { file, data in self.exporting = ExportedFile(name: file.name, data: data) },
+                    chat: self.chat,
+                    reply: { self.chat.beginReply(to: $0, agentName: self.agent.name) }),
                 bottomInset: self.bottomChrome + self.transcriptSafeArea.bottom,
                 topInset: self.topChrome + self.transcriptSafeArea.top,
                 highlight: self.find.highlight)
@@ -399,4 +440,30 @@ struct ExportedFile: FileDocument {
     func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
         FileWrapper(regularFileWithContents: self.data)
     }
+}
+
+extension ChatStore {
+    /// Starts replying to a message: the composer shows the "Replying to" chip and takes focus.
+    func beginReply(to messageId: String, agentName: String) {
+        guard let target = self.replyTarget(for: messageId, you: Owner.displayName, agent: agentName) else { return }
+        self.replyTarget = target
+    }
+}
+
+/// Reply to Last Message (⇧⌘R) for the chat that has focus.
+@MainActor
+struct ReplyToLast {
+    let chat: ChatStore
+    let agentName: String
+
+    var isAvailable: Bool { self.chat.latestReplyableId != nil }
+
+    func perform() {
+        guard let id = self.chat.latestReplyableId else { return }
+        self.chat.beginReply(to: id, agentName: self.agentName)
+    }
+}
+
+extension FocusedValues {
+    @Entry var replyToLast: ReplyToLast?
 }

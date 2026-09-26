@@ -8,6 +8,8 @@ import UniformTypeIdentifiers
 /// chats and streamed replies. Nothing leaves the device.
 actor DemoGateway {
     static let url = "demo://pincer"
+    /// The demo as an older Gateway that rejects `chat.send`'s `replyToId`, for checks.
+    static let noReplyToURL = "demo://pincer?replyTo=off"
 
     private typealias Row = [String: JSONValue]
 
@@ -35,7 +37,7 @@ actor DemoGateway {
         "users.prefs.set", "commands.list", "progressCard.get", "progressCard.put", "question.list", "question.resolve",
         "approval.history", "approval.get", "logs.tail", "channels.pairing.list", "channels.pairing.approve", "channels.pairing.dismiss",
         "health", "status", "last-heartbeat", "system-presence", "gateway.restart.request",
-        "exec.approvals.get", "exec.approvals.set",
+        "exec.approvals.get", "exec.approvals.set", "message.action",
     ] + DemoUsage.methods
     /// The device the demo credits with decisions made in Pincer ("Decided by: This device").
     static let deviceId = "demo0device0000000000000000000000000000000000000000000000000001"
@@ -81,7 +83,17 @@ actor DemoGateway {
     private var restartTask: Task<Void, Never>?
     private static let restartExpectedMs = 1500
 
-    init() {
+    /// Whether `chat.send` takes `replyToId`, like current Gateways.
+    private let acceptsReplyTo: Bool
+    /// `message.action` calls received, oldest first.
+    private(set) var recordedActions: [JSONValue] = []
+
+    init(acceptsReplyTo: Bool = true) {
+        self.acceptsReplyTo = acceptsReplyTo
+        self.prefs[Reactions.prefKey] = [
+            "agent:main:main|demo-main-status": "👍",
+            "agent:main:main|demo-main-gauge": "🎉",
+        ]
         let seeded = Self.seed()
         self.sessions = seeded.sessions
         self.transcripts = seeded.transcripts
@@ -219,6 +231,8 @@ actor DemoGateway {
             return ["status": "ok", "entries": .object(self.prefs.filter { keys.contains($0.key) })]
         case "users.prefs.set":
             return self.setPrefs(params)
+        case "message.action":
+            return try self.messageAction(params)
         case "progressCard.get":
             return ["card": self.progressCards[try self.knownSession(params["sessionKey"])] ?? .null]
         case "progressCard.put":
@@ -886,11 +900,35 @@ actor DemoGateway {
         return ["status": "ok"]
     }
 
+    /// Reactions on bridged (Discord) chats' messages, like the Gateway's channel `react` action.
+    private func messageAction(_ params: JSONValue) throws -> JSONValue {
+        guard let channel = params["channel"]?.text, let action = params["action"]?.text,
+              let inner = params["params"]?.object, let idempotencyKey = params["idempotencyKey"]?.text
+        else {
+            throw GatewayError.rpc(code: "INVALID_REQUEST", message: "message.action requires channel, action, params and idempotencyKey", details: nil)
+        }
+        if let existing = self.actionResults[idempotencyKey] { return existing }
+        guard action == "react", channel == "discord", let emoji = inner["emoji"]?.text, inner["messageId"]?.text != nil else {
+            throw GatewayError.rpc(code: "INVALID_REQUEST", message: "unsupported message action \(action) on \(channel)", details: nil)
+        }
+        self.recordedActions.append(params)
+        let result: JSONValue = inner["remove"]?.bool == true
+            ? ["ok": true, "removed": .string(emoji)] : ["ok": true, "added": .string(emoji)]
+        self.actionResults[idempotencyKey] = result
+        return result
+    }
+
+    private var actionResults: [String: JSONValue] = [:]
+
     // MARK: Runs
 
     private func send(_ params: JSONValue) throws -> JSONValue {
         guard let idempotencyKey = params["idempotencyKey"]?.string else {
             throw GatewayError.rpc(code: "INVALID_REQUEST", message: "idempotencyKey is required", details: nil)
+        }
+        if params["replyToId"] != nil, !self.acceptsReplyTo {
+            throw GatewayError.rpc(
+                code: "INVALID_REQUEST", message: "invalid chat.send params: at root: unexpected property 'replyToId'", details: nil)
         }
         let key = try self.knownSession(params["sessionKey"])
         if let existing = self.idempotency[idempotencyKey] {
@@ -920,7 +958,8 @@ actor DemoGateway {
             content.append(Self.image(artifactId, alt: attachment["fileName"]?.string ?? "Uploaded image"))
         }
         self.append(key, Self.message("user", content, runId: runId,
-                                      idempotencyKey: params["idempotencyKey"]?.string))
+                                      idempotencyKey: params["idempotencyKey"]?.string,
+                                      openclaw: self.replyFacts(key, params["replyToId"]?.text)))
         self.updateRow(key, reason: "send") { row in
             row["hasActiveRun"] = true
             row["activeRunIds"] = [.string(runId)]
@@ -1422,11 +1461,31 @@ actor DemoGateway {
     }'
     """
 
+    /// `replyToId` + `replyToPreview` for a user message replying to `targetId`, like the Gateway
+    /// records them. Unknown ids reply to nothing.
+    private func replyFacts(_ key: String, _ targetId: String?) -> Row {
+        guard let targetId, !targetId.hasPrefix(ChatItem.pendingInputPrefix),
+              let target = self.transcripts[key]?.first(where: { $0["__openclaw"]?["id"]?.string == targetId })
+        else { return [:] }
+        let text = (target["content"]?.array ?? []).compactMap { $0["type"]?.string == "text" ? $0["text"]?.string : nil }
+            .joined(separator: "\n\n")
+        let sender: String = target["role"]?.string == "assistant"
+            ? self.agentName(self.sessions[key]?["agentId"]?.string ?? "main") : GatewayConnection.displayName
+        return ["replyToId": .string(targetId),
+                "replyToPreview": ["text": .string(String(text.prefix(2000))), "senderLabel": .string(sender)]]
+    }
+
+    private func agentName(_ id: String) -> String {
+        self.agents.first { $0["id"]?.string == id }?["name"]?.string ?? id
+    }
+
     private static func message(
         _ role: String, _ content: [JSONValue], runId: String? = nil, idempotencyKey: String? = nil,
-        model: (provider: String, model: String)? = nil, ago: Double = 0, extra: Row = [:]) -> JSONValue
+        model: (provider: String, model: String)? = nil, id: String? = nil, openclaw facts: Row = [:],
+        ago: Double = 0, extra: Row = [:]) -> JSONValue
     {
-        var openclaw: Row = ["id": .string(UUID().uuidString.lowercased())]
+        var openclaw: Row = ["id": .string(id ?? UUID().uuidString.lowercased())]
+        openclaw.merge(facts) { _, new in new }
         if let runId { openclaw["runId"] = .string(runId) }
         if let idempotencyKey { openclaw["idempotencyKey"] = .string(idempotencyKey) }
         let timestamp = ago > 0 ? JSONValue.number(((Date().timeIntervalSince1970 - ago) * 1000).rounded()) : Self.now()
@@ -1480,6 +1539,7 @@ actor DemoGateway {
         }
 
         let dfCall = "call_seed_df"
+        let ackCall = "call_seed_ack"
         let minute = 60.0, hour = 3600.0, day = 86400.0
         /// A seeded message sent `ago` seconds before launch, so results show realistic dates.
         func said(_ role: String, _ text: String, ago: Double, extra: Row = [:]) -> JSONValue {
@@ -1510,11 +1570,15 @@ actor DemoGateway {
                 said("user", "confirm", ago: 3 * day - 5 * minute),
                 said("assistant", "Confirmed: Café Lumière, Friday at 8:15 pm, two people. It's in your calendar with the address.",
                      ago: 3 * day - 6 * minute),
-                Self.message("user", [Self.text("Can you check disk usage and show me a quick status?")], ago: 20 * minute),
+                Self.message("user", [Self.text("Can you check disk usage and show me a quick status?")], id: "demo-main-ask",
+                             ago: 20 * minute),
                 Self.message("assistant", [
                     Self.thinking("I should look at disk usage and summarize the main volumes."),
+                    Self.toolCall(ackCall, "message", ["action": "react", "emoji": "✅"]),
                     Self.toolCall(dfCall, "exec", ["command": "df -h"]),
                 ], ago: 20 * minute - 5),
+                Self.message("toolResult", [Self.text(#"{"ok":true,"added":"✅"}"#)], ago: 20 * minute - 7,
+                             extra: ["toolCallId": .string(ackCall), "toolName": "message", "isError": false]),
                 Self.message("toolResult", [Self.text("""
                 Filesystem      Size  Used Avail Use% Mounted on
                 /dev/disk3s1   926G  411G  490G  46% /
@@ -1535,8 +1599,12 @@ actor DemoGateway {
                     """),
                     Self.image("demo-chart", alt: "Disk usage chart"),
                     Self.file("demo-script", name: "disk-report.sh", mimeType: "text/x-shellscript"),
-                ], ago: 20 * minute - 15),
-                Self.message("user", [Self.text("Can you sketch that as a little gauge?")], ago: 15 * minute),
+                ], id: "demo-main-status", ago: 20 * minute - 15),
+                Self.message("user", [Self.text("Can you sketch that as a little gauge?")], id: "demo-main-gauge-ask",
+                             openclaw: ["replyToId": "demo-main-status",
+                                        "replyToPreview": ["text": "Disk status — The root volume has plenty of room…",
+                                                           "senderLabel": "Claw"]],
+                             ago: 15 * minute),
                 Self.message("assistant", [Self.text("""
                 Here's the root volume as a gauge:
 
@@ -1547,7 +1615,7 @@ actor DemoGateway {
                   <text x="120" y="112" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="30" font-weight="600" fill="#34a37a">46%</text>
                 </svg>
                 ```
-                """)], ago: 15 * minute - 10),
+                """)], id: "demo-main-gauge", ago: 15 * minute - 10),
                 Self.message("assistant", [Self.text("""
                 👋 **Welcome to the Pincer demo.** Everything here is simulated on your device, so no Gateway \
                 is needed. Send a message to see a streamed reply. Try the words *tool*, *image*, *approve*, *ask* or *plan*, \
@@ -1581,7 +1649,16 @@ actor DemoGateway {
                 Yes. Pi-hole blocked 18% of 42,000 queries in the last 24 hours; the panel came back after the \
                 container restarted.
                 """, ago: day - minute),
-                said("user", "The lab temperature sensor looks noisy tonight.", ago: minute, extra: discord),
+                Self.message("user", [Self.text("The lab temperature sensor looks noisy tonight.")], id: "demo-lab-sensor",
+                             openclaw: ["transport": ["channel": "discord", "messageId": "1300000000000000001",
+                                                      "conversationRef": "channel:123"]],
+                             ago: minute, extra: discord),
+                Self.message("assistant", [
+                    Self.toolCall("call_seed_lab_ack", "message",
+                                  ["action": "react", "emoji": "👀", "messageId": "1300000000000000001"]),
+                ], ago: 50),
+                Self.message("toolResult", [Self.text(#"{"ok":true,"added":"👀"}"#)], ago: 45,
+                             extra: ["toolCallId": "call_seed_lab_ack", "toolName": "message", "isError": false]),
                 said("assistant", "I'll keep an eye on the home-lab channel and flag anything unusual.", ago: 20),
             ])
         add("agent:main:dashboard:trip", agent: "main", title: "Japan trip", preview: "Kyoto day plan drafted.",
