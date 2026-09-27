@@ -939,6 +939,21 @@ async function simulateRun(state, run, params, replyMeta = {}) {
       });
     }
 
+    if (String(text ?? '').includes('[mock:fail-run]')) {
+      // Like a provider timeout: the run ends with a chat `error` event and an `error` lifecycle phase.
+      const errorMessage = 'LLM request timed out.';
+      broadcast(state, 'chat', { runId: run.runId, sessionKey, seq: ++run.seq, state: 'error', errorMessage, errorKind: 'timeout' });
+      broadcast(state, 'agent', { runId: run.runId, sessionKey, seq: ++run.seq, stream: 'lifecycle', data: { phase: 'error', error: errorMessage } });
+      row.hasActiveRun = false;
+      row.activeRunIds = row.activeRunIds.filter((id) => id !== run.runId);
+      row.status = 'idle';
+      updateSessionRow(row, { lastActivityAt: nowMs() });
+      broadcastSessionChanged(state, sessionKey, 'run-finished', row);
+      run.finished = true;
+      state.activeRuns.delete(run.runId);
+      return;
+    }
+
     if (/\bplan\b/i.test(String(text ?? ''))) {
       await simulatePlan(state, run, sessionKey, row);
       if (run.aborted) return;

@@ -1014,6 +1014,11 @@ actor DemoGateway {
                               "message": Self.message("assistant", [Self.thinking(thinking)], runId: runId, model: model)])
         }
 
+        if lowered.range(of: #"\bfail\b"#, options: .regularExpression) != nil {
+            await self.simulateFailure(runId: runId, key: key)
+            return
+        }
+
         if lowered.range(of: #"\bplan\b"#, options: .regularExpression) != nil {
             guard await self.simulatePlan(runId: runId, key: key, model: model) else { return }
         }
@@ -1073,6 +1078,21 @@ actor DemoGateway {
             }
         }
         if approvesLater { self.scheduleLaterApproval(sessionKey: key) }
+    }
+
+    /// Ends the run the way a provider timeout does: a chat `error`, then an `error` lifecycle phase.
+    private func simulateFailure(runId: String, key: String) async {
+        guard await self.pause(runId, milliseconds: 600) else { return }
+        let message = "LLM request timed out."
+        self.chat(runId, ["state": "error", "errorMessage": .string(message), "errorKind": "timeout"])
+        self.agentEvent(runId, stream: "lifecycle", ["phase": "error", "error": .string(message)])
+        self.runs[runId] = nil
+        self.logs.chatFailed(runId: runId, message: message)
+        self.updateRow(key, reason: "run-finished") { row in
+            row["hasActiveRun"] = false
+            row["activeRunIds"] = []
+            row["status"] = "idle"
+        }
     }
 
     // MARK: Demo showcase: approve later
@@ -1429,6 +1449,7 @@ actor DemoGateway {
         **approve later** sends one a few seconds after the reply.
         - **ask** brings up a question card.
         - **plan** walks the task progress card.
+        - **fail** ends the run with an error.
         - Send **/compact**, or use **Compact Now** in the context ring.
         - **⌘F** searches the chat — try "onsen" in *Japan trip*.
         - **⌘K** opens the command palette, and **⌘1–⌘3** jump to pinned chats.

@@ -286,6 +286,11 @@ struct ChatChrome: ViewModifier {
             .navigationBarTitleDisplayMode(.inline)
             #endif
             .toolbar {
+                #if os(macOS)
+                ToolbarItem(placement: .navigation) { ChatHeaderAvatar() }
+                #else
+                ToolbarItem(placement: .topBarLeading) { ChatHeaderAvatar() }
+                #endif
                 ToolbarItem(placement: .primaryAction) { ChatModelItem() }
                 ToolbarItem(placement: .primaryAction) { ChatSessionMenu() }
             }

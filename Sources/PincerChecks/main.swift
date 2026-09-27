@@ -2422,6 +2422,8 @@ if let index = arguments.firstIndex(of: "--live"), arguments.count > index + 2 {
     await runLiveSetup(url: url, token: token)
     print("Deep links (live)")
     await runLiveDeepLinks(url: url, token: token)
+    print("Agent avatars (live)")
+    await runLiveAvatars(url: url, token: token)
 }
 if let index = arguments.firstIndex(of: "--live-scope-upgrade"), arguments.count > index + 2 {
     print("Scope upgrade fallback against \(arguments[index + 1])")
@@ -2458,6 +2460,8 @@ if arguments.contains("--demo") {
     await runDemoSetup()
     print("Deep links (demo)")
     await runDemoDeepLinks()
+    print("Agent avatars (demo)")
+    await runDemoAvatars()
 }
 
 print("Keychain isolation")
