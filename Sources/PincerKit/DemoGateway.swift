@@ -38,7 +38,7 @@ actor DemoGateway {
         "approval.history", "approval.get", "logs.tail", "channels.pairing.list", "channels.pairing.approve", "channels.pairing.dismiss",
         "health", "status", "last-heartbeat", "system-presence", "gateway.restart.request",
         "exec.approvals.get", "exec.approvals.set", "message.action",
-    ] + DemoUsage.methods + DemoGateway.setupMethods + DemoGateway.agentMethods
+    ] + DemoUsage.methods + DemoGateway.setupMethods + DemoGateway.agentMethods + DemoGateway.skillMethods
     /// The device the demo credits with decisions made in Pincer ("Decided by: This device").
     static let deviceId = "demo0device0000000000000000000000000000000000000000000000000001"
 
@@ -68,6 +68,10 @@ actor DemoGateway {
     var execApprovalsExists = true
     /// Agent workspace files by workspace path (`agents.files.*`).
     var agentWorkspaces = DemoGateway.seedAgentWorkspaces()
+    /// `skills.status` entries (DemoGateway+Skills.swift; seeds in DemoSkillsSeed.swift).
+    var skillEntries = DemoGateway.seedSkills()
+    /// The simulated ClawHub registry (`skills.search/detail`, ClawHub installs and updates).
+    var clawHubCatalog = DemoGateway.seedClawHubCatalog()
     /// `ask_user` prompts by id, in the order they were asked.
     private var questions: [String: JSONValue] = [:]
     private var questionOrder: [String] = []
@@ -190,6 +194,7 @@ actor DemoGateway {
 
     func handle(_ method: String, _ params: JSONValue) async throws -> JSONValue {
         if let result = try self.handleAgents(method, params) { return result }
+        if let result = try self.handleSkills(method, params) { return result }
         switch method {
         case "agents.list":
             return ["defaultId": "main", "mainKey": "main", "scope": "per-sender", "agents": .array(self.agents)]
