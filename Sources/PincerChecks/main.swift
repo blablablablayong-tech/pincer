@@ -2414,6 +2414,8 @@ if let index = arguments.firstIndex(of: "--live"), arguments.count > index + 2 {
     await runQuickCaptureLive(url: url, token: token)
     print("Replies & reactions (live)")
     await runLiveReactionsReply(url: url, token: token)
+    print("Setup wizard (live)")
+    await runLiveSetup(url: url, token: token)
     print("Deep links (live)")
     await runLiveDeepLinks(url: url, token: token)
 }
@@ -2448,6 +2450,8 @@ if arguments.contains("--demo") {
     await runDemoReactionsReply()
     print("Menu bar (demo)")
     await runMenuBarDemo()
+    print("Setup wizard (demo)")
+    await runDemoSetup()
     print("Deep links (demo)")
     await runDemoDeepLinks()
 }
