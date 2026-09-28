@@ -13,6 +13,7 @@ import { handleUsageRequest, USAGE_METHODS, usageDisabled } from './usage.mjs';
 import { CHANNEL_PAIRING_METHODS, addChannelPairingRequest, channelPairingDisabled, createChannelPairingState, handleChannelPairingRequest } from './pairing.mjs';
 import { HEALTH_EVENTS, HEALTH_METHODS, addFailedDelivery, broadcastPresence, cancelPendingRestart, createHealthState, handleHealthRequest, healthDisabled, helloSnapshot, isRestarting } from './health.mjs';
 import { SETUP_METHODS, createSetupState, handleSetupRequest } from './setup.mjs';
+import { SESSION_MANAGER_METHODS, applyArchived, archiveProtectionError, handleSessionManagerRequest, hiddenSessionManagerMethods, seedSessionManager } from './sessions.mjs';
 import { CHANNEL_LIFECYCLE_METHODS, createChannelsState, handleChannelsRequest } from './channels.mjs';
 import { healthSummary } from './health.mjs';
 import { createWebPushState, handleWebPushEvent, handleWebPushRequest } from './webpush.mjs';
@@ -41,6 +42,7 @@ const METHODS = [
   'message.action',
   'sessions.patch',
   'sessions.compact',
+  ...SESSION_MANAGER_METHODS,
   'models.list',
   'sessions.create',
   'artifacts.download',
@@ -512,6 +514,7 @@ function createSeedState() {
     fileEditResult(patchCall),
     makeMessage('assistant', [textBlock('Retries now stop after 4 attempts and skip 4xx errors. `retry.test.ts` covers both cases, and `legacy-retry.ts` is gone.')]),
   );
+  const sessionManager = seedSessionManager({ row, transcripts, makeMessage, textBlock, base });
 
   const state = {
     agents,
@@ -533,7 +536,9 @@ function createSeedState() {
     sendAttempts: new Map(),
     messageActions: new Map(),
     reactionLog: [],
-    activeRuns: new Map(),
+    activeRuns: new Map(sessionManager.stubRuns.map((run) => [run.runId, run])),
+    // Inactive transcript branch tips per session (see sessions.mjs).
+    sessionBranches: sessionManager.branches,
     connections: new Set(),
     configState: createConfigState(),
     webPushState: createWebPushState(),
@@ -550,9 +555,10 @@ function createSeedState() {
   return state;
 }
 
-function sortedSessions(state, includeArchived = false) {
+// `archived`: false/absent lists active rows, true only archived ones, "all" both (sessions.list).
+function sortedSessions(state, archived = false) {
   return [...state.sessions.values()]
-    .filter((s) => includeArchived || !s.archived)
+    .filter((s) => (archived === 'all' ? true : archived === true ? Boolean(s.archived) : !s.archived))
     .sort((a, b) => {
       if (Boolean(a.pinned) !== Boolean(b.pinned)) return a.pinned ? -1 : 1;
       return (b.lastActivityAt ?? 0) - (a.lastActivityAt ?? 0);
@@ -584,6 +590,18 @@ function broadcast(state, event, payload, predicate = () => true) {
     if (conn.authenticated && predicate(conn)) sendEvent(conn, event, payload);
   }
   handleWebPushEvent(state, event, payload);
+}
+
+// Run timing on the row (GatewaySessionRow startedAt/endedAt/runtimeMs), for run durations.
+function markRunStarted(row) {
+  row.startedAt = nowMs();
+  delete row.endedAt;
+  delete row.runtimeMs;
+}
+
+function markRunEnded(row) {
+  row.endedAt = nowMs();
+  if (row.startedAt !== undefined) row.runtimeMs = Math.max(0, row.endedAt - row.startedAt);
 }
 
 function updateSessionRow(row, patch = {}) {
@@ -693,6 +711,7 @@ function advertisedMethods() {
     ...(nodesDisabled() ? NODE_METHODS : []),
     ...(usageDisabled() ? USAGE_METHODS : []),
     ...(logsDisabled() ? LOGS_METHODS : []),
+    ...hiddenSessionManagerMethods(),
   ];
   return METHODS.filter((m) => !hidden.includes(m));
 }
@@ -802,6 +821,7 @@ function finishRunAbort(state, run) {
     row.hasActiveRun = false;
     row.activeRunIds = row.activeRunIds.filter((id) => id !== run.runId);
     row.status = 'idle';
+    markRunEnded(row);
     markSubagentAborted(state, row, run, broadcastSessionChanged);
     updateSessionRow(row, { lastActivityAt: nowMs() });
     broadcastSessionChanged(state, run.sessionKey, 'abort', row);
@@ -911,6 +931,7 @@ async function simulateCompactCommand(state, run, sessionKey, row, instructions)
   row.hasActiveRun = false;
   row.activeRunIds = row.activeRunIds.filter((id) => id !== run.runId);
   row.status = 'idle';
+  markRunEnded(row);
   row.lastMessagePreview = text;
   updateSessionRow(row, { lastActivityAt: nowMs() });
   broadcastSessionChanged(state, sessionKey, 'compact', row);
@@ -960,6 +981,7 @@ async function simulateRun(state, run, params, replyMeta = {}) {
     row.hasActiveRun = true;
     row.activeRunIds = [...new Set([...row.activeRunIds, run.runId])];
     row.status = 'running';
+    markRunStarted(row);
     row.lastMessagePreview = String(text ?? '').slice(0, 120);
     updateSessionRow(row, { lastActivityAt: nowMs() });
     broadcastSessionMessage(state, sessionKey, userMsg, transcript.length);
@@ -1019,6 +1041,7 @@ async function simulateRun(state, run, params, replyMeta = {}) {
       row.hasActiveRun = false;
       row.activeRunIds = row.activeRunIds.filter((id) => id !== run.runId);
       row.status = 'idle';
+      markRunEnded(row);
       updateSessionRow(row, { lastActivityAt: nowMs() });
       broadcastSessionChanged(state, sessionKey, 'run-finished', row);
       run.finished = true;
@@ -1131,6 +1154,7 @@ async function simulateRun(state, run, params, replyMeta = {}) {
     row.hasActiveRun = false;
     row.activeRunIds = row.activeRunIds.filter((id) => id !== run.runId);
     row.status = 'idle';
+    markRunEnded(row);
     row.lastMessagePreview = reply.slice(0, 120);
     row.unread = true;
     // Each turn grows the context; the snapshot never passes the window.
@@ -1188,6 +1212,14 @@ function handleAuthedRequest(state, conn, msg) {
   if (handleChannelsRequest(state, conn, msg, { sendRes, sendErr, broadcast, healthSummary })) return;
   if (handleDevicesRequest(state, conn, msg, { sendRes, sendErr, broadcast })) return;
   if (handleHealthRequest(state, conn, msg, { sendRes, sendErr, broadcast, abortRun: finishRunAbort })) return;
+  if (handleSessionManagerRequest(state, conn, msg, {
+    sendRes, sendErr, broadcast, broadcastSessionChanged, abortMatchingRuns, makeMessage, textBlock, clone,
+    registerGroup: (name) => registerGroup(state, name),
+    registerSession: (key, row, transcript) => {
+      state.sessions.set(key, row);
+      state.transcripts.set(key, transcript);
+    },
+  })) return;
   switch (method) {
     case 'progressCard.get': {
       const key = params.sessionKey;
@@ -1217,12 +1249,12 @@ function handleAuthedRequest(state, conn, msg) {
       conn.sessionSubscribed = true;
       sendRes(conn, id, {
         subscribed: true,
-        list: { sessions: sortedSessions(state, params.archived === true || params.archived === 'all'), defaults: sessionDefaults(), nextOffset: null, hasMore: false },
+        list: { sessions: sortedSessions(state, params.archived), defaults: sessionDefaults(), nextOffset: null, hasMore: false },
       });
       break;
     }
     case 'sessions.list': {
-      let listed = sortedSessions(state, params.archived === true || params.archived === 'all');
+      let listed = sortedSessions(state, params.archived);
       if (typeof params.spawnedBy === 'string' && params.spawnedBy) listed = listed.filter((row) => isSpawnedBy(row, params.spawnedBy));
       sendRes(conn, id, { sessions: listed, defaults: sessionDefaults(), nextOffset: null, hasMore: false });
       break;
@@ -1393,8 +1425,17 @@ function handleAuthedRequest(state, conn, msg) {
       if (params.expectedSessionId && params.expectedSessionId !== row.sessionId) {
         return sendErr(conn, id, 'INVALID_REQUEST', 'expectedSessionId mismatch');
       }
-      for (const field of ['unread', 'pinned', 'label', 'category', 'color', 'archived']) {
+      if (params.archived === true) {
+        const protectedError = archiveProtectionError(params.key);
+        if (protectedError) return sendErr(conn, id, 'INVALID_REQUEST', protectedError);
+      }
+      for (const field of ['unread', 'pinned', 'label', 'category', 'color']) {
         if (Object.hasOwn(params, field)) row[field] = params[field];
+      }
+      if (Object.hasOwn(params, 'archived')) {
+        // Upstream stops active work before archiving.
+        if (params.archived === true) abortMatchingRuns(state, params.key);
+        applyArchived(row, params.archived === true);
       }
       if (Object.hasOwn(params, 'model')) {
         if (params.model === null) {
