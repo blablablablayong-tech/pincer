@@ -2409,6 +2409,7 @@ await runIntentChecks()
 print("Deep links & Handoff")
 runDeepLinkChecks()
 
+runLocalizationChecks()
 checkToolDiffs()
 checkSidebarWorking()
 
@@ -2477,6 +2478,8 @@ if arguments.contains("--demo") {
     await runDemoToolDiffs()
     print("Agent avatars (demo)")
     await runDemoAvatars()
+    print("Accessibility labels (demo)")
+    await runDemoAccessibility()
     print("Sidebar working avatar (demo)")
     await runDemoSidebarWorking()
 }
