@@ -32,9 +32,11 @@ public final class AppModel {
     public internal(set) var gatewayListRequests = 0
     /// Chats visited, for Back/Forward and the palette's recent chats.
     public private(set) var history = ChatHistory<Notifier.Target>()
-    public var appIsActive = true {
+    /// False until a scene reports `.active`, so a background launch doesn't prefetch.
+    public var appIsActive = false {
         didSet {
             self.notifier.appIsActive = self.appIsActive
+            self.gateways.forEach { $0.appIsActive = self.appIsActive }
             if self.appIsActive, !oldValue { self.gateways.forEach { $0.reconnectIfNeeded() } }
             if !self.appIsActive, oldValue {
                 let gateways = self.gateways
@@ -81,7 +83,14 @@ public final class AppModel {
         self.localDefaults = localDefaults
         let profiles = GatewayProfileStore.load(from: sharedDefaults, legacy: localDefaults)
         SharedContainer.shareKeychainItems(for: profiles, defaults: sharedDefaults)
-        self.gateways = profiles.map { GatewayStore(profile: $0, defaults: localDefaults, identity: .loadOrCreate()) }
+        // One Keychain read at launch, however many Gateways there are.
+        let identity = profiles.isEmpty ? nil : DeviceIdentity.loadOrCreate()
+        self.identity = identity
+        self.gateways = profiles.map {
+            let store = GatewayStore(profile: $0, defaults: localDefaults, identity: identity!)
+            store.appIsActive = false
+            return store
+        }
         self.firstRun = FirstRunModel(defaults: localDefaults, environment: firstRunEnvironment, hasGateways: !profiles.isEmpty)
         let saved = (sharedDefaults.string(forKey: Self.selectedGatewayKey)
             ?? localDefaults.string(forKey: Self.selectedGatewayKey)).flatMap(UUID.init(uuidString:))
@@ -125,6 +134,15 @@ public final class AppModel {
     }
 
     @ObservationIgnored private var started = false
+    /// The device identity, read from the Keychain once and shared by every Gateway.
+    @ObservationIgnored private var identity: DeviceIdentity?
+
+    private func deviceIdentity() -> DeviceIdentity {
+        if let identity { return identity }
+        let loaded = DeviceIdentity.loadOrCreate()
+        self.identity = loaded
+        return loaded
+    }
 
     /// Re-registers push on every connected gateway, e.g. after the token or a setting changed.
     public func syncPush() {
@@ -219,8 +237,9 @@ public final class AppModel {
     @discardableResult
     public func add(_ profile: GatewayProfile, secret: String?) -> GatewayStore {
         profile.secret = secret
-        let store = GatewayStore(profile: profile, defaults: self.localDefaults, identity: .loadOrCreate())
+        let store = GatewayStore(profile: profile, defaults: self.localDefaults, identity: self.deviceIdentity())
         store.notifier = self.notifier
+        store.appIsActive = self.appIsActive
         self.gateways.append(store)
         self.persist()
         self.selectedGatewayId = store.id
@@ -248,8 +267,9 @@ public final class AppModel {
             profile.secret = secret
             profile.forgetDeviceToken()
         }
-        let store = GatewayStore(profile: profile, defaults: self.localDefaults, identity: .loadOrCreate())
+        let store = GatewayStore(profile: profile, defaults: self.localDefaults, identity: self.deviceIdentity())
         store.notifier = self.notifier
+        store.appIsActive = self.appIsActive
         self.gateways[index] = store
         self.persist()
         store.start()
@@ -264,11 +284,13 @@ public final class AppModel {
             store.stop()
             // A prefs pull that was in flight may have written them back.
             store.forgetLocalHealthDismissals()
+            ReactionStore(gatewayId: id.uuidString, defaults: self.localDefaults).removeAll()
         }
         store.profile.forgetCredentials()
         TranscriptCache.removeAll(gatewayId: id, permanently: true)
         self.history.prune { $0.gatewayId != id }
         DraftStore.removeAll(gatewayId: id)
+        ReactionStore(gatewayId: id.uuidString, defaults: self.localDefaults).removeAll()
         store.outbox = Outbox()
         OutboxStore.remove(gatewayId: id)
         store.forgetLocalHealthDismissals()

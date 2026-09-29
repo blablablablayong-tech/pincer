@@ -14,14 +14,38 @@ public enum TranscriptCache {
         public var complete: Bool
         /// Session activity when saved; an unchanged session needs no background refresh.
         public var activityMs: Double?
+        /// The transcript was cut at `maxItems` (the newest kept, older history dropped), so it's
+        /// as complete as it will get even though `complete` is false.
+        public var retained: Bool
 
-        public static let currentVersion = 7
+        public static let currentVersion = 8
 
-        public init(version: Int = Self.currentVersion, items: [ChatItem], complete: Bool, activityMs: Double? = nil) {
+        public init(version: Int = Self.currentVersion, items: [ChatItem], complete: Bool, activityMs: Double? = nil,
+                    retained: Bool = false)
+        {
             self.version = version
             self.items = items
             self.complete = complete
             self.activityMs = activityMs
+            self.retained = retained
+        }
+
+        private enum CodingKeys: String, CodingKey {
+            case version, items, complete, activityMs, retained
+        }
+
+        public init(from decoder: Decoder) throws {
+            let c = try decoder.container(keyedBy: CodingKeys.self)
+            self.version = try c.decode(Int.self, forKey: .version)
+            self.items = try c.decode([ChatItem].self, forKey: .items)
+            self.complete = try c.decode(Bool.self, forKey: .complete)
+            self.activityMs = try c.decodeIfPresent(Double.self, forKey: .activityMs)
+            self.retained = try c.decodeIfPresent(Bool.self, forKey: .retained) ?? false
+        }
+
+        /// Whether a transcript of `committedCount` items is cut at `maxItems` when saved.
+        public static func isRetained(committedCount: Int) -> Bool {
+            committedCount > TranscriptCache.maxItems
         }
     }
 
@@ -32,10 +56,13 @@ public enum TranscriptCache {
         /// The transcript's `Snapshot.version`; a sidecar without one (written before it was
         /// recorded) or for another version never vouches for freshness.
         var version: Int?
+        /// `Snapshot.retained`; nil in a sidecar written before v8.
+        var retained: Bool?
     }
 
-    /// What `loadWithOutcome` found on disk. Anything but `missing`, `loaded` and `migrated` means
-    /// the file was unusable and has been removed, so the chat is refetched from the Gateway.
+    /// What `loadWithOutcome` found on disk. Anything but `missing`, `loaded`, `migrated` and
+    /// `unavailable` means the file was unusable and has been removed, so the chat is refetched
+    /// from the Gateway.
     public enum LoadOutcome: Equatable, Sendable {
         /// No cached transcript.
         case missing
@@ -49,11 +76,15 @@ public enum TranscriptCache {
         case future(version: Int)
         /// Empty, truncated, not JSON or not a transcript; moved to the Quarantine folder.
         case corrupt(String)
+        /// The transcript exists but couldn't be read right now (locked with the device, permission
+        /// or I/O trouble that may pass). Nothing was deleted or quarantined; a save would replace
+        /// the older cached history, so callers hold theirs until a later load succeeds.
+        case unavailable(String)
 
         /// The file couldn't be used and was removed.
         public var discarded: Bool {
             switch self {
-            case .missing, .loaded, .migrated: false
+            case .missing, .loaded, .migrated, .unavailable: false
             case .outdated, .future, .corrupt: true
             }
         }
@@ -99,6 +130,12 @@ public enum TranscriptCache {
     //    `migrations[6]` (`forwardedSenderMigration`) reads the sender from that header, strips
     //    it, and shows the message as the sender's. Messages the Gateway had already projected
     //    decode without a sender until the newest page is refetched over them on open.
+    //  - v8 (#199, efficient persistence) is a storage-only change: `<digest>.json` became a small
+    //    manifest (`version`, `complete`, `activityMs`, `retained`, `token`, `segments`) naming
+    //    segment files in `<digest>.segments/`, each a JSON array of items. Segments end at
+    //    content-defined boundaries (see `segmentRanges`), so an append or a prepend leaves the
+    //    existing ones byte-identical and a save writes only what changed. `migrations[7]` does
+    //    nothing; the v7 single file is decoded, then saved back as a manifest and segments.
 
     /// Upgrades a snapshot's JSON object from the version it's keyed by to the next one.
     typealias Migration = @Sendable (inout [String: Any]) throws -> Void
@@ -122,6 +159,7 @@ public enum TranscriptCache {
             json["items"] = items
         },
         6: forwardedSenderMigration,
+        7: { _ in },
     ]
 
     /// v6 → v7 (#207): cached inter-session turns become the sending agent's.
@@ -200,7 +238,7 @@ public enum TranscriptCache {
         }
     }
 
-    private static func describe(_ error: Error) -> String {
+    static func describe(_ error: Error) -> String {
         switch error {
         case let DecodingError.keyNotFound(key, _): "missing \(key.stringValue)"
         case let DecodingError.typeMismatch(type, context):
@@ -262,33 +300,72 @@ public enum TranscriptCache {
     }
 
     /// `loadWithOutcome` for a transcript file already located (the search index's reconcile).
-    static func read(_ url: URL, gatewayId: UUID, root: URL? = Self.root,
+    /// With `newest`, a current-format transcript is read only as far back as the segments
+    /// covering that many of its newest items (the snapshot then holds those, and possibly more).
+    static func read(_ url: URL, gatewayId: UUID, root: URL? = Self.root, newest: Int? = nil,
                      priority: TaskPriority) async -> (snapshot: Snapshot?, outcome: LoadOutcome)
     {
         let quarantine = self.quarantineDirectory(gatewayId: gatewayId, root: root)
         return await Task.detached(priority: priority) {
-            let data: Data
-            do {
-                data = try Data(contentsOf: url)
-            } catch {
-                guard FileManager.default.fileExists(atPath: url.path(percentEncoded: false)) else { return (nil, .missing) }
-                let outcome = LoadOutcome.corrupt("unreadable: \(error.localizedDescription)")
-                Self.discard(url, outcome: outcome, quarantine: quarantine)
-                return (nil, outcome)
-            }
-            let result = Self.decode(data)
-            switch result.outcome {
-            case .missing, .loaded:
-                break
-            case let .migrated(from):
-                Self.logger.notice("Migrated cached transcript \(url.lastPathComponent, privacy: .private) from v\(from) to v\(Snapshot.currentVersion)")
-                if let snapshot = result.snapshot, !MessageIndex.isDiscardedPermanently(gatewayId: gatewayId) {
-                    _ = await Writer.shared.write(snapshot, to: url)
+            var attempts = 0
+            while true {
+                attempts += 1
+                let manifestDate = Self.modificationDate(url)
+                let data: Data
+                do {
+                    data = try Data(contentsOf: url)
+                } catch {
+                    guard FileManager.default.fileExists(atPath: url.path(percentEncoded: false)) else { return (nil, .missing) }
+                    // The file is there, so this isn't a content problem: keep it.
+                    return (nil, .unavailable("unreadable: \(error.localizedDescription)"))
                 }
-            case .outdated, .future, .corrupt:
-                Self.discard(url, outcome: result.outcome, quarantine: quarantine)
+                if let peek = try? JSONDecoder().decode(VersionPeek.self, from: data), peek.version == Snapshot.currentVersion,
+                   let manifest = try? JSONDecoder().decode(Manifest.self, from: data)
+                {
+                    var range: Range<Int>?
+                    if let newest {
+                        var covered = 0
+                        var start = manifest.segments.count
+                        while start > 0, covered < newest {
+                            start -= 1
+                            covered += manifest.segments[start].count
+                        }
+                        range = start..<manifest.segments.count
+                    }
+                    switch Self.readSegments(manifest, manifestURL: url, range: range) {
+                    case let .loaded(snapshot, layout):
+                        var layout = layout
+                        layout.manifestDate = manifestDate
+                        await Writer.shared.prime(url, layout: layout)
+                        return (snapshot, .loaded)
+                    case let .unavailable(reason):
+                        return (nil, .unavailable(reason))
+                    case let .missing(name):
+                        // A save may have replaced this manifest and deleted the segment since.
+                        if attempts < 3, let again = try? Data(contentsOf: url), again != data { continue }
+                        let outcome = LoadOutcome.corrupt("segment \(name) is missing")
+                        await Writer.shared.discard(url, expected: data, outcome: outcome, quarantine: quarantine)
+                        return (nil, outcome)
+                    case let .corrupt(reason):
+                        let outcome = LoadOutcome.corrupt(reason)
+                        await Writer.shared.discard(url, expected: data, outcome: outcome, quarantine: quarantine)
+                        return (nil, outcome)
+                    }
+                }
+                let result = Self.decode(data)
+                switch result.outcome {
+                case .missing, .loaded, .unavailable:
+                    break
+                case let .migrated(from):
+                    Self.logger.notice("Migrated cached transcript \(url.lastPathComponent, privacy: .private) from v\(from) to v\(Snapshot.currentVersion)")
+                    if let snapshot = result.snapshot, !MessageIndex.isDiscardedPermanently(gatewayId: gatewayId) {
+                        _ = await Writer.shared.write(snapshot, to: url)
+                    }
+                case .outdated, .future, .corrupt:
+                    await Writer.shared.discard(url, expected: data, outcome: result.outcome, quarantine: quarantine)
+                }
+                return result
             }
-            return result
         }.value
     }
 
@@ -300,9 +377,10 @@ public enum TranscriptCache {
     static let maxQuarantined = 5
 
     /// Removes an unusable transcript and its sidecar; a corrupt one is quarantined.
-    private static func discard(_ url: URL, outcome: LoadOutcome, quarantine: URL?) {
+    static func discard(_ url: URL, outcome: LoadOutcome, quarantine: URL?) {
         let fileManager = FileManager.default
         try? fileManager.removeItem(at: url.appendingPathExtension("meta"))
+        try? fileManager.removeItem(at: self.segmentsDirectory(of: url))
         let name = url.lastPathComponent
         guard case let .corrupt(reason) = outcome, let quarantine else {
             try? fileManager.removeItem(at: url)
@@ -375,24 +453,160 @@ public enum TranscriptCache {
 
     /// Writes the transcript, then brings the Gateway's message search index (under the same
     /// `root`) up to date with it. Nothing is written for a Gateway removed from the app, even by
-    /// a save already under way. With the cache off, an index kept in memory (the demo) is still
-    /// updated.
-    public static func save(_ snapshot: Snapshot, gatewayId: UUID, sessionKey: String, root: URL? = Self.root) async {
-        guard !MessageIndex.isDiscardedPermanently(gatewayId: gatewayId) else { return }
+    /// a save already under way, nor for a transcript that hasn't changed since it was last
+    /// written. With the cache off, an index kept in memory (the demo) is still updated.
+    ///
+    /// With `keepingOlder`, `snapshot.items` is the newest window of the chat (a windowed
+    /// transcript keeps only its recent items in memory): what's stored before the window's first
+    /// item stays as it is, and `complete` is the stored one. A window that doesn't join what's
+    /// stored replaces it, like any save.
+    public static func save(_ snapshot: Snapshot, gatewayId: UUID, sessionKey: String, keepingOlder: Bool = false,
+                            root: URL? = Self.root) async
+    {
+        await self.saveReturningStats(snapshot, gatewayId: gatewayId, sessionKey: sessionKey, keepingOlder: keepingOlder,
+                                      root: root)
+    }
+
+    /// `save`, reporting what it wrote (tests and benchmarks).
+    @discardableResult
+    public static func saveReturningStats(_ snapshot: Snapshot, gatewayId: UUID, sessionKey: String,
+                                          keepingOlder: Bool = false, root: URL? = Self.root) async -> SaveResult
+    {
+        guard !MessageIndex.isDiscardedPermanently(gatewayId: gatewayId) else { return SaveResult() }
         guard let url = self.file(gatewayId: gatewayId, sessionKey: sessionKey, root: root) else {
             if MessageIndex.location(gatewayId: gatewayId, root: root) == .memory {
                 await MessageIndex.shared(gatewayId: gatewayId, root: root)
                     .index(sessionKey: sessionKey, snapshot: snapshot, fileMtime: Date())
             }
-            return
+            return SaveResult()
         }
-        guard let written = await Writer.shared.write(snapshot, to: url) else { return }
+        let result = await Writer.shared.write(snapshot, to: url, keepingOlder: keepingOlder)
+        self.recordSaveStats(result)
+        guard !result.unchanged, let written = result.modified else { return result }
         guard !MessageIndex.isDiscardedPermanently(gatewayId: gatewayId) else {
             self.deleteDirectory(gatewayId: gatewayId, root: root)
-            return
+            return result
         }
-        await MessageIndex.shared(gatewayId: gatewayId, root: root)
-            .index(sessionKey: sessionKey, snapshot: snapshot, fileMtime: written)
+        let change = result.change ?? .full(token: nil)
+        let index = MessageIndex.shared(gatewayId: gatewayId, root: root)
+        guard let older = result.older else {
+            await index.index(sessionKey: sessionKey, snapshot: snapshot, fileMtime: written, change: change)
+            return result
+        }
+        // The index counts positions in the whole transcript. It's first given only what's at
+        // hand (the boundary segment's older items and the window) and asks for the rest if it
+        // needs it.
+        let olderCount = older.reduce(0) { $0 + $1.count }
+        let slice = result.boundaryKept + snapshot.items
+        let outcome = await index.index(sessionKey: sessionKey, items: slice, itemOffset: olderCount,
+                                        totalCount: olderCount + slice.count, fileMtime: written, change: change)
+        guard outcome == .needsEarlierItems, let items = await self.items(of: older, url: url) else { return result }
+        let whole = Snapshot(version: snapshot.version, items: items + slice, complete: result.complete ?? snapshot.complete,
+                             activityMs: snapshot.activityMs, retained: snapshot.retained)
+        await index.index(sessionKey: sessionKey, snapshot: whole, fileMtime: written, change: change)
+        return result
+    }
+
+    /// The items of `segments` (of the transcript at `url`), oldest first; nil if any can't be read.
+    private static func items(of segments: [SegmentRef], url: URL) async -> [ChatItem]? {
+        let directory = self.segmentsDirectory(of: url)
+        return await Task.detached(priority: .utility) {
+            var items: [ChatItem] = []
+            for ref in segments {
+                guard case let .items(segment) = Self.loadSegment(ref, in: directory) else { return nil }
+                items += segment
+            }
+            return items
+        }.value
+    }
+
+    /// The newest `limit` cached items and whether the transcript is complete, reading only the
+    /// segments that hold them. Remembers the layout, so the next save writes only what changed.
+    public static func loadNewest(gatewayId: UUID, sessionKey: String, limit: Int,
+                                  root: URL? = Self.root) async -> (items: [ChatItem], complete: Bool, outcome: LoadOutcome)
+    {
+        guard let url = self.file(gatewayId: gatewayId, sessionKey: sessionKey, root: root) else { return ([], false, .missing) }
+        let (snapshot, outcome) = await self.read(url, gatewayId: gatewayId, root: root, newest: max(limit, 0),
+                                                  priority: .userInitiated)
+        guard let snapshot else { return ([], false, outcome) }
+        return (Array(snapshot.items.suffix(max(limit, 0))), snapshot.complete, outcome)
+    }
+
+    /// Up to `limit` cached items just before the item `itemId`, oldest first, reading only the
+    /// segments needed. `reachedStart`: nothing older is cached. An id that isn't cached gives no
+    /// items and `.missing`.
+    public static func loadOlder(gatewayId: UUID, sessionKey: String, before itemId: String, limit: Int,
+                                 root: URL? = Self.root) async -> (items: [ChatItem], reachedStart: Bool, outcome: LoadOutcome)
+    {
+        guard let url = self.file(gatewayId: gatewayId, sessionKey: sessionKey, root: root) else { return ([], false, .missing) }
+        let quarantine = self.quarantineDirectory(gatewayId: gatewayId, root: root)
+        let limit = max(limit, 0)
+        return await Task.detached(priority: .userInitiated) {
+            var attempts = 0
+            while true {
+                attempts += 1
+                let data: Data
+                do {
+                    data = try Data(contentsOf: url)
+                } catch {
+                    guard FileManager.default.fileExists(atPath: url.path(percentEncoded: false)) else { return ([], false, .missing) }
+                    return ([], false, .unavailable("unreadable: \(error.localizedDescription)"))
+                }
+                guard let peek = try? JSONDecoder().decode(VersionPeek.self, from: data), peek.version == Snapshot.currentVersion,
+                      let manifest = try? JSONDecoder().decode(Manifest.self, from: data)
+                else {
+                    // An older single file: read (and migrate) it whole.
+                    let (snapshot, outcome) = await Self.read(url, gatewayId: gatewayId, root: root, priority: .userInitiated)
+                    guard let snapshot, let index = snapshot.items.firstIndex(where: { $0.id == itemId }) else {
+                        return ([], false, snapshot == nil ? outcome : .missing)
+                    }
+                    let older = snapshot.items[..<index]
+                    return (Array(older.suffix(limit)), older.count <= limit, outcome)
+                }
+                let directory = Self.segmentsDirectory(of: url)
+                var collected: [ChatItem] = []
+                var found = false
+                var index = manifest.segments.count
+                var failure: LoadOutcome?
+                while index > 0, !found || collected.count < limit {
+                    index -= 1
+                    let ref = manifest.segments[index]
+                    // The id is the first item of the segment: nothing of it belongs before the id.
+                    if !found, ref.firstId == itemId {
+                        found = true
+                        continue
+                    }
+                    switch Self.loadSegment(ref, in: directory) {
+                    case let .items(segment):
+                        if found {
+                            collected = segment + collected
+                        } else if let position = segment.firstIndex(where: { $0.id == itemId }) {
+                            found = true
+                            collected = Array(segment[..<position])
+                        }
+                    case .missing:
+                        if attempts < 3, let again = try? Data(contentsOf: url), again != data { failure = .missing } else {
+                            failure = .corrupt("segment \(ref.file) is missing")
+                        }
+                    case let .unavailable(reason):
+                        return ([], false, .unavailable(reason))
+                    case let .corrupt(reason):
+                        failure = .corrupt(reason)
+                    }
+                    if failure != nil { break }
+                }
+                switch failure {
+                case .missing?:
+                    continue
+                case let outcome?:
+                    await Writer.shared.discard(url, expected: data, outcome: outcome, quarantine: quarantine)
+                    return ([], false, outcome)
+                case nil:
+                    guard found else { return ([], false, .missing) }
+                    return (Array(collected.suffix(limit)), index == 0 && collected.count <= limit, .loaded)
+                }
+            }
+        }.value
     }
 
     /// Deletes one chat's cached transcript (its stored tool details included), its sidecar and
@@ -416,6 +630,7 @@ public enum TranscriptCache {
             MessageIndex.discard(gatewayId: gatewayId, root: root, permanently: permanently)
             self.deleteDirectory(gatewayId: gatewayId, root: root)
         }
+        if let directory = self.directory(gatewayId: gatewayId, root: root) { Task { await Writer.shared.forget(under: directory) } }
     }
 
     /// Deletes every Gateway's cached transcripts, search indexes and quarantined files (Settings'
@@ -432,6 +647,7 @@ public enum TranscriptCache {
                 try? fileManager.removeItem(at: entry)
             }
         }
+        Task { await Writer.shared.forget(under: root) }
         logger.notice("Cleared the transcript cache")
     }
 
@@ -471,38 +687,39 @@ public enum TranscriptCache {
         try? FileManager.default.removeItem(at: directory)
     }
 
-    /// Serializes writes so an older snapshot can never land after a newer one.
-    private actor Writer {
+    /// Serializes writes so an older snapshot can never land after a newer one. Remembers the
+    /// layout it last wrote (or loaded) per chat so a save writes only the segments that changed.
+    actor Writer {
         static let shared = Writer()
+
+        /// Chats whose layout is remembered.
+        static let maxLayouts = 64
+
+        var layouts: [URL: Layout] = [:]
+        /// Least recently used first.
+        var recency: [URL] = []
 
         /// Returns once every write and removal queued before it has finished.
         func drain() {}
 
         func remove(_ url: URL) {
+            self.forgetLayout(url)
             try? FileManager.default.removeItem(at: url.appendingPathExtension("meta"))
             try? FileManager.default.removeItem(at: url)
+            try? FileManager.default.removeItem(at: TranscriptCache.segmentsDirectory(of: url))
         }
 
-        /// The file's modification date once written, or nil when it couldn't be.
-        func write(_ snapshot: Snapshot, to url: URL) -> Date? {
-            let metaURL = url.appendingPathExtension("meta")
-            do {
-                try FileManager.default.createDirectory(
-                    at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
-                let data = try JSONEncoder().encode(snapshot)
-                // The sidecar goes first and comes back only once the transcript is written, so it
-                // never vouches for a transcript that isn't there.
-                try? FileManager.default.removeItem(at: metaURL)
-                try data.write(to: url, options: [.atomic, .completeFileProtection])
-                let meta = try JSONEncoder().encode(
-                    Meta(complete: snapshot.complete, activityMs: snapshot.activityMs, version: snapshot.version))
-                try meta.write(to: metaURL, options: [.atomic, .completeFileProtection])
-                return (try? url.resourceValues(forKeys: [.contentModificationDateKey]))?.contentModificationDate ?? Date()
-            } catch {
-                // A missing cache only costs a refetch.
-                try? FileManager.default.removeItem(at: metaURL)
-                TranscriptCache.logger.error("Couldn't write cached transcript \(url.lastPathComponent, privacy: .private): \(error.localizedDescription, privacy: .public)")
-                return nil
+        /// Removes an unusable transcript, unless a save replaced it since it was read.
+        func discard(_ url: URL, expected: Data, outcome: LoadOutcome, quarantine: URL?) {
+            if let current = try? Data(contentsOf: url), current != expected { return }
+            self.forgetLayout(url)
+            TranscriptCache.discard(url, outcome: outcome, quarantine: quarantine)
+        }
+
+        func forget(under directory: URL) {
+            let prefix = directory.standardizedFileURL.path(percentEncoded: false)
+            for url in self.recency where url.standardizedFileURL.path(percentEncoded: false).hasPrefix(prefix) {
+                self.forgetLayout(url)
             }
         }
     }

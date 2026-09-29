@@ -3,6 +3,23 @@ import Foundation
 import SQLite3
 import Synchronization
 
+/// How a saved transcript differs from the one last indexed.
+public enum IndexChange: Sendable, Equatable {
+    /// Nothing is known: index the whole transcript. `token` identifies this save.
+    case full(token: String?)
+    /// The first `unchangedPrefix` items equal those of the save identified by `baseToken`,
+    /// so only what follows is indexed. Falls back to `.full` when that save isn't the one indexed.
+    case tail(unchangedPrefix: Int, baseToken: String, token: String)
+}
+
+/// What indexing a slice of a transcript came to.
+public enum IndexOutcome: Sendable, Equatable {
+    case done
+    /// The slice doesn't reach back far enough (or the change needs the whole transcript);
+    /// call again with all of it.
+    case needsEarlierItems
+}
+
 /// On-disk full-text index of one Gateway's cached transcripts (SQLite FTS5), next to the
 /// transcripts themselves. It's derived data: a file that isn't a readable index of this version
 /// (an old version, a corrupt file) is deleted and rebuilt from the transcript cache. Failures
@@ -20,6 +37,8 @@ public actor MessageIndex {
         case unavailable
     }
 
+    public typealias IndexChange = PincerKit.IndexChange
+
     public enum IndexError: Error {
         case unavailable
         /// A failure that may pass; the index is kept.
@@ -32,7 +51,7 @@ public actor MessageIndex {
     }
 
     /// Bump when the schema or what's indexed changes; the old index is then rebuilt.
-    static let schemaVersion: Int32 = 3
+    static let schemaVersion: Int32 = 4
     static var userVersion: Int32 { self.schemaVersion * 1000 + Int32(TranscriptCache.Snapshot.currentVersion) }
 
     public nonisolated let gatewayId: UUID
@@ -251,11 +270,27 @@ public actor MessageIndex {
         var itemCount: Int
         var lastItemId: String?
         var digest: String
+        var token: String?
     }
+
+    /// What the last `index` call did, for tests and benchmarks.
+    struct IndexStats: Equatable, Sendable {
+        enum Path: Equatable, Sendable { case full, tail, unchanged, skipped }
+
+        var path: Path
+        var documentsBuilt = 0
+        var rowsRead = 0
+        var rowsWritten = 0
+    }
+
+    private nonisolated let stats = Mutex(IndexStats(path: .skipped))
+    nonisolated var lastIndexStats: IndexStats { self.stats.withLock { $0 } }
 
     /// A message ready to write: its change hash and the folded text the full-text index gets.
     private struct Prepared: Sendable {
         var document: MessageSearch.Document
+        /// Index of the message's first item in the transcript.
+        var pos: Int
         var hash: String
         var folded: String
     }
@@ -264,32 +299,119 @@ public actor MessageIndex {
         case done
         /// The messages changed; call again with them.
         case needsDocuments
+        /// A tail can't be applied to what's indexed; index the whole transcript.
+        case needsFull
     }
 
     /// Indexes a chat's saved transcript. Does nothing when its messages haven't changed, and
     /// ignores a snapshot older than the one already indexed.
-    public nonisolated func index(sessionKey: String, snapshot: TranscriptCache.Snapshot, fileMtime: Date) async {
+    public nonisolated func index(sessionKey: String, snapshot: TranscriptCache.Snapshot, fileMtime: Date,
+                                  change: IndexChange = .full(token: nil)) async
+    {
         self.inFlight.begin()
         defer { self.inFlight.end() }
+        guard !self.isRemoved else { return }
         let items = snapshot.items
+        let mtime = fileMtime.timeIntervalSinceReferenceDate
+        var token: String?
+        switch change {
+        case let .full(value):
+            token = value
+        case let .tail(prefix, baseToken, newToken):
+            token = newToken
+            if prefix >= 0, prefix <= items.count {
+                let start = MessageSearch.rowBoundary(items: items, before: prefix)
+                if await self.indexTail(sessionKey: sessionKey, items: items, offset: 0, start: start, prefix: prefix,
+                                        baseToken: baseToken, token: newToken, mtime: mtime) != .fallback { return }
+            }
+        }
         // Hashing what the messages are built from is much cheaper than building them, so an
         // unchanged chat costs little.
-        let chat = ChatState(mtime: fileMtime.timeIntervalSinceReferenceDate, itemCount: items.count,
-                             lastItemId: items.last?.id, digest: Self.digest(items))
-        guard !self.isRemoved,
-              await self.write(sessionKey: sessionKey, chat: chat, documents: nil) == .needsDocuments,
-              !self.isRemoved
-        else { return }
-        let documents = MessageSearch.documents(sessionKey: sessionKey, items: items).map { document in
-            Prepared(document: document, hash: Self.hash(document), folded: MessageSearch.folded(document.text))
-        }
+        let chat = ChatState(mtime: mtime, itemCount: items.count, lastItemId: items.last?.id,
+                             digest: Self.digest(items), token: token)
+        guard await self.write(sessionKey: sessionKey, chat: chat, documents: nil) == .needsDocuments, !self.isRemoved else { return }
+        let documents = Self.prepared(sessionKey: sessionKey, items: items[...])
         await self.write(sessionKey: sessionKey, chat: chat, documents: documents)
+    }
+
+    public typealias IndexOutcome = PincerKit.IndexOutcome
+
+    /// Like `index(sessionKey:snapshot:fileMtime:change:)` for a save that has only the newest
+    /// items at hand: `items` are the transcript's from index `itemOffset` on, of `totalCount`
+    /// in all, and `change`'s `unchangedPrefix` counts from the transcript's start. Only a
+    /// `.tail` that can start within `items` is applied; anything else (a `.full`, a tail that
+    /// must start earlier, or one that can't be applied to what's indexed) does nothing and
+    /// returns `.needsEarlierItems`.
+    public nonisolated func index(sessionKey: String, items: [ChatItem], itemOffset: Int, totalCount: Int, fileMtime: Date,
+                                  change: IndexChange) async -> IndexOutcome
+    {
+        self.inFlight.begin()
+        defer { self.inFlight.end() }
+        guard itemOffset >= 0, itemOffset + items.count == totalCount else { return .needsEarlierItems }
+        if itemOffset == 0 {
+            await self.index(sessionKey: sessionKey, snapshot: TranscriptCache.Snapshot(items: items, complete: false),
+                             fileMtime: fileMtime, change: change)
+            return .done
+        }
+        guard !self.isRemoved else { return .done }
+        guard case let .tail(prefix, baseToken, token) = change, prefix > itemOffset, prefix <= totalCount,
+              !items.isEmpty
+        else { return .needsEarlierItems }
+        let start = MessageSearch.rowBoundary(items: items, before: prefix - itemOffset)
+        // Without a boundary in reach, the row containing the change may begin before `items`.
+        guard MessageSearch.isRowBoundary(items[start]) else { return .needsEarlierItems }
+        let result = await self.indexTail(sessionKey: sessionKey, items: items, offset: itemOffset, start: start,
+                                          prefix: prefix, baseToken: baseToken, token: token,
+                                          mtime: fileMtime.timeIntervalSinceReferenceDate)
+        return result == .fallback ? .needsEarlierItems : .done
+    }
+
+    private enum TailResult { case done, fallback }
+
+    /// Applies a tail whose rows start at `items[start]`, item `offset + start` of the transcript.
+    private nonisolated func indexTail(sessionKey: String, items: [ChatItem], offset: Int, start: Int, prefix: Int,
+                                       baseToken: String, token: String, mtime: Double) async -> TailResult
+    {
+        let chat = ChatState(mtime: mtime, itemCount: offset + items.count, lastItemId: items.last?.id,
+                             digest: "t:\(token)", token: token)
+        let tail = TailWrite(start: offset + start, prefix: prefix, baseToken: baseToken)
+        guard await self.canTail(sessionKey: sessionKey, tail: tail, mtime: mtime) else { return .fallback }
+        var documents = Self.prepared(sessionKey: sessionKey, items: items[start...])
+        if offset > 0 { for index in documents.indices { documents[index].pos += offset } }
+        guard !self.isRemoved else { return .done }
+        return await self.write(sessionKey: sessionKey, chat: chat, documents: documents, tail: tail) == .needsFull ? .fallback : .done
+    }
+
+    private static func prepared(sessionKey: String, items: ArraySlice<ChatItem>) -> [Prepared] {
+        MessageSearch.positionedDocuments(sessionKey: sessionKey, items: items).map { pos, document in
+            Prepared(document: document, pos: pos, hash: Self.hash(document), folded: MessageSearch.folded(document.text))
+        }
+    }
+
+    /// What a tail write is restricted to: messages of rows starting at or after `start`.
+    private struct TailWrite: Sendable {
+        var start: Int
+        var prefix: Int
+        var baseToken: String
+    }
+
+    /// Whether a tail can be applied: the chat is indexed from the save it's based on, with at
+    /// least as many items as are said to be unchanged.
+    private func canTail(sessionKey: String, tail: TailWrite, mtime: Double) -> Bool {
+        self.withRecovery { db in
+            guard let row = try self.chatRow(sessionKey, db: db) else { return false }
+            return Self.allows(tail, row: row, mtime: mtime)
+        } ?? false
+    }
+
+    private static func allows(_ tail: TailWrite, row: ChatRow, mtime: Double) -> Bool {
+        row.token == tail.baseToken && row.mtime <= mtime && tail.prefix <= row.itemCount
     }
 
     /// Records `chat`: only its file date when its messages are unchanged, otherwise its
     /// messages too, which needs `documents`.
     @discardableResult
-    private func write(sessionKey: String, chat: ChatState, documents: [Prepared]?) -> WriteResult {
+    private func write(sessionKey: String, chat: ChatState, documents: [Prepared]?, tail: TailWrite? = nil) -> WriteResult {
         // A save indexes after writing its transcript; if the chat was removed from the cache
         // since, its file is gone and indexing it would bring it back into search.
         if case .file = self.location,
@@ -299,21 +421,26 @@ public actor MessageIndex {
         return self.withRecovery { db -> WriteResult in
             let existing = try self.chatRow(sessionKey, db: db)
             if let existing, existing.mtime > chat.mtime { return .done }
-            let unchanged = existing?.digest == chat.digest
+            if let tail, !(existing.map { Self.allows(tail, row: $0, mtime: chat.mtime) } ?? false) { return .needsFull }
+            let unchanged = tail == nil && existing?.digest == chat.digest
             guard unchanged || documents != nil else { return .needsDocuments }
+            var stats = IndexStats(path: unchanged ? .unchanged : tail == nil ? .full : .tail, documentsBuilt: documents?.count ?? 0)
             try self.exec(db, "BEGIN IMMEDIATE")
             do {
                 if unchanged {
-                    try self.run(db, "UPDATE chats SET file_mtime = ?, item_count = ?, last_item_id = ? WHERE session_key = ?",
-                                 [.double(chat.mtime), .int(chat.itemCount), .text(chat.lastItemId), .text(sessionKey)])
-                } else {
-                    try self.replace(sessionKey: sessionKey, with: documents ?? [], db: db)
                     try self.run(db, """
-                        INSERT OR REPLACE INTO chats (session_key, file_mtime, item_count, last_item_id, digest)
-                        VALUES (?, ?, ?, ?, ?)
+                        UPDATE chats SET file_mtime = ?, item_count = ?, last_item_id = ?, token = ? WHERE session_key = ?
+                        """, [.double(chat.mtime), .int(chat.itemCount), .text(chat.lastItemId), .text(chat.token),
+                              .text(sessionKey)])
+                } else {
+                    try self.replace(sessionKey: sessionKey, with: documents ?? [], from: tail?.start, stats: &stats, db: db)
+                    try self.run(db, """
+                        INSERT OR REPLACE INTO chats (session_key, file_mtime, item_count, last_item_id, digest, token)
+                        VALUES (?, ?, ?, ?, ?, ?)
                         """, [.text(sessionKey), .double(chat.mtime), .int(chat.itemCount), .text(chat.lastItemId),
-                              .text(chat.digest)])
+                              .text(chat.digest), .text(chat.token)])
                 }
+                self.stats.withLock { $0 = stats }
                 try self.exec(db, "COMMIT")
             } catch {
                 try? self.exec(db, "ROLLBACK")
@@ -325,31 +452,48 @@ public actor MessageIndex {
 
     /// Brings a chat's rows in line with `documents`, touching only messages that were added,
     /// changed or removed, so a new message costs one insert rather than rewriting the chat.
-    private func replace(sessionKey: String, with documents: [Prepared], db: OpaquePointer) throws {
-        var existing: [String: (id: Int64, hash: String)] = [:]
-        let select = try self.prepare(db, "SELECT id, entry_id, section, hash FROM docs WHERE session_key = ?")
+    /// With `start`, `documents` are those of rows starting at or after item `start`, and only
+    /// such rows are compared.
+    private func replace(sessionKey: String, with documents: [Prepared], from start: Int? = nil,
+                         stats: inout IndexStats, db: OpaquePointer) throws
+    {
+        var existing: [String: (id: Int64, hash: String, pos: Int)] = [:]
+        let select = try self.prepare(db, """
+            SELECT id, entry_id, section, hash, pos FROM docs WHERE session_key = ? AND COALESCE(pos, -1) >= ?
+            """)
         defer { sqlite3_finalize(select) }
-        try self.bind(select, [.text(sessionKey)])
+        try self.bind(select, [.text(sessionKey), .int(start ?? -1)])
         while true {
             let result = sqlite3_step(select)
             if result == SQLITE_DONE { break }
             guard result == SQLITE_ROW else { throw self.error(db) }
             let key = "\(Self.text(select, 1) ?? "")#\(sqlite3_column_int64(select, 2))"
-            existing[key] = (sqlite3_column_int64(select, 0), Self.text(select, 3) ?? "")
+            existing[key] = (sqlite3_column_int64(select, 0), Self.text(select, 3) ?? "", Int(sqlite3_column_int64(select, 4)))
+            stats.rowsRead += 1
         }
         var removed: [Int64] = []
         var added: [Prepared] = []
+        var moved: [(id: Int64, pos: Int)] = []
         var seen: Set<String> = []
         for prepared in documents {
             let key = "\(prepared.document.entryId)#\(prepared.document.section)"
             guard seen.insert(key).inserted else { continue }
             if let old = existing.removeValue(forKey: key) {
-                if old.hash == prepared.hash { continue }
+                if old.hash == prepared.hash {
+                    if old.pos != prepared.pos { moved.append((old.id, prepared.pos)) }
+                    continue
+                }
                 removed.append(old.id)
             }
             added.append(prepared)
         }
         removed += existing.values.map(\.id)
+        stats.rowsWritten += removed.count + added.count + moved.count
+        if !moved.isEmpty {
+            let update = try self.prepare(db, "UPDATE docs SET pos = ? WHERE id = ?")
+            defer { sqlite3_finalize(update) }
+            for (id, pos) in moved { try self.step(update, [.int(pos), .int(Int(id))], db: db) }
+        }
 
         if !removed.isEmpty {
             let body = try self.prepare(db, "SELECT body FROM docs WHERE id = ?")
@@ -370,7 +514,8 @@ public actor MessageIndex {
         }
         if !added.isEmpty {
             let insert = try self.prepare(db, """
-                INSERT INTO docs (session_key, entry_id, section, role, via, sender, ts, hash, body) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO docs (session_key, entry_id, section, role, via, sender, ts, hash, body, pos)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """)
             defer { sqlite3_finalize(insert) }
             let index = try self.prepare(db, "INSERT INTO messages (rowid, body) VALUES (?, ?)")
@@ -381,7 +526,7 @@ public actor MessageIndex {
                     .text(sessionKey), .text(document.entryId), .int(document.section), .text(document.role.rawValue),
                     .text(document.via), .text(Self.encodedSender(document.sender)),
                     .double(document.timestamp?.timeIntervalSinceReferenceDate), .text(prepared.hash),
-                    .blob(Self.packed(document.text)),
+                    .blob(Self.packed(document.text)), .int(prepared.pos),
                 ], db: db)
                 let id = sqlite3_last_insert_rowid(db)
                 try self.step(index, [.int(Int(id)), .text(prepared.folded)], db: db)
@@ -396,7 +541,8 @@ public actor MessageIndex {
         self.withRecovery { db in
             try self.exec(db, "BEGIN IMMEDIATE")
             do {
-                try self.replace(sessionKey: sessionKey, with: [], db: db)
+                var stats = IndexStats(path: .full)
+                try self.replace(sessionKey: sessionKey, with: [], stats: &stats, db: db)
                 try self.run(db, "DELETE FROM chats WHERE session_key = ?", [.text(sessionKey)])
                 try self.exec(db, "COMMIT")
             } catch {
@@ -538,6 +684,24 @@ public actor MessageIndex {
         return (row.itemCount, row.lastItemId, row.digest, Date(timeIntervalSinceReferenceDate: row.mtime))
     }
 
+    /// The chat's message rows as `entry#section@pos:hash`, in index order, for checks.
+    func indexedRows(sessionKey: String) -> [String] {
+        self.withRecovery { db in
+            let statement = try self.prepare(db, "SELECT entry_id, section, pos, hash FROM docs WHERE session_key = ? ORDER BY pos, entry_id, section")
+            defer { sqlite3_finalize(statement) }
+            try self.bind(statement, [.text(sessionKey)])
+            var rows: [String] = []
+            while sqlite3_step(statement) == SQLITE_ROW {
+                rows.append("\(Self.text(statement, 0) ?? "")#\(sqlite3_column_int64(statement, 1))@\(sqlite3_column_int64(statement, 2)):\(Self.text(statement, 3) ?? "")")
+            }
+            return rows
+        } ?? []
+    }
+
+    func chatToken(sessionKey: String) -> String? {
+        (self.withRecovery { db in try self.chatRow(sessionKey, db: db) } ?? nil)?.token
+    }
+
     public func close() {
         // Once this returns no interrupt is in flight, and none can reach the freed connection.
         self.interrupter.end()
@@ -631,12 +795,12 @@ public actor MessageIndex {
             try self.exec(handle, """
                 CREATE TABLE docs (
                     id INTEGER PRIMARY KEY, session_key TEXT NOT NULL, entry_id TEXT NOT NULL, section INTEGER NOT NULL,
-                    role TEXT, via TEXT, sender TEXT, ts REAL, hash TEXT, body BLOB);
-                CREATE INDEX docs_session ON docs (session_key);
+                    role TEXT, via TEXT, sender TEXT, ts REAL, hash TEXT, body BLOB, pos INTEGER);
+                CREATE INDEX docs_session ON docs (session_key, pos);
                 CREATE VIRTUAL TABLE messages USING fts5(
                     body, content = '', tokenize = 'unicode61 remove_diacritics 2');
                 CREATE TABLE chats (
-                    session_key TEXT PRIMARY KEY, file_mtime REAL, item_count INTEGER, last_item_id TEXT, digest TEXT);
+                    session_key TEXT PRIMARY KEY, file_mtime REAL, item_count INTEGER, last_item_id TEXT, digest TEXT, token TEXT);
                 PRAGMA user_version = \(Self.userVersion);
                 """)
         } else {
@@ -675,16 +839,17 @@ public actor MessageIndex {
         var itemCount: Int
         var lastItemId: String?
         var digest: String?
+        var token: String?
     }
 
     private func chatRow(_ sessionKey: String, db: OpaquePointer) throws -> ChatRow? {
-        let statement = try self.prepare(db, "SELECT file_mtime, item_count, last_item_id, digest FROM chats WHERE session_key = ?")
+        let statement = try self.prepare(db, "SELECT file_mtime, item_count, last_item_id, digest, token FROM chats WHERE session_key = ?")
         defer { sqlite3_finalize(statement) }
         try self.bind(statement, [.text(sessionKey)])
         switch sqlite3_step(statement) {
         case SQLITE_ROW:
             return ChatRow(mtime: sqlite3_column_double(statement, 0), itemCount: Int(sqlite3_column_int64(statement, 1)),
-                           lastItemId: Self.text(statement, 2), digest: Self.text(statement, 3))
+                           lastItemId: Self.text(statement, 2), digest: Self.text(statement, 3), token: Self.text(statement, 4))
         case SQLITE_DONE:
             return nil
         default:

@@ -25,7 +25,9 @@ extension ChatStore {
         guard !self.headless, self.isHydrated, !self.cachingStopped,
               TranscriptCache.file(gatewayId: self.gatewayId, sessionKey: self.sessionKey) != nil
         else { return }
-        await self.saveToCache()
+        self.saveTask?.cancel()
+        // Writes nothing when the cache already holds what's loaded.
+        await self.saveSnapshot()
         // The save suspended: the chat may have been opened or become busy meanwhile.
         guard self.isHydrated, let gateway, !gateway.isChatPinned(self.sessionKey) else { return }
         self.saveTask?.cancel()
