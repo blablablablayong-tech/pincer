@@ -132,6 +132,16 @@ public final class ChatStore: Identifiable {
     public var hasOlderItems: Bool { self.olderInCache || self.hasMoreHistory }
     public internal(set) var isLoadingOlder = false
     public var errorMessage: String?
+    /// Called once when a run ends successfully, with its last assistant message that has speakable text (never for
+    /// history loads, aborted or failed runs). Read Aloud's auto-read uses it.
+    @ObservationIgnored public var onFinalAssistantReply: ((ChatItem) -> Void)?
+    /// Who installed `onFinalAssistantReply`, so a closing window only removes its own handler.
+    @ObservationIgnored public weak var onFinalAssistantReplyOwner: AnyObject?
+    /// The newest live assistant message with speakable text since the last live user message, and whether a
+    /// successful run ended before one arrived. See `noteRunSucceeded`.
+    @ObservationIgnored var liveReplyCandidate: ChatItem?
+    @ObservationIgnored var awaitingFinalReply = false
+    @ObservationIgnored var autoReadRunId: String?
     /// Whether the transcript contains any reasoning; used to hint at `/reasoning on`.
     public internal(set) var sawThinking = false
     /// The agent's task checklist for this session, shown above the composer.

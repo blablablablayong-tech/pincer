@@ -1863,6 +1863,16 @@
         }
       }
     },
+    "Automatic": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatic"
+          }
+        }
+      }
+    },
     "Automation": {
       "localizations": {
         "en": {
@@ -3073,6 +3083,16 @@
         }
       }
     },
+    "Connect to the Gateway to see its voice settings.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connect to the Gateway to see its voice settings."
+          }
+        }
+      }
+    },
     "Connect to the Gateway to see skills.": {
       "localizations": {
         "en": {
@@ -4233,6 +4253,16 @@
         }
       }
     },
+    "Device Voice": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Device Voice"
+          }
+        }
+      }
+    },
     "Device name": {
       "localizations": {
         "en": {
@@ -5143,6 +5173,16 @@
         }
       }
     },
+    "Faster": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faster"
+          }
+        }
+      }
+    },
     "File": {
       "localizations": {
         "en": {
@@ -5589,6 +5629,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gateway URL"
+          }
+        }
+      }
+    },
+    "Gateway Voice": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gateway Voice"
           }
         }
       }
@@ -7533,6 +7583,16 @@
         }
       }
     },
+    "Next match (⌘G)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Next match (⌘G)"
+          }
+        }
+      }
+    },
     "Next run": {
       "localizations": {
         "en": {
@@ -8019,6 +8079,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "None yet."
+          }
+        }
+      }
+    },
+    "Not Configured": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not Configured"
           }
         }
       }
@@ -8933,6 +9003,16 @@
         }
       }
     },
+    "Persona": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Persona"
+          }
+        }
+      }
+    },
     "Pick a chat": {
       "localizations": {
         "en": {
@@ -9193,6 +9273,26 @@
         }
       }
     },
+    "Preparing": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preparing"
+          }
+        }
+      }
+    },
+    "Preparing…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preparing…"
+          }
+        }
+      }
+    },
     "Preview": {
       "localizations": {
         "en": {
@@ -9239,6 +9339,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Previous match (%@)"
+          }
+        }
+      }
+    },
+    "Previous match (⇧⌘G)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Previous match (⇧⌘G)"
           }
         }
       }
@@ -9319,6 +9429,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Prompt Budget"
+          }
+        }
+      }
+    },
+    "Provider": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Provider"
           }
         }
       }
@@ -9523,12 +9643,42 @@
         }
       }
     },
+    "Read Aloud": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Read Aloud"
+          }
+        }
+      }
+    },
+    "Read Aloud uses this voice when this device is allowed to and the Gateway has a voice set up. To always use this device's own voice, change the Voice option in the Read Aloud section of Settings.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Read Aloud uses this voice when this device is allowed to and the Gateway has a voice set up. To always use this device's own voice, change the Voice option in the Read Aloud section of Settings."
+          }
+        }
+      }
+    },
     "Read Last Reply Aloud": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Read Last Reply Aloud"
+          }
+        }
+      }
+    },
+    "Read New Replies Aloud": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Read New Replies Aloud"
           }
         }
       }
@@ -12153,6 +12303,16 @@
         }
       }
     },
+    "Slower": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Slower"
+          }
+        }
+      }
+    },
     "Some Files Weren't Copied": {
       "localizations": {
         "en": {
@@ -12199,6 +12359,56 @@
           "stringUnit": {
             "state": "translated",
             "value": "Source"
+          }
+        }
+      }
+    },
+    "Speak Replies on Channels": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speak Replies on Channels"
+          }
+        }
+      }
+    },
+    "Speaking": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speaking"
+          }
+        }
+      }
+    },
+    "Speaking Rate": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speaking Rate"
+          }
+        }
+      }
+    },
+    "Speaking…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speaking…"
+          }
+        }
+      }
+    },
+    "Speaks a reply from its context menu. Automatic uses the Gateway's voice when available. The device voice is used when the Gateway can't provide one. New replies are only read in the chat you're looking at, and not while VoiceOver is on.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speaks a reply from its context menu. Automatic uses the Gateway's voice when available. The device voice is used when the Gateway can't provide one. New replies are only read in the chat you're looking at, and not while VoiceOver is on."
           }
         }
       }
@@ -12343,6 +12553,16 @@
         }
       }
     },
+    "Stop Reading Aloud": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop Reading Aloud"
+          }
+        }
+      }
+    },
     "Stop the Current Run": {
       "localizations": {
         "en": {
@@ -12483,6 +12703,16 @@
         }
       }
     },
+    "System Default": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System Default"
+          }
+        }
+      }
+    },
     "TLS certificate SHA-256": {
       "localizations": {
         "en": {
@@ -12553,6 +12783,16 @@
         }
       }
     },
+    "Test Device Voice": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Test Device Voice"
+          }
+        }
+      }
+    },
     "Text posted to the main chat": {
       "localizations": {
         "en": {
@@ -12579,6 +12819,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "That link points to a Gateway that isn’t set up on this device."
+          }
+        }
+      }
+    },
+    "That provider isn't configured on the Gateway.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That provider isn't configured on the Gateway."
           }
         }
       }
@@ -12993,6 +13243,16 @@
         }
       }
     },
+    "This Device Only": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This Device Only"
+          }
+        }
+      }
+    },
     "This Gateway can't %@ channels.": {
       "localizations": {
         "en": {
@@ -13223,6 +13483,16 @@
         }
       }
     },
+    "This Gateway doesn't support voice.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This Gateway doesn't support voice."
+          }
+        }
+      }
+    },
     "This Gateway has no channel accounts. Pincer talks to your agents directly, so you don't need any.": {
       "localizations": {
         "en": {
@@ -13343,12 +13613,32 @@
         }
       }
     },
+    "This device doesn't have write access, so voice settings are read-only.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This device doesn't have write access, so voice settings are read-only."
+          }
+        }
+      }
+    },
     "This device isn't allowed to answer questions yet. Approve its request on the Gateway host, then try again. You can also answer in the Control UI or the channel the chat came from.": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "This device isn't allowed to answer questions yet. Approve its request on the Gateway host, then try again. You can also answer in the Control UI or the channel the chat came from."
+          }
+        }
+      }
+    },
+    "This device needs write access to change voice settings.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This device needs write access to change voice settings."
           }
         }
       }
@@ -13419,6 +13709,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "This is a simulated sign-in for the demo. No account is used."
+          }
+        }
+      }
+    },
+    "This is gateway-wide: the Gateway attaches spoken audio to every reply it sends on channels like Discord or Telegram, for everyone. It doesn't affect Read Aloud in Pincer.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This is gateway-wide: the Gateway attaches spoken audio to every reply it sends on channels like Discord or Telegram, for everyone. It doesn't affect Read Aloud in Pincer."
+          }
+        }
+      }
+    },
+    "This is how Pincer will read your replies aloud.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This is how Pincer will read your replies aloud."
           }
         }
       }
@@ -14299,6 +14609,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Viewing and changing the command policy needs Full Management access. Turn it on under Connection, then approve this device on the Gateway host."
+          }
+        }
+      }
+    },
+    "Voice": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voice"
           }
         }
       }
@@ -15219,6 +15539,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "pairing requests"
+          }
+        }
+      }
+    },
+    "percent": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "percent"
           }
         }
       }

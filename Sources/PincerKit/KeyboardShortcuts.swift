@@ -247,9 +247,8 @@ public enum ShortcutCommand: String, CaseIterable, Sendable, Identifiable {
         }
     }
 
-    /// Commands with no menu item or button in this build, hidden from Settings. Read Aloud's
-    /// command arrives with #47; its menu item adopts `.shortcut(.readAloud)` and drops out of here.
-    public static let unavailable: Set<ShortcutCommand> = [.readAloud]
+    /// Commands with no menu item or button in this build, hidden from Settings.
+    public static let unavailable: Set<ShortcutCommand> = []
 
     /// Listed in Settings, in menu order within each category.
     public static func listed(in category: Category) -> [ShortcutCommand] {

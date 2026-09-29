@@ -323,22 +323,21 @@ struct KeyboardShortcutsTests {
         #expect(store.validate(combo, for: .newChat) == .ok)
     }
 
-    @MainActor
-    @Test func commandsUsingIgnoresUnavailableCommands() {
-        let store = ShortcutStore(defaults: ScratchDefaults().defaults)
-        // readAloud is hidden from Settings (ShortcutCommand.unavailable) but still has a
-        // default combo; it must not show up as a user of that combo.
-        let readAloudDefault = ShortcutCommand.readAloud.defaultCombo!
-        #expect(store.commands(using: readAloudDefault).isEmpty)
+    @Test func readAloudIsListedInSettings() {
+        #expect(ShortcutCommand.unavailable.isEmpty)
+        #expect(ShortcutCommand.listed(in: ShortcutCommand.readAloud.category).contains(.readAloud))
     }
 
     @MainActor
-    @Test func validateDoesNotConflictWithAnUnavailableCommandsDefault() {
+    @Test func readAloudDefaultIsInUse() {
         let store = ShortcutStore(defaults: ScratchDefaults().defaults)
         let readAloudDefault = ShortcutCommand.readAloud.defaultCombo!
-        // Recording readAloud's default (⌥⌘L) for another command is not a conflict: readAloud
-        // has no menu item or button to collide with in this build.
-        #expect(store.validate(readAloudDefault, for: .newChat) == .ok)
+        #expect(store.commands(using: readAloudDefault) == [.readAloud])
+        guard case .conflict(let owners) = store.validate(readAloudDefault, for: .newChat) else {
+            Issue.record("⌥⌘L is Read Aloud's shortcut")
+            return
+        }
+        #expect(owners == [.readAloud])
     }
 
     // MARK: - Recording: macOS key codes

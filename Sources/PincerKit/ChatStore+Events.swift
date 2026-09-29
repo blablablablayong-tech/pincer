@@ -9,10 +9,12 @@ extension ChatStore {
         let state = payload["state"]?.string ?? ""
         switch state {
         case "status":
+            self.awaitingFinalReply = false
             var run = self.live?.runId == runId ? self.live! : LiveRun(runId: runId)
             run.phase = payload["phase"]?.string
             self.live = run
         case "delta":
+            self.awaitingFinalReply = false
             var run = self.live?.runId == runId ? self.live! : LiveRun(runId: runId)
             run.phase = nil
             if let snapshot = payload["message"], snapshot.object != nil,
@@ -46,6 +48,7 @@ extension ChatStore {
                 self.compaction = .failed(state == "error" ? self.errorMessage ?? "Compaction failed." : "Compaction was stopped.")
             }
             self.finishRun(runId)
+            if state == "final" { self.noteRunSucceeded(runId) } else { self.dropPendingReply() }
         default:
             break
         }
@@ -101,6 +104,7 @@ extension ChatStore {
                 let outcome: AvatarOutcome = phase == "error" ? .error : data["aborted"]?.bool == true ? .none : .success
                 self.noteOutcome(runId, outcome)
                 self.finishRun(runId)
+                if outcome == .success { self.noteRunSucceeded(runId) } else { self.dropPendingReply() }
             }
         case "plan":
             // Durable cards are authoritative; this stream only stands in on Gateways without them.
@@ -136,6 +140,7 @@ extension ChatStore {
             self.items[index] = item
         } else {
             self.items.append(item)
+            self.trackLiveReply(item)
         }
         self.recoverCappedMessages()
         if let key = item.idempotencyKey { self.gateway?.reconcileOutbox(committedKeys: [key]) }
@@ -153,6 +158,35 @@ extension ChatStore {
             }
             run.tools.removeAll { committedToolIds.contains($0.id) }
             self.live = run
+        }
+    }
+
+    /// Remembers live assistant text so the run's last reply can be handed to auto-read when the run succeeds.
+    private func trackLiveReply(_ item: ChatItem) {
+        if item.role == .user { self.dropPendingReply(); return }
+        guard item.role == .assistant, !item.isPending, SpeechText.speakableText(for: item) != nil else { return }
+        if self.awaitingFinalReply {
+            self.awaitingFinalReply = false
+            self.onFinalAssistantReply?(item)
+        } else {
+            self.liveReplyCandidate = item
+        }
+    }
+
+    func dropPendingReply() {
+        self.liveReplyCandidate = nil
+        self.awaitingFinalReply = false
+    }
+
+    /// A run ended successfully: auto-read speaks its last reply, now or when it arrives.
+    func noteRunSucceeded(_ runId: String) {
+        guard self.autoReadRunId != runId else { return }
+        self.autoReadRunId = runId
+        if let item = self.liveReplyCandidate {
+            self.liveReplyCandidate = nil
+            self.onFinalAssistantReply?(item)
+        } else {
+            self.awaitingFinalReply = true
         }
     }
 
@@ -270,6 +304,8 @@ extension ChatStore {
                 self.stale = true
             }
             if self?.live?.runId == runId { self?.live = nil }
+            // The final reply had until now to arrive; a later message isn't this run's.
+            self?.awaitingFinalReply = false
             await self?.finishCompaction(runId: runId)
         }
     }

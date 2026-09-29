@@ -191,6 +191,15 @@ final class TranscriptRowView: TranscriptBaseView {
                 quick,
             ]
         }
+        if actions.canReadAloud(id) {
+            items += [
+                .separator(),
+                TranscriptMenuItem(actions.isReadingAloud(id) ? L("Stop Reading Aloud") : L("Read Aloud"),
+                                   symbol: actions.isReadingAloud(id) ? "stop.circle" : "speaker.wave.2") { [weak actions] in
+                    actions?.readAloud(id)
+                },
+            ]
+        }
         return items + source
     }
     #else
@@ -250,6 +259,15 @@ final class TranscriptRowView: TranscriptBaseView {
                 ]),
                 UIMenu(options: .displayInline, preferredElementSize: .small, children: quick),
             ]
+        }
+        if actions.canReadAloud(id) {
+            let reading = actions.isReadingAloud(id)
+            elements.append(UIMenu(options: .displayInline, children: [
+                UIAction(title: reading ? L("Stop Reading Aloud") : L("Read Aloud"),
+                         image: UIImage(systemName: reading ? "stop.circle" : "speaker.wave.2")) { [weak actions] _ in
+                    actions?.readAloud(id)
+                },
+            ]))
         }
         return elements + source
     }

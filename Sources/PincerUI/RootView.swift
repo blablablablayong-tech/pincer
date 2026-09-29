@@ -35,6 +35,7 @@ public struct PincerScene: Scene {
             TranscriptFindCommands()
             ChatWindowCommands(app: self.app)
             ExportChatCommands()
+            ReadAloudCommands()
             CommandGroup(after: .newItem) {
                 Button(L("Add Gateway…")) {
                     self.app.firstRun.present()
@@ -424,7 +425,7 @@ enum ReactionFeature {
 
 struct SettingsForm: View {
     enum Section: CaseIterable {
-        case you, launch, quickCapture, menuBar, appearance, avatars, colors, conversation, sidebar, notifications, keyboardShortcuts, device, storage, tips
+        case you, launch, quickCapture, menuBar, appearance, avatars, colors, conversation, readAloud, sidebar, notifications, keyboardShortcuts, device, storage, tips
 
         /// Sections that exist on this platform.
         static var available: [Self] {
@@ -438,7 +439,7 @@ struct SettingsForm: View {
         #if os(macOS)
         static let generalTab: [Self] = [.you, .launch, .quickCapture, .menuBar, .device, .storage, .tips]
         static let appearanceTab: [Self] = [.appearance, .avatars, .colors]
-        static let conversationTab: [Self] = [.conversation, .sidebar]
+        static let conversationTab: [Self] = [.conversation, .readAloud, .sidebar]
         static let notificationsTab: [Self] = [.notifications]
         static let shortcutsTab: [Self] = [.keyboardShortcuts]
         /// The Settings window's tabs, in order.
@@ -484,6 +485,8 @@ struct SettingsForm: View {
             }
         case .tips:
             TipsSettingsSection()
+        case .readAloud:
+            ReadAloudSettingsSection()
         case .launch:
             #if os(macOS)
             LaunchAtLoginSettingsSection()
