@@ -7083,6 +7083,16 @@
         }
       }
     },
+    "Next Tip": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Next Tip"
+          }
+        }
+      }
+    },
     "Next Unread Chat": {
       "localizations": {
         "en": {
@@ -12949,6 +12959,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Times"
+          }
+        }
+      }
+    },
+    "Tip %lld of %lld": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tip %lld of %lld"
           }
         }
       }
