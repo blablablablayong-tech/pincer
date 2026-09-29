@@ -256,6 +256,12 @@ public final class GatewayStore: Identifiable {
         self.init(profile: profile, defaults: .standard, identity: .loadOrCreate())
     }
 
+    /// A store keeping its device settings in `defaults`, so checks running side by side don't
+    /// share `UserDefaults.standard`.
+    public convenience init(profile: GatewayProfile, defaults: UserDefaults) {
+        self.init(profile: profile, defaults: defaults, identity: .loadOrCreate())
+    }
+
     init(profile: GatewayProfile, defaults: UserDefaults, identity: DeviceIdentity) {
         self.profile = profile
         self.id = profile.id
@@ -350,6 +356,22 @@ public final class GatewayStore: Identifiable {
         self.prefetchTask?.cancel()
         self.reconcileTask?.cancel()
         Task { await connection.stop() }
+    }
+
+    /// Returns once the background history prefetch has finished and its writes have landed, so a
+    /// check can clear a cached chat without it being saved back.
+    public func settlePrefetch() async {
+        await self.prefetchTask?.value
+        await TranscriptCache.flush(gatewayId: self.id)
+    }
+
+    /// `stop()` for a store that won't be started again, returning once the connection is torn
+    /// down and its chats' last cache writes and search indexing have landed.
+    public func stopAndFlushCache() async {
+        self.stop()
+        await self.connection.stop()
+        for chat in self.chats.values { await chat.finishCaching() }
+        await TranscriptCache.flush(gatewayId: self.id)
     }
 
     /// Whether this connection can see and answer agent questions (`operator.questions`).

@@ -28,6 +28,7 @@ func runScopeUpgrade(url: String, token: String) async {
           "connected without operator.questions (\(gateway.hello?.withheldScopes ?? []))")
     check(gateway.hello?.scopeUpgradeRequestId?.hasPrefix("pair_") == true, "upgrade request id kept for the hint")
     // The mock approves upgrades after 3 seconds; Try Again then picks up the new scope.
+    // The mock approves the scope upgrade on a fixed 3 s timer; there is no event to await.
     try? await Task.sleep(for: .seconds(3.5))
     gateway.retryQuestionAccess()
     let upgraded = await waitFor("questions scope after approval", timeout: 20) {
@@ -45,6 +46,7 @@ func runLive(url: String, token: String) async {
     let gateway = GatewayStore(profile: profile)
     gateway.start()
     // What launch does: the scene turning active asks for a reconnect mid-handshake.
+    // Deliberate race delay (RACE_MS), not a wait on a condition.
     try? await Task.sleep(for: .milliseconds(Int(ProcessInfo.processInfo.environment["RACE_MS"] ?? "30") ?? 30))
     gateway.reconnectIfNeeded()
 
@@ -58,7 +60,6 @@ func runLive(url: String, token: String) async {
     check(connected, "connected and bootstrapped (pairing seen: \(sawPairing))")
     check(!sawReconnecting, "first connect never reports reconnecting")
     guard connected else { return }
-    _ = gateway.chat(for: "agent:main:dashboard:trip")
     await runLiveShare(profile: profile, gateway: gateway)
     check(gateway.agents.count >= 3, "agents.list (\(gateway.agents.map(\.name)))")
     check(gateway.sessions.count >= 5, "sessions.subscribe (\(gateway.sessions.count) rows)")
@@ -92,10 +93,11 @@ func runLive(url: String, token: String) async {
         check(false, "history includes an image")
     }
 
-    let trip = gateway.chat(for: "agent:main:dashboard:trip")
-    // Background prefetch may already have cached trip's whole history (it skips chats open here
-    // from now on): drop that so this checks paging from the Gateway.
+    // Background prefetch may have cached trip's whole history: let it finish and drop that, then
+    // open trip only now, so a reconnect earlier on can't have reloaded (and backfilled) it.
+    await gateway.settlePrefetch()
     await TranscriptCache.remove(gatewayId: gateway.id, sessionKey: "agent:main:dashboard:trip")
+    let trip = gateway.chat(for: "agent:main:dashboard:trip")
     await trip.load()
     let firstPage = trip.items.map(\.id)
     check(trip.hasMoreHistory && firstPage.count == 120, "latest page only (\(firstPage.count))")
@@ -265,7 +267,11 @@ func runLive(url: String, token: String) async {
     // A second device: names set on it before syncing are uploaded, and renames flow both ways.
     let otherProfile = GatewayProfile(name: "Mock 2", url: url, authMode: .token)
     otherProfile.secret = token
-    let other = GatewayStore(profile: otherProfile)
+    // Its own defaults suite: parallel check runs share UserDefaults.standard, and the avatar
+    // check below reads the device settings this store writes.
+    let (otherDefaults, otherSuite) = scratchDefaults()
+    defer { otherDefaults.removePersistentDomain(forName: otherSuite) }
+    let other = GatewayStore(profile: otherProfile, defaults: otherDefaults)
     let early = ChatServer(provider: "discord", id: "server-early", name: nil)
     let renamed = ChatServer(provider: "discord", id: "server-renamed", name: nil)
     other.renameServer(early, to: "Set Before Sync")
@@ -298,12 +304,12 @@ func runLive(url: String, token: String) async {
     let avatarSynced = await waitFor("avatar sync") {
         other.avatarChoices["main"] == "cat" && other.avatarChoices[AvatarPreferences.renderStyleEntry] == "plush"
     }
-    check(avatarSynced && UserDefaults.standard.string(forKey: AvatarPreferences.creatureKey(for: "main")) == "cat"
-          && UserDefaults.standard.string(forKey: AvatarPreferences.renderStyleKey) == "plush",
+    check(avatarSynced && otherDefaults.string(forKey: AvatarPreferences.creatureKey(for: "main")) == "cat"
+          && otherDefaults.string(forKey: AvatarPreferences.renderStyleKey) == "plush",
           "avatar character and style sync through users.prefs")
     other.setAvatarCreature(nil, for: "main")
     let avatarCleared = await waitFor("avatar clear") { gateway.avatarChoices["main"] == nil }
-    check(avatarCleared && UserDefaults.standard.object(forKey: AvatarPreferences.creatureKey(for: "main")) == nil,
+    check(avatarCleared && otherDefaults.object(forKey: AvatarPreferences.creatureKey(for: "main")) == nil,
           "setting a character back to Auto syncs")
     gateway.setAvatarRenderStyle(.pixel)
     _ = await waitFor("avatar style reset") { other.avatarChoices[AvatarPreferences.renderStyleEntry] == "pixel" }
@@ -721,6 +727,7 @@ func runLive(url: String, token: String) async {
     check(!gateway.health.canRestart && admin.health.canRestart, "restart needs admin")
     let uptimeBefore = health.uptime() ?? 0
     await gateway.health.restart()
+    // Negative window: a non-admin restart must not disturb the connections.
     try? await Task.sleep(for: .milliseconds(400))
     check(gateway.health.restartState == .failed(ConfigWriteError.adminRequired.message) && gateway.state.isConnected
           && admin.state.isConnected && (health.uptime() ?? 0) >= uptimeBefore,

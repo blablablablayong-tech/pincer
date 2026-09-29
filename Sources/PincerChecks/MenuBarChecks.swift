@@ -134,7 +134,11 @@ func runMenuBarDemo() async {
     }
 
     await gateway.markRead(papers)
-    let markedRead = await waitFor("mark read") { !MenuBarInbox(app: app).unread.contains { $0.target.sessionKey == papers } }
+    // Opening Forge's Main above marks it read asynchronously too, so wait for both to land.
+    let markedRead = await waitFor("mark read") {
+        let now = MenuBarInbox(app: app)
+        return now.unreadCount == 1 && now.unread.map(\.target.sessionKey) == [homeLab]
+    }
     inbox = MenuBarInbox(app: app)
     check(markedRead && inbox.unreadCount == 1 && inbox.unread.map(\.target.sessionKey) == [homeLab], "a chat marked read leaves Unread (\(inbox.unreadCount) unread)")
 
@@ -219,6 +223,7 @@ func checkMenuBarDemoDismissals(_ app: AppModel, _ gateway: GatewayStore, defaul
     check(synced, "menu bar demo: health dismissals synced with users.prefs")
     health.dismiss(telegram)
     // The users.prefs.set round trip: the demo echoes users.prefs.changed and the store re-reads it.
+    // Negative window: the echo must leave the stored dismissals unchanged.
     try? await Task.sleep(for: .milliseconds(500))
     let dismissed = gateway.healthDismissals
     check(dismissed == [telegram.id: "until:state=not-connected"] && health.dismissals == dismissed,
@@ -238,10 +243,12 @@ func checkMenuBarDemoDismissals(_ app: AppModel, _ gateway: GatewayStore, defaul
     let again = ObservationTripwire.track { _ = gateway.healthDismissals; _ = health.dismissals }
     health.dismiss(telegram)
     check(!again.fired, "dismissing the Telegram issue again writes nothing")
+    // Negative window: a repeated dismissal must not write users.prefs.
     try? await Task.sleep(for: .milliseconds(300))
     check(gateway.healthDismissals == dismissed, "the repeated dismissal leaves users.prefs as it was (\(gateway.healthDismissals))")
 
     health.restore(id: telegram.id)
+    // Round trip through users.prefs: restore echoes users.prefs.changed; the state below is read after it.
     try? await Task.sleep(for: .milliseconds(300))
     let inbox = MenuBarInbox(app: app)
     check(gateway.healthDismissals.isEmpty && inbox.gateways.first?.text == "Degraded",

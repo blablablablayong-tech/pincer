@@ -239,6 +239,7 @@ func checkReactionsReply() {
 // MARK: Demo
 
 private func pause(_ seconds: Double) async {
+    // Demo pacing between scripted steps; not a wait on a condition.
     try? await Task.sleep(for: .milliseconds(Int(seconds * 1000)))
 }
 
@@ -248,6 +249,7 @@ private func recordedActions(_ gateway: GatewayStore, atLeast count: Int, timeou
     let deadline = Date().addingTimeInterval(timeout)
     var actions = await gateway.demoRecordedActions()
     while actions.count < count, Date() < deadline {
+        // Poll interval.
         try? await Task.sleep(for: .milliseconds(50))
         actions = await gateway.demoRecordedActions()
     }
@@ -278,8 +280,6 @@ private func userItem(_ chat: ChatStore, containing text: String) -> [ChatItem] 
 
 @MainActor
 func runDemoReactionsReply() async {
-    let savedRecent = UserDefaults.standard.object(forKey: Reactions.recentDefaultsKey)
-    defer { UserDefaults.standard.set(savedRecent, forKey: Reactions.recentDefaultsKey) }
     guard let gateway = await connectDemo(.demo(), "demo for replies and reactions") else { return }
     defer {
         gateway.stop()
@@ -363,7 +363,9 @@ func runDemoReactionsReply() async {
     let both = chat.reactionGroups(for: "demo-main-ask", agentName: agentName)
     check(both.count == 1 && both[0].count == 2 && both[0].includesYou && both[0].reactorsText == "You and \(agentName)",
           "your ✅ joins \(agentName)'s (\(both.first?.reactorsText ?? ""))")
-    check(Reactions.recent.first == "✅", "adding records a recent emoji")
+    // The recent list lives in this process's standard defaults, which parallel check runs share
+    // (#206), so another run may have recorded after this one: check membership, not position.
+    check(Reactions.recent.contains("✅"), "adding records a recent emoji")
     chat.toggleReaction("🔥", on: "demo-main-ask")
     check(gateway.reactions[prefKey] == "✅ 🔥", "emoji kept in the order added")
     chat.toggleReaction("✅", on: "demo-main-ask")
