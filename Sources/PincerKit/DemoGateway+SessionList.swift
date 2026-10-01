@@ -2,7 +2,7 @@ import Foundation
 
 /// The session list, history, patch/create, prefs and message actions.
 extension DemoGateway {
-    func handleSessionList(_ method: String, _ params: JSONValue) throws -> JSONValue? {
+    func handleSessionList(_ method: String, _ params: JSONValue) async throws -> JSONValue? {
         switch method {
         case "sessions.subscribe":
             self.sessionsSubscribed = true
@@ -28,6 +28,11 @@ extension DemoGateway {
             }
             return ["ok": true, "key": params["key"] ?? .null]
         case "chat.history":
+            self.historyRequestCounts[params["sessionKey"]?.string ?? "", default: 0] += 1
+            if self.holdsHistory {
+                await withCheckedContinuation { self.heldHistory.append($0) }
+                try Task.checkCancellation()
+            }
             return try self.history(params)
         case "sessions.patch":
             return try self.patch(params)
@@ -42,6 +47,16 @@ extension DemoGateway {
             return try self.messageAction(params)
         default:
             return nil
+        }
+    }
+
+    /// Test hook: while held, `chat.history` parks until `holdHistory(false)`.
+    func holdHistory(_ hold: Bool) {
+        self.holdsHistory = hold
+        if !hold {
+            let parked = self.heldHistory
+            self.heldHistory = []
+            for continuation in parked { continuation.resume() }
         }
     }
 
