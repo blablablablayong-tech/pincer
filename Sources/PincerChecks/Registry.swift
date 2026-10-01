@@ -120,6 +120,7 @@ enum Suites {
             Section(nil) { checkToolDiffs() },
             Section(nil) { checkOutboxLogic() },
             Section(nil) { checkSidebarWorking() },
+            Section("Sidebar activity dates") { runSidebarActivityDateChecks() },
             Section("First-run wizard") { await runFirstRunChecks() },
         ]
         return sections
