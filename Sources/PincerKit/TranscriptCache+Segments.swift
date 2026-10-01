@@ -129,7 +129,7 @@ extension TranscriptCache {
         self.lastStats.withLock { $0 = result }
     }
 
-    static func segmentsDirectory(of manifest: URL) -> URL {
+    package static func segmentsDirectory(of manifest: URL) -> URL {
         manifest.deletingPathExtension().appendingPathExtension("segments")
     }
 
