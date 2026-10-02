@@ -134,6 +134,7 @@ enum Suites {
             sections.append(Section("Shortcuts & Siri") { await runIntentChecks() })
         }
         sections += [
+            Section("Shortcuts unread visibility") { await runIntentVisibilityChecks() },
             Section("Deep links & Handoff") { runDeepLinkChecks() },
             Section(nil) { runLocalizationChecks() },
             Section(nil) { checkToolDiffs() },
@@ -168,6 +169,7 @@ enum Suites {
 
     /// The built-in demo, second half.
     static let demoExtras: [Section] = [
+        Section("Shortcuts unread visibility (demo)") { await runDemoIntentVisibilityChecks() },
         Section("Device ID Settings cache (demo)") { runSettingsDeviceIdentityChecks() },
         Section("Rejected synced preferences (demo)") { await runDemoRejectedPrefWriteChecks() },
         Section("Sidebar automations & slash commands (demo)") { await runDemoSidebarVisibility() },
