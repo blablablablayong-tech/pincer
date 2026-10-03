@@ -99,6 +99,7 @@ enum Suites {
             Section("Replies & reactions") { checkReactionsReply() },
             Section("Quoted row preview preparation") { await runQuotePreviewChecks() },
             Section("Agent avatar signals") { runAvatarSignalChecks() },
+            Section("Centered chat identity") { runCenteredChatHeaderChecks() },
             Section("Avatar choices per Gateway") { runGatewayAvatarChoiceChecks() },
             Section("Agent reply targets") { checkReplyTargets() },
             Section("Reaction level") { checkReactionLevel() },
@@ -198,6 +199,7 @@ enum Suites {
 
     /// The built-in demo, second half.
     static let demoExtras: [Section] = [
+        Section("Centered chat identity (demo)") { await runDemoCenteredChatHeaderChecks() },
         Section("Reply Last availability (demo)") { await runDemoReplyLastAvailabilityChecks() },
         Section("Slash suggestion announcements (demo)") { await runDemoSlashSuggestionAnnouncementChecks() },
         Section("Compact chat toolbar branches (demo)") { await runDemoCompactBranchToolbarChecks() },
