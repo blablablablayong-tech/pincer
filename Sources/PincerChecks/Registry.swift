@@ -109,6 +109,7 @@ enum Suites {
             Section("Heartbeat event ordering") { await runHeartbeatEventOrderingChecks() },
             Section("Health event ordering") { await runHealthEventOrderingChecks() },
             Section("Gateway preference rejections") { runRejectedPrefHealthChecks() },
+            Section("Usage totals bounds") { await runUsageTotalsBoundsChecks() },
             Section("Usage & cost") { await checkUsage() },
             Section("Replies & reactions") { checkReactionsReply() },
             Section("Quoted row preview preparation") { await runQuotePreviewChecks() },
@@ -213,6 +214,7 @@ enum Suites {
 
     /// The built-in demo, second half.
     static let demoExtras: [Section] = [
+        Section("Usage totals bounds (demo)") { await runDemoUsageTotalsBoundsChecks() },
         Section("Context usage (demo)") { await runDemoContextUsageChecks() },
         Section("Deferred dictation send ownership (demo)") { await runDemoDeferredDictationSendChecks() },
         Section("Attachment draft ownership (demo)") { await runDemoAttachmentDraftOwnershipChecks() },
