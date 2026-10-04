@@ -105,6 +105,7 @@ enum Suites {
             Section(nil) { await checkDeviceManagement() },
             Section(nil) { await checkSkillsTools() },
             Section(nil) { await checkSessionManager() },
+            Section("Session detail ownership") { await runSessionDetailOwnershipChecks() },
             Section("Pairing requests") { await checkPairingInboxModel() },
             Section(nil) { await checkGatewayHealth() },
             Section("Heartbeat event ordering") { await runHeartbeatEventOrderingChecks() },
@@ -219,6 +220,7 @@ enum Suites {
     static let demoExtras: [Section] = [
         Section("MCP refresh outcomes (demo)") { await runDemoMCPRefreshOutcomeChecks() },
         Section("Rewind history ownership (demo)") { await runDemoRewindHistoryOwnershipChecks() },
+        Section("Session detail ownership (demo)") { await runDemoSessionDetailOwnershipChecks() },
         Section("Usage totals bounds (demo)") { await runDemoUsageTotalsBoundsChecks() },
         Section("Context usage (demo)") { await runDemoContextUsageChecks() },
         Section("Deferred dictation send ownership (demo)") { await runDemoDeferredDictationSendChecks() },
