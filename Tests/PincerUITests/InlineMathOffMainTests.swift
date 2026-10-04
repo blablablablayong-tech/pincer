@@ -10,6 +10,28 @@ import UIKit
 #endif
 
 @MainActor
+private final class InlineMathBatchCompletion {
+    private var result: Bool?
+    private var waiter: CheckedContinuation<Bool, Never>?
+    func finish(_ completed: Bool) {
+        guard self.result == nil else { return }
+        self.result = completed
+        let waiter = self.waiter
+        self.waiter = nil
+        waiter?.resume(returning: completed)
+    }
+    func wait() async -> Bool {
+        await withTaskCancellationHandler {
+            await withCheckedContinuation { waiter in
+                if let result = self.result { waiter.resume(returning: result) }
+                else if Task.isCancelled { self.finish(false); waiter.resume(returning: false) }
+                else { self.waiter = waiter }
+            }
+        } onCancel: { Task { @MainActor in self.finish(false) } }
+    }
+}
+
+@MainActor
 @Suite("InlineMathOffMain", .serialized)
 struct InlineMathOffMainTests {
     static let source = "Energy scales as $x^2 + \\frac{a}{b}$ and \\(y_i\\) in a sentence long enough to wrap a couple of times at narrow widths."
@@ -168,6 +190,10 @@ struct InlineMathOffMainTests {
     }
 
     @Test(.timeLimit(.minutes(2))) func prewarmWarmsTheWindowAtTheFinalWidth() async {
+        let acquiredCacheLease = await TranscriptSharedCacheLease.shared.acquire()
+        #expect(acquiredCacheLease, "the actual cache fixture must acquire its cancellable isolation lease")
+        guard acquiredCacheLease else { return }
+        defer { TranscriptSharedCacheLease.shared.release() }
         let scratch = ScratchDefaults()
         defer { scratch.remove() }
         let renderer = TranscriptLayoutCacheTests.renderer(scratch)
@@ -180,24 +206,45 @@ struct InlineMathOffMainTests {
         }
         let width: CGFloat = 612
         let contentWidth = TranscriptMetrics.contentWidth(rowWidth: width)
-        let driver = TranscriptPremeasureDriver()
+        let driver = TranscriptPremeasureDriver(admission: TranscriptPremeasureAdmission())
+        defer { driver.cancelAll() }
+        driver.currentRow = { id in rows.first { $0.id == id } }
         let cold = rows.compactMap { renderer.premeasureBodies(for: $0) }
         #expect(cold.count == rows.count)
         #expect(cold.allSatisfy { keys in !keys.allSatisfy { TranscriptText.isWarm($0.textKey, contentWidth: contentWidth) } })
-        // A bounded prewarm may finish only part of the window when other suites own the worker.
-        // Exercise that path without assuming the shared queue finishes before a wall-clock deadline.
+        // A zero-budget pass is optional; actual asynchronous adoption must warm the whole window.
+        // Isolate admission from other suites while retaining the real serialized measurement worker.
         let warmed = driver.prewarm(Array(rows.indices), all: rows, width: width, renderer: renderer, budget: 0)
         #expect((0...rows.count).contains(warmed))
         let remaining = driver.split(Array(rows.indices), all: rows, width: width, renderer: renderer).offload
         if !remaining.isEmpty {
-            await withCheckedContinuation { continuation in
-                // Twelve rows fit in a single worker chunk; completion means adoption has finished.
-                #expect(remaining.count <= TranscriptPremeasureDriver.rowsPerJob)
-                driver.submit(remaining, width: width, env: renderer.textEnvironment) { continuation.resume() }
+            let completed = InlineMathBatchCompletion()
+            driver.submit(remaining, width: width, env: renderer.textEnvironment) {
+                // A discarded/rejected terminal batch must also wake the test, then fail the
+                // exact adoption assertion instead of hanging behind its success predicate.
+                if driver.inFlightCount == 0 { completed.finish(true) }
             }
+            let finished = await completed.wait()
+            if !finished || driver.stats.adopted != rows.count {
+                print("Inline math actual batch completion: finished=\(finished) stats=\(driver.stats) inFlight=\(driver.inFlightCount) active=\(driver.admission.active) pending=\(driver.admission.pendingCount)")
+            }
+            #expect(finished, "the real batch completion event must arrive before test cancellation")
+            #expect(driver.inFlightCount == 0 && driver.stats.adopted == rows.count,
+                    "every actual row must finish adoption before checking the warmed window")
         }
         #expect(cold.allSatisfy { keys in keys.allSatisfy { TranscriptText.isWarm($0.textKey, contentWidth: contentWidth) } })
-        // A second pass finds everything warm and sends nothing.
+        // Global eviction tokens conservatively invalidate earlier row memos even when this
+        // exact window remains warm. Render the finished window, as the real controller does,
+        // and prove its already-adopted sizes avoid any additional Main TextKit measurement.
+        let mainLayoutsBefore = TranscriptText.measureStats.mainLayouts
+        for row in rows {
+            let layout = renderer.layout(for: row, width: width)
+            #expect(layout.height.isFinite && layout.height > 0)
+            #expect(layout.width.isFinite && layout.width == width)
+            #expect(renderer.hasLayout(for: row, width: width))
+        }
+        #expect(TranscriptText.measureStats.mainLayouts == mainLayoutsBefore)
+        // The actual rendered-window cache then makes a second pass send nothing.
         #expect(driver.prewarm(Array(rows.indices), all: rows, width: width, renderer: renderer) == 0)
         // A zero budget returns at once, even with work left.
         let more = (0..<8).map { Self.assistant("pz\($0)-\(salt)", text: "Cold \($0) " + body + salt, at: $0) }

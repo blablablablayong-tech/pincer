@@ -74,14 +74,15 @@ struct TranscriptPremeasureTests {
         item.transcriptId = item.id
         let rows: [TranscriptRow] = [.entry(.user(item))]
         let driver = TranscriptPremeasureDriver()
+        driver.currentRow = { id in rows.first { $0.id == id } }
 
         let first = driver.split([0], all: rows, width: 700, renderer: renderer)
         let digestsAfterFirst = TranscriptText.sourceDigestBuildCount
         let second = driver.split([0], all: rows, width: 700, renderer: renderer)
 
         #expect(first.offload.count == 1 && second.offload.count == 1)
-        #expect(renderer.premeasureBodyBuildCount == 1,
-                "scroll planning should not rebuild/join and hash an unchanged message body")
+        #expect(renderer.premeasureBodyBuildCount == 0,
+                "scroll planning must not prepare source before the worker acquires it")
         #expect(TranscriptText.sourceDigestBuildCount == digestsAfterFirst,
                 "warm-cache probes should reuse the memoized full-source digest")
     }
@@ -90,7 +91,8 @@ struct TranscriptPremeasureTests {
         let scratch = ScratchDefaults()
         defer { scratch.remove() }
         let seedRenderer = TranscriptLayoutCacheTests.renderer(scratch)
-        let controller = TranscriptListController(context: seedRenderer.context, prefetchBudget: 0.004)
+        let controller = TranscriptListController(context: seedRenderer.context, prefetchBudget: 0.004,
+                                                  premeasureAdmission: TranscriptPremeasureAdmission())
         let driver = controller.premeasure
         let oldText = "Old body " + UUID().uuidString
         let newText = "New body " + UUID().uuidString
@@ -111,17 +113,24 @@ struct TranscriptPremeasureTests {
                                        contentWidth: TranscriptMetrics.contentWidth(rowWidth: 700)))
         let newJob = try! #require(driver.split([0], all: controller.rows, width: 700,
                                                 renderer: controller.renderer).offload.first)
-        #expect(newJob.bodies.first?.source == newText)
+        let newResult = TranscriptPremeasurer.shared.measureWithin(
+            5, jobs: [newJob], env: controller.renderer.textEnvironment, epoch: driver.epoch)
+        #expect(newResult.first?.bodies.first?.key.source == newText)
         #expect(newJob.rowRevision != oldJob.rowRevision)
     }
 
     @Test func warmRowMemoRechecksAfterTextCacheEviction() async {
+        let acquiredCacheLease = await TranscriptSharedCacheLease.shared.acquire()
+        #expect(acquiredCacheLease, "the actual cache fixture must acquire its cancellable isolation lease")
+        guard acquiredCacheLease else { return }
+        defer { TranscriptSharedCacheLease.shared.release() }
         let scratch = ScratchDefaults()
         defer { scratch.remove() }
         let renderer = TranscriptLayoutCacheTests.renderer(scratch)
         let source = "Evict me from the text cache " + UUID().uuidString
         let rows = [Self.userRow(id: "cache-eviction-\(UUID().uuidString)", text: source)]
-        let driver = TranscriptPremeasureDriver()
+        let driver = TranscriptPremeasureDriver(admission: TranscriptPremeasureAdmission())
+        driver.currentRow = { id in rows.first { $0.id == id } }
         let job = try! #require(driver.split([0], all: rows, width: 700, renderer: renderer).offload.first)
         let measured = await TranscriptPremeasurer.shared.measureWithin(
             5, jobs: [job], env: renderer.textEnvironment, epoch: driver.epoch)
