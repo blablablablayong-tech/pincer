@@ -234,6 +234,9 @@ extension DemoGateway {
                 throw Self.skillsInvalid("invalid skills.update params: at /enabled: must be boolean")
             }
         }
+        if let apiKey = params["apiKey"], apiKey.string == nil {
+            throw Self.skillsInvalid("invalid skills.update params: at /apiKey: must be string")
+        }
         var config: [String: JSONValue] = [:]
         if let index = self.skillEntries.firstIndex(where: { $0["skillKey"]?.text == key }) {
             var entry = self.skillEntries[index]
