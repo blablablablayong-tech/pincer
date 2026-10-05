@@ -244,6 +244,7 @@ enum Suites {
         ]
         #if DEBUG
         sections.append(Section("Quick Capture prepared attachment") { await runQuickCapturePreparedAttachmentChecks() })
+        sections.append(Section("Edit send attachment admission") { await runEditSendAttachmentAdmissionChecks(); await runEditSendNormalDraftPreparationChecks() })
         sections.append(Section("Quick Capture send target ownership") { await runQuickCaptureSendTargetOwnershipChecks() })
         sections.append(Section("Quick Capture created target ownership") { await runQuickCaptureCreatedTargetOwnershipChecks() })
         sections.append(Section("Find worker admission") { await runTranscriptFindWorkerChecks(); await runTranscriptFindWorkerQueueChecks() })
@@ -426,6 +427,7 @@ enum Suites {
     ]
         #if DEBUG
         sections.append(Section("Quick Capture prepared attachment (demo)") { await runDemoQuickCapturePreparedAttachmentChecks() })
+        sections.append(Section("Edit send attachment admission (demo)") { await runDemoEditSendAttachmentAdmissionChecks(); await runEditSendNormalDraftPreparationChecks() })
         sections.append(Section("Quick Capture send target ownership (demo)") { await runDemoQuickCaptureSendTargetOwnershipChecks() })
         sections.append(Section("Quick Capture created target ownership (demo)") { await runDemoQuickCaptureCreatedTargetOwnershipChecks() })
         sections.append(Section("Find worker admission (demo)") { await runDemoTranscriptFindWorkerChecks() })
