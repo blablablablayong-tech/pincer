@@ -2,15 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<!-- Read by SharedContainer and PushKeyStore; must match the entitlements. The rest of Info.plist is generated. -->
 	<key>PincerAppGroup</key>
 	<string>$(PINCER_APP_GROUP)</string>
-	<!-- Development namespace suffix (".dev-<name>"); empty in production. -->
 	<key>PincerDevSuffix</key>
 	<string>$(PINCER_DEV_SUFFIX)</string>
 	<key>PincerKeychainGroup</key>
 	<string>$(AppIdentifierPrefix)chat.pincer.shared$(PINCER_DEV_SUFFIX)</string>
-	<!-- pincer://open?gateway=…&session=… links and Handoff of the visible chat (PincerRoute). -->
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -24,8 +21,6 @@
 			</array>
 		</dict>
 	</array>
-	<!-- The first-run wizard's Nearby list: Gateways advertise over Bonjour (upstream docs/gateway/bonjour.md). -->
-	<!-- iOS only (macOS ignores these): background refresh checks gateways for local notifications. -->
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
@@ -43,6 +38,11 @@
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>chat.pincer.chat</string>
+	</array>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>zh-Hans</string>
 	</array>
 </dict>
 </plist>

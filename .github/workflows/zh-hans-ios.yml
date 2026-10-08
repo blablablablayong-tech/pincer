@@ -1,0 +1,69 @@
+name: Pincer 简体中文版 iOS IPA
+on:
+  push:
+    branches: [zh-hans-ios]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  unsigned-ios:
+    name: Build iPhone IPA (unsigned)
+    runs-on: macos-26
+    timeout-minutes: 60
+    steps:
+      - name: Checkout Chinese fork
+        uses: actions/checkout@v4
+      - name: Select newest Xcode
+        shell: bash
+        run: |
+          set -euo pipefail
+          XCODE="$(ls -d /Applications/Xcode_*.app | sort -V | tail -1)"
+          sudo xcode-select -s "$XCODE"
+          xcodebuild -version
+      - name: Verify Chinese String Catalog
+        run: |
+          python3 scripts/translate_zh_hans.py --check
+          python3 - <<'PY2'
+          import json
+          c=json.load(open("Sources/PincerUI/Resources/Localizable.xcstrings",encoding="utf-8"))
+          missing=[k for k,v in c["strings"].items() if "zh-Hans" not in v.get("localizations",{})]
+          if missing: raise SystemExit(f"{len(missing)} untranslated catalog entries")
+          print("PASS:",len(c["strings"]),"entries have a zh-Hans locale")
+          PY2
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Generate Xcode Project
+        run: xcodegen generate --quiet
+      - name: Build unsigned iOS app
+        shell: bash
+        run: |
+          set -eo pipefail
+          xcodebuild build \
+            -project Pincer.xcodeproj \
+            -scheme Pincer-iOS \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/PincerDerivedData" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY='' \
+            | tee "$RUNNER_TEMP/pincer-build.log"
+      - name: Pack unsigned IPA
+        shell: bash
+        run: |
+          set -euo pipefail
+          source="$RUNNER_TEMP/PincerDerivedData/Build/Products/Release-iphoneos/Pincer.app"
+          test -d "$source"
+          mkdir -p out/Payload
+          ditto "$source" out/Payload/Pincer.app
+          rm -rf out/Payload/Pincer.app/PlugIns
+          cd out
+          zip -qr Pincer-zh-Hans-unsigned.ipa Payload
+          test -s Pincer-zh-Hans-unsigned.ipa
+      - name: Upload unsigned iOS IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: Pincer-zh-Hans-unsigned-IPA
+          path: out/Pincer-zh-Hans-unsigned.ipa
+          if-no-files-found: error
+          retention-days: 30
