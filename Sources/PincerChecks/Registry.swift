@@ -257,6 +257,7 @@ enum Suites {
             Section("Composer session title") { runComposerSessionTitleChecks() },
             Section("Current shortcut tips") { runShortcutTipsChecks() },
             Section("First-run wizard") { await runFirstRunChecks() },
+            Section("First-run probe deadlines") { await runFirstRunProbeTimeoutChecks() },
             Section("Documentation capture packaging") { runDocsCaptureIsolationChecks() },
             Section("Checks pending lane diagnostics") { await runChecksPendingProgressChecks() },
         ]

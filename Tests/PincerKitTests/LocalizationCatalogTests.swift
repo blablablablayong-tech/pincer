@@ -29,6 +29,36 @@ struct LocalizationCatalogTests {
         #expect(!(try self.strings()).isEmpty, "catalog has strings")
     }
 
+
+    @Test func simplifiedChineseConnectionAndSessionCopy() throws {
+        let expected = [
+            "%@, agent": "%@，智能体", "Rewind": "回溯", "Rewind…": "回溯…",
+            "Queue a follow-up": "排队发送", "%lld messages queued": "%lld 条消息待发送",
+            "Chat & Approvals": "聊天与审批", "Full Management": "完整管理权限",
+            "Tailscale identity / none": "Tailscale 身份验证 / 无认证",
+            "The rewound message is back in the composer.": "已将回溯的消息放回输入框。",
+        ]
+        let strings = try self.strings()
+        for (key, translation) in expected {
+            let entry = try #require(strings[key], "missing catalog key: \(key)")
+            let values = Catalog.values(entry, language: "zh-Hans")
+            #expect(!values.isEmpty, "missing Simplified Chinese: \(key)")
+            #expect(values.allSatisfy { $0.value == translation }, "unexpected Chinese copy for \(key): \(values)")
+        }
+    }
+
+    @Test func simplifiedChinesePreservesFormatArguments() throws {
+        for (key, entry) in try self.strings() {
+            let expected = FormatSpecifiers.parse(key)
+            for (path, value) in Catalog.values(entry, language: "zh-Hans") {
+                let actual = FormatSpecifiers.parse(value)
+                let ok = path == "stringUnit" ? actual == expected
+                    : actual.allSatisfy { expected[$0.key] == $0.value }
+                #expect(ok, "\(key) [\(path)]: format arguments changed in \(value)")
+            }
+        }
+    }
+
     @Test func coreControlsAreInTheCatalog() throws {
         let keys = Set(try self.strings().keys)
         let core = ["Send", "Stop", "Attach files", "Model", "Context window", "Find next", "Find previous",
@@ -135,7 +165,7 @@ struct LocalizationCatalogTests {
             // #191, #192, #351
             "ConnectionViews", "FirstRunView", "SetupWizardView", "RootView", "CommandPaletteView",
             "GatewaySettingsWindow", "DeepLinkRouting", "SidebarList+AppKit", "SidebarSupport", "ChannelList",
-            "TranscriptRowLayout", "TranscriptRowView+Parts",
+            "TranscriptRowLayout", "TranscriptRowView+Parts", "SessionManagerViews",
         ]
         let folder = Self.root.appending(path: "Sources/PincerUI")
         var unmigrated: [String] = []
@@ -166,7 +196,11 @@ struct LocalizationCatalogTests {
 enum Catalog {
     /// The `en` string units of an entry: `stringUnit` plus any plural/device variations, by path.
     static func englishValues(_ entry: [String: Any]) -> [(path: String, value: String)] {
-        guard let en = (entry["localizations"] as? [String: Any])?["en"] as? [String: Any] else { return [] }
+        self.values(entry, language: "en")
+    }
+
+    static func values(_ entry: [String: Any], language: String) -> [(path: String, value: String)] {
+        guard let en = (entry["localizations"] as? [String: Any])?[language] as? [String: Any] else { return [] }
         var out: [(String, String)] = []
         func walk(_ node: [String: Any], _ path: String) {
             if let unit = node["stringUnit"] as? [String: Any] {

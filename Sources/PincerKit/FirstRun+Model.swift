@@ -345,16 +345,10 @@ public enum FirstRunProbe {
         task.resume()
         defer { task.cancel(with: .goingAway, reason: nil) }
         do {
-            let message = try await withThrowingTaskGroup(of: URLSessionWebSocketTask.Message?.self) { group in
-                group.addTask { try await task.receive() }
-                group.addTask {
-                    try await Task.sleep(for: .seconds(timeout))
-                    return nil
-                }
-                let first = try await group.next() ?? nil
-                group.cancelAll()
-                return first
-            }
+            let message = try await self.firstMessage(
+                timeout: timeout,
+                receive: { try await task.receive() },
+                cancel: { task.cancel(with: .goingAway, reason: nil) })
             guard let message else { return .unreachable(FirstRunCopy.cantReach) }
             let data: Data? = switch message {
             case let .data(data): data

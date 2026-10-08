@@ -11,9 +11,9 @@ public struct GatewayProfile: Codable, Identifiable, Hashable, Sendable {
 
         public var label: String {
             switch self {
-            case .none: "Tailscale identity / none"
-            case .token: "Gateway token"
-            case .password: "Gateway password"
+            case .none: L("Tailscale identity / none")
+            case .token: L("Gateway token")
+            case .password: L("Gateway password")
             }
         }
     }
@@ -28,15 +28,15 @@ public struct GatewayProfile: Codable, Identifiable, Hashable, Sendable {
         public var id: String { self.rawValue }
         public var label: String {
             switch self {
-            case .standard: "Chat & Approvals"
-            case .admin: "Full Management"
+            case .standard: L("Chat & Approvals")
+            case .admin: L("Full Management")
             }
         }
 
         public var detail: String {
             switch self {
-            case .standard: "Chat, read history and answer approvals. Gateway settings are read-only."
-            case .admin: "Also change the Gateway's settings and plugins. The Gateway host approves this device again."
+            case .standard: L("Chat, read history and answer approvals. Gateway settings are read-only.")
+            case .admin: L("Also change the Gateway's settings and plugins. The Gateway host approves this device again.")
             }
         }
     }

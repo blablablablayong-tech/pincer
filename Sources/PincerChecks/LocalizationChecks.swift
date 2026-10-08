@@ -63,6 +63,25 @@ func runLocalizationChecks() {
     check(missing.isEmpty, "every key has a non-empty en value (missing: \(missing.sorted().prefix(10)))")
     check(mismatched.isEmpty, "format specifiers match between key and en value (\(mismatched.sorted().prefix(10)))")
 
+    let chineseCopy = [
+        "%@, agent": "%@，智能体", "Rewind": "回溯", "Queue a follow-up": "排队发送",
+        "Chat & Approvals": "聊天与审批", "Full Management": "完整管理权限",
+        "Tailscale identity / none": "Tailscale 身份验证 / 无认证",
+    ]
+    for (key, expected) in chineseCopy {
+        let entry = strings[key] as? [String: Any]
+        let localizations = entry?["localizations"] as? [String: Any]
+        let chinese = localizations?["zh-Hans"] as? [String: Any]
+        let unit = chinese?["stringUnit"] as? [String: Any]
+        check(unit?["value"] as? String == expected, "Simplified Chinese copy: \(key)")
+    }
+    let connectionKeys = [
+        GatewayProfile.AuthMode.none.label, GatewayProfile.AuthMode.token.label, GatewayProfile.AuthMode.password.label,
+        GatewayProfile.AccessLevel.standard.label, GatewayProfile.AccessLevel.admin.label,
+        GatewayProfile.AccessLevel.standard.detail, GatewayProfile.AccessLevel.admin.detail,
+    ]
+    check(connectionKeys.allSatisfy { strings[$0] != nil }, "connection labels and permission details have catalog entries")
+
     // #228: PincerKit's sentences are keys in this catalog (no bundle registered here, so they read as English keys).
     let kitPhrases = [
         MessageSender.unknownAgentName, MessageSender.automationName, MessageSender.helperName,

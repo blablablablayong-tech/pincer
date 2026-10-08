@@ -30,6 +30,16 @@ jobs:
           if missing: raise SystemExit(f"{len(missing)} untranslated catalog entries")
           print("PASS:",len(c["strings"]),"entries have a zh-Hans locale")
           PY2
+      - name: Run probe, localization and session regression tests
+        env:
+          PINCER_KEYCHAIN: memory
+          PINCER_DEV_NAMESPACE: zh-hans-ci
+        run: swift test --filter 'FirstRunProbeTimeoutTests|LocalizationCatalogTests|SessionManagerTests'
+      - name: Run offline checks
+        env:
+          PINCER_KEYCHAIN: memory
+          PINCER_DEV_NAMESPACE: zh-hans-ci-offline
+        run: swift run PincerChecks
       - name: Install XcodeGen
         run: brew install xcodegen
       - name: Generate Xcode Project

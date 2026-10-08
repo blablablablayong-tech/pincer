@@ -38,7 +38,7 @@ struct SessionsPage: View {
                 SessionPreviewPanel(model: model, row: row)
                     .frame(height: 170)
                     .overlay(alignment: .topTrailing) {
-                        Button("Details…") { self.open(key) }
+                        Button(L("Details…")) { self.open(key) }
                             .padding(Theme.Spacing.md)
                     }
             }
@@ -48,13 +48,13 @@ struct SessionsPage: View {
                 self.actionBar(model)
             }
         }
-        .navigationTitle("Sessions")
+        .navigationTitle(L("Sessions"))
         .toolbar {
             #if os(iOS)
             ToolbarItem(placement: .topBarLeading) { EditButton() }
             #endif
             ToolbarItem(placement: .primaryAction) {
-                Button("Refresh", systemImage: "arrow.clockwise") {
+                Button(L("Refresh"), systemImage: "arrow.clockwise") {
                     Task { await model.load(filter: self.filter) }
                 }
                 .disabled(!connected || model.isLoading)
@@ -64,14 +64,14 @@ struct SessionsPage: View {
                                                         title: self.selection.first.flatMap(model.row)?.title),
                             isPresented: self.$confirmingDelete,
                             titleVisibility: .visible) {
-            Button("Delete", role: .destructive) {
+            Button(L("Delete"), role: .destructive) {
                 let keys = Array(self.selection)
                 Task {
                     let outcome = await model.delete(keys)
                     if outcome.failed.isEmpty, !self.selection.isEmpty { self.selection = [] }
                 }
             }
-            Button("Cancel", role: .cancel) {}
+            Button(L("Cancel"), role: .cancel) {}
         } message: {
             Text(SessionManager.deleteMessage(unsentCount: self.unsentCount(model.deletePlan(self.selection).deletable),
                                                  sessionCount: self.selection.count))
@@ -93,7 +93,7 @@ struct SessionsPage: View {
 
     @ViewBuilder private func header(_ model: SessionManagerModel, connected: Bool) -> some View {
         VStack(alignment: .leading, spacing: Theme.Spacing.md) {
-            Picker("Show", selection: Binding(
+            Picker(L("Show"), selection: Binding(
                 get: { self.filter },
                 set: { next in
                     guard next != self.filter else { return }
@@ -105,7 +105,7 @@ struct SessionsPage: View {
             }
             .pickerStyle(.segmented)
             .labelsHidden()
-            TextField("Filter sessions", text: self.$search)
+            TextField(L("Filter sessions"), text: self.$search)
                 .textFieldStyle(.roundedBorder)
                 #if os(iOS)
                 .autocorrectionDisabled()
@@ -119,23 +119,23 @@ struct SessionsPage: View {
 
     @ViewBuilder private func content(_ model: SessionManagerModel, rows: [SessionRow], connected: Bool) -> some View {
         if !connected {
-            ContentUnavailableView("Not Connected", systemImage: "bolt.horizontal.circle",
-                                   description: Text("Connect to the Gateway to manage sessions."))
+            ContentUnavailableView(L("Not Connected"), systemImage: "bolt.horizontal.circle",
+                                   description: Text(L("Connect to the Gateway to manage sessions.")))
         } else if !model.supportsList {
-            ContentUnavailableView("Session Management Isn't Available", systemImage: "rectangle.stack",
+            ContentUnavailableView(L("Session Management Isn't Available"), systemImage: "rectangle.stack",
                                    description: Text(SessionManager.unsupportedMessage))
         } else if !model.hasLoaded, let error = model.loadError {
             ContentUnavailableView {
-                Label("Couldn't Load Sessions", systemImage: "exclamationmark.triangle")
+                Label(L("Couldn't Load Sessions"), systemImage: "exclamationmark.triangle")
             } description: {
                 Text(error)
             } actions: {
-                Button("Try Again") { Task { await model.load(filter: self.filter) } }
+                Button(L("Try Again")) { Task { await model.load(filter: self.filter) } }
             }
         } else if !model.hasLoaded || (model.isLoading && model.filter != self.filter) {
             ProgressView().frame(maxWidth: .infinity, maxHeight: .infinity)
         } else if rows.isEmpty {
-            ContentUnavailableView(self.search.isEmpty ? self.filter.emptyMessage : "No Matches",
+            ContentUnavailableView(self.search.isEmpty ? self.filter.emptyMessage : L("No Matches"),
                                    systemImage: self.filter == .archived ? "archivebox" : "rectangle.stack")
         } else {
             List(selection: self.$selection) {
@@ -157,20 +157,20 @@ struct SessionsPage: View {
 
     @ViewBuilder private func contextMenu(_ model: SessionManagerModel, keys: Set<String>) -> some View {
         if keys.count == 1, let key = keys.first {
-            Button("Show Details") { self.open(key) }
-            Button("Copy Session Key") { Clipboard.copy(key) }
+            Button(L("Show Details")) { self.open(key) }
+            Button(L("Copy Session Key")) { Clipboard.copy(key) }
             Divider()
         }
         if !keys.isEmpty {
             let rows = keys.compactMap(model.row)
             if model.supportsArchive, rows.contains(where: { !$0.isArchived }) {
-                Button("Archive") { Task { await self.setArchived(model, Array(keys), archived: true) } }
+                Button(L("Archive")) { Task { await self.setArchived(model, Array(keys), archived: true) } }
             }
             if model.supportsArchive, rows.contains(where: \.isArchived) {
-                Button("Unarchive") { Task { await self.setArchived(model, Array(keys), archived: false) } }
+                Button(L("Unarchive")) { Task { await self.setArchived(model, Array(keys), archived: false) } }
             }
             if model.supportsDelete {
-                Button("Delete…", role: .destructive) {
+                Button(L("Delete…"), role: .destructive) {
                     if self.selection != keys { self.selection = keys }
                     self.confirmingDelete = true
                 }
@@ -185,22 +185,22 @@ struct SessionsPage: View {
         let keys = Array(self.selection)
         return VStack(alignment: .leading, spacing: Theme.Spacing.sm) {
             HStack(spacing: Theme.Spacing.lg) {
-                Text("\(self.selection.count) selected")
+                Text(L("\(self.selection.count) selected"))
                     .font(.callout)
                     .foregroundStyle(.secondary)
                 Spacer()
                 if model.supportsArchive {
-                    Button("Archive", systemImage: "archivebox") {
+                    Button(L("Archive"), systemImage: "archivebox") {
                         Task { await self.setArchived(model, keys, archived: true) }
                     }
                     .disabled(model.isWorking || !rows.contains { !$0.isArchived })
-                    Button("Unarchive", systemImage: "tray.and.arrow.up") {
+                    Button(L("Unarchive"), systemImage: "tray.and.arrow.up") {
                         Task { await self.setArchived(model, keys, archived: false) }
                     }
                     .disabled(model.isWorking || !rows.contains(where: \.isArchived))
                 }
                 if model.supportsDelete {
-                    Button("Delete…", systemImage: "trash", role: .destructive) { self.confirmingDelete = true }
+                    Button(L("Delete…"), systemImage: "trash", role: .destructive) { self.confirmingDelete = true }
                         .disabled(model.isWorking || !plan.canDelete)
                 }
                 if model.isWorking { ProgressView().controlSize(.small) }
@@ -244,17 +244,17 @@ struct SessionManagerRowView: View {
                 HStack(spacing: Theme.Spacing.sm) {
                     Text(self.row.title).lineLimit(1).truncationMode(.middle)
                     if self.row.isArchived {
-                        Text("Archived")
+                        Text(L("Archived"))
                             .font(.caption2.weight(.medium))
                             .padding(.horizontal, 5)
                             .padding(.vertical, Theme.Spacing.hairline)
                             .background(.quaternary, in: Capsule())
                     }
                     if SessionManager.isRecoverable(self.row) {
-                        Label("Interrupted", systemImage: "exclamationmark.arrow.circlepath")
+                        Label(L("Interrupted"), systemImage: "exclamationmark.arrow.circlepath")
                             .labelStyle(.iconOnly)
                             .foregroundStyle(.orange)
-                            .help("Interrupted by a Gateway restart")
+                            .help(L("Interrupted by a Gateway restart"))
                             .accessibilityLabel(AccessibilityText.runStatusLabel("interrupted"))
                     }
                 }
@@ -379,10 +379,10 @@ struct SessionPreviewContent: View {
 
     var body: some View {
         if !self.model.supportsPreview {
-            Text("Previews need a newer Gateway.").foregroundStyle(.secondary)
+            Text(L("Previews need a newer Gateway.")).foregroundStyle(.secondary)
         } else if let preview = self.model.previews[self.key] {
             if preview.items.isEmpty {
-                Text(preview.emptyReason ?? "No messages yet").foregroundStyle(.secondary)
+                Text(preview.emptyReason ?? L("No messages yet")).foregroundStyle(.secondary)
             } else {
                 VStack(alignment: .leading, spacing: Theme.Spacing.sm) {
                     ForEach(preview.items) { item in
@@ -408,10 +408,10 @@ struct SessionPreviewContent: View {
 
     static func roleTitle(_ role: String) -> String {
         switch role {
-        case "user": "You"
-        case "assistant": "Assistant"
-        case "tool": "Tool"
-        case "system": "System"
+        case "user": L("You")
+        case "assistant": L("Assistant")
+        case "tool": L("Tool")
+        case "system": L("System")
         default: role.capitalized
         }
     }
@@ -434,7 +434,7 @@ private struct SessionManagerMessages: View {
                 .foregroundStyle(.secondary)
         }
         if let editorText = self.model.lastEditorText, !editorText.isEmpty {
-            Text("The rewound message is back in the composer.")
+            Text(L("The rewound message is back in the composer."))
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
@@ -475,7 +475,7 @@ struct SessionDetailPage: View {
             Section { SessionManagerMessages(model: model) }
             if let row {
                 self.details(row, model: model)
-                Section("Preview") { SessionPreviewContent(model: model, key: self.sessionKey) }
+                Section(L("Preview")) { SessionPreviewContent(model: model, key: self.sessionKey) }
                 self.actions(row, model: model, connected: connected)
                 self.branches(row, model: model, connected: connected)
                 self.rewindPoints(row, model: model, connected: connected)
@@ -486,42 +486,42 @@ struct SessionDetailPage: View {
             }
         }
         .formStyle(.grouped)
-        .navigationTitle(row?.title ?? "Session")
+        .navigationTitle(row?.title ?? L("Session"))
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                Button("Refresh", systemImage: "arrow.clockwise") { Task { await self.load(model, force: true) } }
+                Button(L("Refresh"), systemImage: "arrow.clockwise") { Task { await self.load(model, force: true) } }
                     .disabled(!connected)
             }
         }
         .confirmationDialog(SessionManager.deleteTitle(count: 1, title: row?.title), isPresented: self.$confirmingDelete,
                             titleVisibility: .visible) {
-            Button("Delete", role: .destructive) {
+            Button(L("Delete"), role: .destructive) {
                 Task {
                     let outcome = await model.delete([self.sessionKey])
                     if outcome.succeeded.contains(self.sessionKey) { self.pop() }
                 }
             }
-            Button("Cancel", role: .cancel) {}
+            Button(L("Cancel"), role: .cancel) {}
         } message: {
             Text(SessionManager.deleteMessage(unsentCount: self.gateway.outbox.entries(for: self.sessionKey).count))
         }
         .confirmationDialog(SessionManager.switchTitle(self.pendingBranch?.title ?? ""),
                             isPresented: Self.presence(self.$pendingBranch), titleVisibility: .visible,
                             presenting: self.pendingBranch) { branch in
-            Button("Switch Branch") {
+            Button(L("Switch Branch")) {
                 Task { await model.switchBranch(key: self.sessionKey, leafEntryId: branch.leafEntryId) }
             }
-            Button("Cancel", role: .cancel) {}
+            Button(L("Cancel"), role: .cancel) {}
         } message: { _ in
             Text(SessionManager.switchMessage)
         }
-        .confirmationDialog(SessionManager.rewindTitle(row?.title ?? "Session"),
+        .confirmationDialog(SessionManager.rewindTitle(row?.title ?? L("Session")),
                             isPresented: Self.presence(self.$pendingRewind), titleVisibility: .visible,
                             presenting: self.pendingRewind) { point in
-            Button("Rewind", role: .destructive) {
+            Button(L("Rewind"), role: .destructive) {
                 Task { await model.rewind(key: self.sessionKey, entryId: point.entryId) }
             }
-            Button("Cancel", role: .cancel) {}
+            Button(L("Cancel"), role: .cancel) {}
         } message: { _ in
             Text(SessionManager.rewindMessage)
         }
@@ -566,39 +566,39 @@ struct SessionDetailPage: View {
     }
 
     @ViewBuilder private func details(_ row: SessionRow, model: SessionManagerModel) -> some View {
-        Section("Details") {
-            LabeledContent("Status") { SessionRunStatusView(row: row, state: SessionRunState(row: row)) }
-            LabeledContent("Agent", value: row.agentId)
-            if let channel = row.channel, !channel.isEmpty { LabeledContent("Channel", value: channel) }
-            if let model = row.modelRef { LabeledContent("Model", value: ModelRef.shortName(model)) }
-            if let tokens = row.totalTokens { LabeledContent("Context", value: "\(tokens.formatted()) tokens") }
+        Section(L("Details")) {
+            LabeledContent(L("Status")) { SessionRunStatusView(row: row, state: SessionRunState(row: row)) }
+            LabeledContent(L("Agent"), value: row.agentId)
+            if let channel = row.channel, !channel.isEmpty { LabeledContent(L("Channel"), value: channel) }
+            if let model = row.modelRef { LabeledContent(L("Model"), value: ModelRef.shortName(model)) }
+            if let tokens = row.totalTokens { LabeledContent(L("Context"), value: L("\(tokens.formatted()) tokens")) }
             if let input = row.raw["inputTokens"]?.double, let output = row.raw["outputTokens"]?.double {
-                LabeledContent("Last Run Tokens", value: "\(Int(input).formatted()) in · \(Int(output).formatted()) out")
+                LabeledContent(L("Last Run Tokens"), value: L("\(Int(input).formatted()) in · \(Int(output).formatted()) out"))
             }
             if let branches = model.branches[row.key], !branches.isEmpty {
-                LabeledContent("Branches", value: branches.count.formatted())
+                LabeledContent(L("Branches"), value: branches.count.formatted())
             }
             if let created = Self.date(row.raw["createdAt"]) {
-                LabeledContent("Created", value: created.formatted(date: .abbreviated, time: .shortened))
+                LabeledContent(L("Created"), value: created.formatted(date: .abbreviated, time: .shortened))
             }
             if let active = row.activityDate {
-                LabeledContent("Last Active", value: active.formatted(.relative(presentation: .named)))
+                LabeledContent(L("Last Active"), value: active.formatted(.relative(presentation: .named)))
             }
             if row.isArchived {
-                LabeledContent("Archived") {
-                    Text(Self.date(row.raw["archivedAt"])?.formatted(date: .abbreviated, time: .shortened) ?? "Yes")
+                LabeledContent(L("Archived")) {
+                    Text(Self.date(row.raw["archivedAt"])?.formatted(date: .abbreviated, time: .shortened) ?? L("Yes"))
                 }
-                if let reason = row.raw["archiveReason"]?.text { LabeledContent("Archive Reason", value: reason) }
+                if let reason = row.raw["archiveReason"]?.text { LabeledContent(L("Archive Reason"), value: reason) }
             }
             if SessionManager.isRecoverable(row) {
-                Label("Interrupted by a Gateway restart", systemImage: "exclamationmark.arrow.circlepath")
+                Label(L("Interrupted by a Gateway restart"), systemImage: "exclamationmark.arrow.circlepath")
                     .foregroundStyle(.orange)
             }
-            LabeledContent("Key") {
+            LabeledContent(L("Key")) {
                 Text(row.key).font(.caption.monospaced()).textSelection(.enabled)
             }
             if let sessionId = row.sessionId {
-                LabeledContent("Session ID") {
+                LabeledContent(L("Session ID")) {
                     Text(sessionId).font(.caption.monospaced()).textSelection(.enabled)
                 }
             }
@@ -607,9 +607,9 @@ struct SessionDetailPage: View {
 
     @ViewBuilder private func actions(_ row: SessionRow, model: SessionManagerModel, connected: Bool) -> some View {
         let busy = model.busy.contains(row.key)
-        Section("Actions") {
+        Section(L("Actions")) {
             if model.canRecover(row) {
-                Button("Recover Session", systemImage: "arrow.uturn.backward.circle") {
+                Button(L("Recover Session"), systemImage: "arrow.uturn.backward.circle") {
                     Task {
                         if let result = await model.recover(key: row.key), result.key != self.sessionKey {
                             self.replace(with: result.key)
@@ -619,7 +619,7 @@ struct SessionDetailPage: View {
                 .disabled(!connected || busy)
             }
             if model.supportsArchive {
-                Button(row.isArchived ? "Unarchive" : "Archive",
+                Button(row.isArchived ? L("Unarchive") : L("Archive"),
                        systemImage: row.isArchived ? "tray.and.arrow.up" : "archivebox") {
                     Task { _ = await model.setArchived([row.key], archived: !row.isArchived) }
                 }
@@ -627,7 +627,7 @@ struct SessionDetailPage: View {
             }
             if model.supportsDelete {
                 let plan = model.deletePlan([row.key])
-                Button("Delete…", systemImage: "trash", role: .destructive) { self.confirmingDelete = true }
+                Button(L("Delete…"), systemImage: "trash", role: .destructive) { self.confirmingDelete = true }
                     .disabled(!connected || busy || !plan.canDelete)
                 if plan.needsAdmin {
                     Text(SessionManager.mixedDeleteMessage).font(.caption).foregroundStyle(.secondary)
@@ -637,12 +637,12 @@ struct SessionDetailPage: View {
     }
 
     @ViewBuilder private func branches(_ row: SessionRow, model: SessionManagerModel, connected: Bool) -> some View {
-        Section("Branches") {
+        Section(L("Branches")) {
             if !model.supportsBranches {
                 Text(SessionManager.branchesUnsupportedMessage).foregroundStyle(.secondary)
             } else if let branches = model.branches[row.key] {
                 if branches.isEmpty {
-                    Text("No branches").foregroundStyle(.secondary)
+                    Text(L("No branches")).foregroundStyle(.secondary)
                 }
                 ForEach(branches) { branch in
                     HStack {
@@ -655,12 +655,12 @@ struct SessionDetailPage: View {
                         }
                         Spacer()
                         if !branch.active, model.supportsBranchSwitch {
-                            Button("Switch…") { self.pendingBranch = branch }
+                            Button(L("Switch…")) { self.pendingBranch = branch }
                                 .disabled(!connected || !model.canSwitchBranch || model.busy.contains(row.key))
                         }
                     }
                     .accessibilityElement(children: .combine)
-                    .accessibilityValue(branch.active ? "Active" : "")
+                    .accessibilityValue(branch.active ? L("Active") : "")
                 }
             } else if let error = model.branchErrors[row.key] {
                 Text(error).foregroundStyle(.secondary)
@@ -674,7 +674,7 @@ struct SessionDetailPage: View {
         if model.supportsRewind {
             Section {
                 if let points = model.rewindPoints[row.key] {
-                    if points.isEmpty { Text("No messages to rewind to").foregroundStyle(.secondary) }
+                    if points.isEmpty { Text(L("No messages to rewind to")).foregroundStyle(.secondary) }
                     ForEach(points) { point in
                         HStack {
                             VStack(alignment: .leading, spacing: Theme.Spacing.xxs) {
@@ -686,7 +686,7 @@ struct SessionDetailPage: View {
                                 }
                             }
                             Spacer()
-                            Button("Rewind…") { self.pendingRewind = point }
+                            Button(L("Rewind…")) { self.pendingRewind = point }
                                 .disabled(!connected || !model.canRewind || row.isArchived || row.hasActiveRun
                                     || model.busy.contains(row.key))
                         }
@@ -697,12 +697,12 @@ struct SessionDetailPage: View {
                     ProgressView().controlSize(.small)
                 }
             } header: {
-                Text("Rewind")
+                Text(L("Rewind"))
             } footer: {
                 if row.isArchived {
-                    Text("Unarchive the session to rewind it.")
+                    Text(L("Unarchive the session to rewind it."))
                 } else if row.hasActiveRun {
-                    Text("Wait for the current run to finish to rewind.")
+                    Text(L("Wait for the current run to finish to rewind."))
                 } else {
                     Text(SessionManager.rewindMessage)
                 }
@@ -720,9 +720,9 @@ struct SessionDetailPage: View {
     }
 
     private static func branchSubtitle(_ branch: SessionBranch) -> String {
-        var parts = ["\(branch.messageCount) \(branch.messageCount == 1 ? "message" : "messages")"]
+        var parts = [L("\(branch.messageCount) messages")]
         if let date = branch.updatedAt { parts.append(date.formatted(.relative(presentation: .named))) }
-        if branch.active { parts.append("Active") }
+        if branch.active { parts.append(L("Active")) }
         return parts.joined(separator: " · ")
     }
 

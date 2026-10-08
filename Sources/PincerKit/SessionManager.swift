@@ -51,18 +51,18 @@ public enum SessionManager {
     public static var mixedDeleteMessage: String { L("Only archived sessions can be deleted without Full Management.") }
 
     public static func deleteTitle(count: Int) -> String {
-        count == 1 ? "Delete 1 session?" : "Delete \(count) sessions?"
+        count == 1 ? L("Delete 1 session?") : L("Delete \(count) sessions?")
     }
 
     /// Names the session when there's one: "Delete “Garden planner”?".
     public static func deleteTitle(count: Int, title: String?) -> String {
         guard count == 1, let title, !title.isEmpty else { return self.deleteTitle(count: count) }
-        return "Delete “\(title)”?"
+        return L("Delete “\(title)”?")
     }
 
-    public static func rewindTitle(_ sessionTitle: String) -> String { "Rewind “\(sessionTitle)”?" }
+    public static func rewindTitle(_ sessionTitle: String) -> String { L("Rewind “\(sessionTitle)”?") }
     public static var rewindMessage: String { L("Messages after this point move to a new branch. The message you rewind to goes back into the composer.") }
-    public static func switchTitle(_ branch: String) -> String { "Switch to branch “\(branch)”?" }
+    public static func switchTitle(_ branch: String) -> String { L("Switch to branch “\(branch)”?") }
     public static var switchMessage: String { L("The chat continues from that branch. The current branch is kept and you can switch back.") }
 
     /// Rows for `filter` whose title, key, label, agent or channel contain `search` (ignoring case),
@@ -155,8 +155,15 @@ public enum SessionManager {
     /// "Archived 3 sessions", "Deleted 1 session; 2 failed".
     public static func bulkSummary(verb: String, _ outcome: SessionBulkOutcome) -> String {
         let count = outcome.succeeded.count
-        var text = "\(verb) \(count) \(count == 1 ? "session" : "sessions")"
-        if !outcome.failed.isEmpty { text += "; \(outcome.failed.count) failed" }
+        // Translate whole phrases so word order and quantity wording belong to each locale.
+        var text: String
+        switch verb {
+        case "Archived": text = count == 1 ? L("Archived 1 session") : L("Archived \(count) sessions")
+        case "Unarchived": text = count == 1 ? L("Unarchived 1 session") : L("Unarchived \(count) sessions")
+        case "Deleted": text = count == 1 ? L("Deleted 1 session") : L("Deleted \(count) sessions")
+        default: text = count == 1 ? L("\(verb) 1 session") : L("\(verb) \(count) sessions")
+        }
+        if !outcome.failed.isEmpty { text += L("; \(outcome.failed.count) failed") }
         return text
     }
 
@@ -186,9 +193,9 @@ public enum SessionManagerFilter: String, CaseIterable, Hashable, Sendable, Iden
 
     public var title: String {
         switch self {
-        case .active: "Active"
-        case .archived: "Archived"
-        case .all: "All"
+        case .active: L("Active")
+        case .archived: L("Archived")
+        case .all: L("All")
         }
     }
 
@@ -211,9 +218,9 @@ public enum SessionManagerFilter: String, CaseIterable, Hashable, Sendable, Iden
 
     public var emptyMessage: String {
         switch self {
-        case .active: "No sessions"
-        case .archived: "No archived sessions"
-        case .all: "No sessions"
+        case .active: L("No sessions")
+        case .archived: L("No archived sessions")
+        case .all: L("No sessions")
         }
     }
 }
@@ -305,11 +312,11 @@ public struct SessionPreview: Equatable, Sendable {
     public var emptyReason: String? {
         guard self.items.isEmpty else { return nil }
         switch self.status {
-        case .ok, .empty: return "No messages yet"
-        case .missing: return "This session is gone"
-        case .cold: return "The transcript isn't loaded on the Gateway yet"
-        case .error: return "The Gateway couldn't read this transcript"
-        case .unknown: return "No preview"
+        case .ok, .empty: return L("No messages yet")
+        case .missing: return L("This session is gone")
+        case .cold: return L("The transcript isn't loaded on the Gateway yet")
+        case .error: return L("The Gateway couldn't read this transcript")
+        case .unknown: return L("No preview")
         }
     }
 }
@@ -345,7 +352,7 @@ public struct SessionBranch: Identifiable, Equatable, Sendable {
     public var title: String {
         let line = self.headline.split(whereSeparator: \.isNewline).first.map(String.init)?
             .trimmingCharacters(in: .whitespaces) ?? ""
-        return line.isEmpty ? "Branch \(self.leafEntryId.prefix(8))" : line
+        return line.isEmpty ? L("Branch \(String(self.leafEntryId.prefix(8)))") : line
     }
 
     static func date(_ value: JSONValue) -> Date? {
@@ -429,7 +436,7 @@ public struct SessionRecoverResult: Equatable, Sendable {
         let continuation = json["continuation"]
         self.continuationStarted = continuation?["status"]?.text == "started"
         self.continuationError = continuation?["status"]?.text == "rejected"
-            ? continuation?["error"]?["message"]?.text ?? "The recovered session couldn't resume its run."
+            ? continuation?["error"]?["message"]?.text ?? L("The recovered session couldn't resume its run.")
             : nil
     }
 }
@@ -649,7 +656,7 @@ public final class SessionManagerModel {
                 self.detailErrors[key] = nil
             } else {
                 self.details[key] = nil
-                self.detailErrors[key] = "This session is gone."
+                self.detailErrors[key] = L("This session is gone.")
             }
         } catch {
             guard !Task.isCancelled, self.detailLoadOwners[key] == owner else { return }
@@ -740,11 +747,11 @@ public final class SessionManagerModel {
             if entry["ok"]?.bool == true {
                 outcome.succeeded.append(key)
             } else {
-                outcome.failed.append(.init(key: key, message: entry["error"]?["message"]?.text ?? "Couldn't change this session."))
+                outcome.failed.append(.init(key: key, message: entry["error"]?["message"]?.text ?? L("Couldn't change this session.")))
             }
         }
         for row in batch where !seen.contains(row.key) {
-            outcome.failed.append(.init(key: row.key, message: "The Gateway didn't report this session."))
+            outcome.failed.append(.init(key: row.key, message: L("The Gateway didn't report this session.")))
         }
     }
 
@@ -766,7 +773,7 @@ public final class SessionManagerModel {
             do {
                 let result = try await self.call(SessionManager.deleteMethod, SessionManager.deleteParams(row))
                 if result["deleted"]?.bool == false {
-                    outcome.failed.append(.init(key: row.key, message: "The Gateway didn't delete this session."))
+                    outcome.failed.append(.init(key: row.key, message: L("The Gateway didn't delete this session.")))
                     continue
                 }
                 outcome.succeeded.append(row.key)
@@ -788,7 +795,7 @@ public final class SessionManagerModel {
         var params = self.sessionKeyParams(key)
         params["leafEntryId"] = .string(leafEntryId)
         return await self.mutateTranscript(key, SessionManager.branchesSwitchMethod, .object(params),
-                                           success: "Switched branch") != nil
+                                           success: L("Switched branch")) != nil
     }
 
     /// Cuts the active path back to before user message `entryId` (admin); the cut message's text is
@@ -798,7 +805,7 @@ public final class SessionManagerModel {
         var params = self.sessionKeyParams(key)
         params["entryId"] = .string(entryId)
         return await self.mutateTranscript(key, SessionManager.rewindMethod, .object(params),
-                                           success: "Rewound the session") != nil
+                                           success: L("Rewound the session")) != nil
     }
 
     /// Recovers a restart-tombstoned session into a fresh one (`sessions.recover`, write scope).
@@ -810,10 +817,10 @@ public final class SessionManagerModel {
         do {
             let response = try await self.call(SessionManager.recoverMethod, .object(params))
             guard let result = SessionRecoverResult(response) else {
-                self.actionError = "The Gateway didn't return the recovered session."
+                self.actionError = L("The Gateway didn't return the recovered session.")
                 return nil
             }
-            self.lastMessage = "Recovered the session"
+            self.lastMessage = L("Recovered the session")
             if let error = result.continuationError { self.actionError = error }
             self.forgetCaches(key)
             await self.onTranscriptChanged(key, .changed(editorText: nil))

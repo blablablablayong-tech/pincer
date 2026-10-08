@@ -780,7 +780,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ 代币"
+            "value": "%@ Token"
           }
         }
       }
@@ -1052,7 +1052,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@，特工"
+            "value": "%@，智能体"
           }
         }
       }
@@ -1483,13 +1483,13 @@
               "one": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%lld 消息已排队"
+                  "value": "%lld 条消息待发送"
                 }
               },
               "other": {
                 "stringUnit": {
                   "state": "translated",
-                  "value": "%lld 消息已排队"
+                  "value": "%lld 条消息待发送"
                 }
               }
             }
@@ -1748,7 +1748,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "已选择 %lld"
+            "value": "已选择 %lld 个"
           }
         }
       }
@@ -3684,7 +3684,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "存档原因"
+            "value": "归档原因"
           }
         }
       }
@@ -6196,7 +6196,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "连接到网关以管理会话。"
+            "value": "连接网关后即可管理会话。"
           }
         }
       }
@@ -7044,7 +7044,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "复制会话密钥"
+            "value": "复制会话标识"
           }
         }
       }
@@ -7844,7 +7844,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "已创建"
+            "value": "创建时间"
           }
         }
       }
@@ -8372,7 +8372,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "删除“%@”？"
+            "value": "删除「%@」？"
           }
         }
       }
@@ -8500,7 +8500,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "详情…"
+            "value": "查看详情…"
           }
         }
       }
@@ -10372,7 +10372,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "过滤会话"
+            "value": "搜索会话"
           }
         }
       }
@@ -12724,7 +12724,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "钥匙"
+            "value": "会话标识"
           }
         }
       }
@@ -12852,7 +12852,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "最后活跃"
+            "value": "最近活跃"
           }
         }
       }
@@ -12884,7 +12884,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "最后运行令牌"
+            "value": "上次任务用量"
           }
         }
       }
@@ -14084,7 +14084,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "此后的消息将移动到新分支。你倒回的消息将返回到输入框中。"
+            "value": "此后的消息会移到新分支，选中的消息会放回输入框。"
           }
         }
       }
@@ -15300,7 +15300,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "没有分支"
+            "value": "暂无分支"
           }
         }
       }
@@ -15492,7 +15492,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "没有可以回溯的消息"
+            "value": "暂无可回溯的消息"
           }
         }
       }
@@ -18452,7 +18452,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "预览需要更新的网关。"
+            "value": "请更新 OpenClaw 后查看预览。"
           }
         }
       }
@@ -18804,7 +18804,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "排队跟进"
+            "value": "排队发送"
           }
         }
       }
@@ -21140,7 +21140,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "倒带"
+            "value": "回溯"
           }
         }
       }
@@ -21156,7 +21156,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "倒回…"
+            "value": "回溯…"
           }
         }
       }
@@ -22692,7 +22692,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "会话管理不可用"
+            "value": "暂不支持会话管理"
           }
         }
       }
@@ -23220,7 +23220,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "显示详情"
+            "value": "查看详情"
           }
         }
       }
@@ -25108,7 +25108,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "开关…"
+            "value": "切换…"
           }
         }
       }
@@ -25156,7 +25156,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "跟随系统"
+            "value": "系统"
           }
         }
       }
@@ -26308,7 +26308,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "倒回的消息返回到编辑器中。"
+            "value": "已将回溯的消息放回输入框。"
           }
         }
       }
@@ -28436,7 +28436,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "取消存档会话以倒带。"
+            "value": "取消归档后即可回溯。"
           }
         }
       }
@@ -29268,7 +29268,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "等待当前运行完成以倒回。"
+            "value": "当前任务结束后即可回溯。"
           }
         }
       }
@@ -31958,6 +31958,686 @@
           "stringUnit": {
             "state": "translated",
             "value": "如果你在其他设备上的 Pincer 已获得完整管理权限，也可以前往「网关设置 → 设备」批准这台手机。"
+          }
+        }
+      }
+    },
+    "%@ %lld sessions": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ %lld sessions"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ %lld 个会话"
+          }
+        }
+      }
+    },
+    "%@ 1 session": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 1 session"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 1 个会话"
+          }
+        }
+      }
+    },
+    "%@ in · %@ out": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ in · %@ out"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "输入 %@ · 输出 %@"
+          }
+        }
+      }
+    },
+    "%lld messages": {
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld message"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld messages"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hans": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld 条消息"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld 条消息"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "; %lld failed": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "; %lld failed"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "；%lld 个失败"
+          }
+        }
+      }
+    },
+    "All": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全部"
+          }
+        }
+      }
+    },
+    "Also change the Gateway's settings and plugins. The Gateway host approves this device again.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Also change the Gateway's settings and plugins. The Gateway host approves this device again."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "还可以修改网关设置和插件；需在运行 OpenClaw 的设备上再次批准授权。"
+          }
+        }
+      }
+    },
+    "Archived %lld sessions": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Archived %lld sessions"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已归档 %lld 个会话"
+          }
+        }
+      }
+    },
+    "Archived 1 session": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Archived 1 session"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已归档 1 个会话"
+          }
+        }
+      }
+    },
+    "Branch %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Branch %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "分支 %@"
+          }
+        }
+      }
+    },
+    "Chat & Approvals": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chat & Approvals"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "聊天与审批"
+          }
+        }
+      }
+    },
+    "Chat, read history and answer approvals. Gateway settings are read-only.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chat, read history and answer approvals. Gateway settings are read-only."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "可以聊天、查看历史记录和处理审批；网关设置仅可查看。"
+          }
+        }
+      }
+    },
+    "Couldn't change this session.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't change this session."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法修改这个会话。"
+          }
+        }
+      }
+    },
+    "Delete %lld sessions?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete %lld sessions?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除这 %lld 个会话？"
+          }
+        }
+      }
+    },
+    "Delete 1 session?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete 1 session?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除这个会话？"
+          }
+        }
+      }
+    },
+    "Deleted %lld sessions": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deleted %lld sessions"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已删除 %lld 个会话"
+          }
+        }
+      }
+    },
+    "Deleted 1 session": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deleted 1 session"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已删除 1 个会话"
+          }
+        }
+      }
+    },
+    "Full Management": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full Management"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完整管理权限"
+          }
+        }
+      }
+    },
+    "No Matches": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Matches"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "没有匹配结果"
+          }
+        }
+      }
+    },
+    "No archived sessions": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No archived sessions"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暂无已归档会话"
+          }
+        }
+      }
+    },
+    "No messages yet": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No messages yet"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暂无消息"
+          }
+        }
+      }
+    },
+    "No preview": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No preview"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暂无预览"
+          }
+        }
+      }
+    },
+    "No sessions": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No sessions"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暂无会话"
+          }
+        }
+      }
+    },
+    "Recovered the session": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recovered the session"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已恢复会话"
+          }
+        }
+      }
+    },
+    "Rewind “%@”?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rewind “%@”?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "回溯「%@」？"
+          }
+        }
+      }
+    },
+    "Rewound the session": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rewound the session"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已回溯会话"
+          }
+        }
+      }
+    },
+    "Switch to branch “%@”?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Switch to branch “%@”?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "切换到「%@」分支？"
+          }
+        }
+      }
+    },
+    "Switched branch": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Switched branch"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已切换分支"
+          }
+        }
+      }
+    },
+    "Tailscale identity / none": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tailscale identity / none"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tailscale 身份验证 / 无认证"
+          }
+        }
+      }
+    },
+    "The Gateway couldn't read this transcript": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The Gateway couldn't read this transcript"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "网关无法读取聊天记录"
+          }
+        }
+      }
+    },
+    "The Gateway didn't delete this session.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The Gateway didn't delete this session."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "网关未删除这个会话。"
+          }
+        }
+      }
+    },
+    "The Gateway didn't report this session.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The Gateway didn't report this session."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "网关未返回这个会话的信息。"
+          }
+        }
+      }
+    },
+    "The Gateway didn't return the recovered session.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The Gateway didn't return the recovered session."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "网关未返回恢复后的会话。"
+          }
+        }
+      }
+    },
+    "The recovered session couldn't resume its run.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The recovered session couldn't resume its run."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "会话已恢复，但任务未能继续执行。"
+          }
+        }
+      }
+    },
+    "The transcript isn't loaded on the Gateway yet": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The transcript isn't loaded on the Gateway yet"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "网关尚未加载聊天记录"
+          }
+        }
+      }
+    },
+    "This session is gone": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This session is gone"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这个会话已不存在"
+          }
+        }
+      }
+    },
+    "This session is gone.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This session is gone."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这个会话已不存在。"
+          }
+        }
+      }
+    },
+    "Unarchived %lld sessions": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unarchived %lld sessions"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已取消归档 %lld 个会话"
+          }
+        }
+      }
+    },
+    "Unarchived 1 session": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unarchived 1 session"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已取消归档 1 个会话"
+          }
+        }
+      }
+    },
+    "Yes": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yes"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "是"
+          }
+        }
+      }
+    },
+    "Couldn’t load “%@”": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn’t load “%@”"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法加载「%@」"
           }
         }
       }
