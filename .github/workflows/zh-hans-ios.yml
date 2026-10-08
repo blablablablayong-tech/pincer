@@ -20,12 +20,20 @@ jobs:
       - name: Checkout Chinese fork
         uses: actions/checkout@v4
       - name: Select newest Xcode
+        id: xcode
         shell: bash
         run: |
           set -euo pipefail
           XCODE="$(ls -d /Applications/Xcode_*.app | sort -V | tail -1)"
           sudo xcode-select -s "$XCODE"
           xcodebuild -version
+          echo "version=$(xcodebuild -version | tr '\n' ' ' | tr -cs 'A-Za-z0-9.' '-')" >> "$GITHUB_OUTPUT"
+      - name: Cache Swift test build
+        uses: actions/cache@v4
+        with:
+          path: .build
+          key: zh-tests-${{ runner.os }}-${{ runner.arch }}-${{ steps.xcode.outputs.version }}-${{ hashFiles('Package.swift', 'Package.resolved', 'Sources/**', 'Tests/**') }}
+          restore-keys: zh-tests-${{ runner.os }}-${{ runner.arch }}-${{ steps.xcode.outputs.version }}-
       - name: Verify Chinese String Catalog
         run: |
           python3 scripts/translate_zh_hans.py --check
@@ -40,7 +48,10 @@ jobs:
         env:
           PINCER_KEYCHAIN: memory
           PINCER_DEV_NAMESPACE: zh-hans-ci
-        run: swift test --filter 'FirstRunProbeTimeoutTests|LocalizationCatalogTests|SessionManagerTests'
+        run: |
+          # Run timing-sensitive probes before the catalog source scan occupies the test executor.
+          swift test --filter FirstRunProbeTimeoutTests
+          swift test --skip-build --filter 'LocalizationCatalogTests|SessionManagerTests'
       - name: Run offline checks
         env:
           PINCER_KEYCHAIN: memory
