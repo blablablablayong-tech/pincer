@@ -23,29 +23,24 @@ public enum FirstRunCopy {
         requestId.map { "openclaw devices approve \($0)" } ?? self.listDevicesCommand
     }
 
-    public static let addressMissing = "Enter your Gateway's address."
-    public static let invalidAddress =
-        "That doesn't look like a Gateway address. Try something like wss://my-mac.tailnet.ts.net or ws://192.168.1.20:18789."
-    public static let insecureAddress =
-        "For safety, Pincer only uses unencrypted ws:// on this Mac, your local network, or Tailscale. Use a wss:// address instead."
-    public static let cantReach =
-        "Can't reach a Gateway at that address. Make sure OpenClaw is running (openclaw gateway status) and that this device can reach it."
-    public static let tailscaleHint = "Is Tailscale connected on this device?"
-    public static let notAGateway = "Something answered, but it isn't an OpenClaw Gateway. Check the address and port (usually 18789)."
-    public static let tlsFailed =
-        "Couldn't make a secure connection to that address. If you use Tailscale Serve, check that HTTPS is enabled for your tailnet."
-    public static let pinMismatch = "The Gateway's certificate doesn't match the fingerprint you entered."
+    public static var addressMissing: String { L("Enter your Gateway's address.") }
+    public static var invalidAddress: String { L("That doesn't look like a Gateway address. Try something like wss://my-mac.tailnet.ts.net or ws://192.168.1.20:18789.") }
+    public static var insecureAddress: String { L("For safety, Pincer only uses unencrypted ws:// on this Mac, your local network, or Tailscale. Use a wss:// address instead.") }
+    public static var cantReach: String { L("Can't reach a Gateway at that address. Make sure OpenClaw is running (openclaw gateway status) and that this device can reach it.") }
+    public static var tailscaleHint: String { L("Is Tailscale connected on this device?") }
+    public static var notAGateway: String { L("Something answered, but it isn't an OpenClaw Gateway. Check the address and port (usually 18789).") }
+    public static var tlsFailed: String { L("Couldn't make a secure connection to that address. If you use Tailscale Serve, check that HTTPS is enabled for your tailnet.") }
+    public static var pinMismatch: String { L("The Gateway's certificate doesn't match the fingerprint you entered.") }
 
-    public static let tokenWrong = "That token didn't work. Copy it again with the command below and paste the whole thing."
-    public static let tokenMissing = "This Gateway needs a token."
-    public static let passwordWrong = "That password didn't work. Check it and try again."
-    public static let passwordNeeded = "This Gateway uses a password. Choose Use a password instead."
-    public static let methodMismatch = "This Gateway isn't set up for that sign-in method. Try the other one."
-    public static let rateLimited = "Too many tries. Wait a minute, then try again."
-    public static let versionMismatch = "This Gateway's version doesn't work with this Pincer. Update OpenClaw or Pincer."
-    public static let deviceTurnedDown =
-        "The Gateway turned down this device. Go back and try again, or approve it with the command above."
-    public static let requestChanged = "The request changed. Use this new command."
+    public static var tokenWrong: String { L("That token didn't work. Copy it again with the command below and paste the whole thing.") }
+    public static var tokenMissing: String { L("This Gateway needs a token.") }
+    public static var passwordWrong: String { L("That password didn't work. Check it and try again.") }
+    public static var passwordNeeded: String { L("This Gateway uses a password. Choose Use a password instead.") }
+    public static var methodMismatch: String { L("This Gateway isn't set up for that sign-in method. Try the other one.") }
+    public static var rateLimited: String { L("Too many tries. Wait a minute, then try again.") }
+    public static var versionMismatch: String { L("This Gateway's version doesn't work with this Pincer. Update OpenClaw or Pincer.") }
+    public static var deviceTurnedDown: String { L("The Gateway turned down this device. Go back and try again, or approve it with the command above.") }
+    public static var requestChanged: String { L("The request changed. Use this new command.") }
 
     /// The `[CODE]` suffix of `GatewayError.rpc` text, if any.
     static func code(in message: String) -> String? {
@@ -100,12 +95,11 @@ public enum FirstRunCopy {
 
     /// One line from the hello snapshot's health, when it reports a problem (channels aren't setup's concern).
     /// Under Welcome's Try the Demo.
-    public static let demoCaption = "No Gateway needed. Explore sample agents and chats. Nothing leaves this device."
+    public static var demoCaption: String { L("No Gateway needed. Explore sample agents and chats. Nothing leaves this device.") }
 
     /// Verify's health line: plain words, with Details for the specifics (product review r1).
-    public static let healthReported = "Your Gateway reported a problem. You can keep going and check it later."
-    public static let approveElsewhere =
-        "Already use Pincer on another device with Full Management? You can approve this one there, in Gateway Settings → Devices."
+    public static var healthReported: String { L("Your Gateway reported a problem. You can keep going and check it later.") }
+    public static var approveElsewhere: String { L("Already use Pincer on another device with Full Management? You can approve this one there, in Gateway Settings → Devices.") }
 
     public static func healthProblem(_ health: GatewayHealthSummary?) -> String? {
         guard let health else { return nil }

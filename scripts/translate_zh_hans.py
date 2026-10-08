@@ -235,9 +235,18 @@ def main():
                 if i%20==0:
                     print("Progress batches",i,"/",len(groups),"cache",len(cached),"failures",failures,flush=True)
         CACHE.write_text(json.dumps(cached,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-    localized=populate(data,cached)
     if not args.check:
+        populate(data,cached)
         CAT.write_text(json.dumps(data,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+        # Never overwrite the human-reviewed second pass when regenerating.
+        import polish_zh_hans
+        polish_zh_hans.main()
+        data=json.loads(CAT.read_text(encoding="utf-8"))
+    localized=sum(
+        a["value"] != b["value"]
+        for entry in data["strings"].values()
+        for a,b in zip(units(entry["localizations"]["en"]),units(entry["localizations"].get("zh-Hans",{})))
+    )
     missing=[]; bad=[]; chinese=0; same=0; total=0
     for key,entry in data["strings"].items():
         target=entry["localizations"].get("zh-Hans")

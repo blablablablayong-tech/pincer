@@ -181,11 +181,22 @@ private struct FirstRunProgress: View {
                 }
             }
             .accessibilityHidden(true)
-            Text("Step \(self.number) of \(stages.count) · \(self.stage.title)", bundle: .module)
+            Text("Step \(self.number) of \(stages.count) · \(self.localizedStageTitle)", bundle: .module)
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
         .accessibilityElement(children: .combine)
+    }
+
+    private var localizedStageTitle: String {
+        switch self.stage {
+        case .welcome: L("Get started")
+        case .find: L("Find")
+        case .signIn: L("Sign in")
+        case .verify: L("Verify")
+        case .setUp: L("Set up")
+        case .done: L("Done")
+        }
     }
 }
 

@@ -124,7 +124,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "自您打开网关以来，%@ 在网关上发生了更改。"
+            "value": "自你打开网关以来，%@ 在网关上发生了更改。"
           }
         }
       }
@@ -428,7 +428,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ 是您的“快速捕获”快捷方式，可在任何应用程序中使用并首先运行。"
+            "value": "%@ 是你的“快速记录”快捷方式，可在任何应用程序中使用并首先运行。"
           }
         }
       }
@@ -924,7 +924,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "自您打开网关以来，%@ 已在网关上被删除。"
+            "value": "自你打开网关以来，%@ 已在网关上被删除。"
           }
         }
       }
@@ -972,7 +972,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ · 从通道继承"
+            "value": "%@ · 从频道继承"
           }
         }
       }
@@ -988,7 +988,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ · 为通道设置"
+            "value": "%@ · 为频道设置"
           }
         }
       }
@@ -1004,7 +1004,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ · 为此帐户设置"
+            "value": "%@ · 为此账号设置"
           }
         }
       }
@@ -1508,7 +1508,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "%lld 更多..."
+            "value": "%lld 更多…"
           }
         }
       }
@@ -2164,7 +2164,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "通道正在等待网关重新启动。"
+            "value": "频道正在等待网关重新启动。"
           }
         }
       }
@@ -2340,7 +2340,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "使用 DM 配对的帐户"
+            "value": "使用 DM 配对的账号"
           }
         }
       }
@@ -2516,7 +2516,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "添加条目..."
+            "value": "添加条目…"
           }
         }
       }
@@ -2660,7 +2660,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在 Pincer 中添加网关以使用快速捕获"
+            "value": "先在 Pincer 中连接 OpenClaw，才能使用「快速记录」。"
           }
         }
       }
@@ -2676,7 +2676,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "添加服务器以为您的代理提供更多工具。"
+            "value": "添加服务器以为你的智能体提供更多工具。"
           }
         }
       }
@@ -2708,7 +2708,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "将技能添加到网关主机上的代理工作区。"
+            "value": "为 OpenClaw 所在设备上的智能体工作区添加技能。"
           }
         }
       }
@@ -2740,7 +2740,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "添加..."
+            "value": "添加…"
           }
         }
       }
@@ -2804,7 +2804,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "高级…"
+            "value": "高级设置…"
           }
         }
       }
@@ -2852,7 +2852,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "代理管理不可用"
+            "value": "智能体管理不可用"
           }
         }
       }
@@ -2868,7 +2868,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "未找到代理"
+            "value": "未找到智能体"
           }
         }
       }
@@ -2884,7 +2884,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "代理已保存"
+            "value": "智能体已保存"
           }
         }
       }
@@ -2916,7 +2916,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在有人再次登录之前，代理会失去其工具。"
+            "value": "在有人再次登录之前，智能体会失去其工具。"
           }
         }
       }
@@ -2996,7 +2996,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "仅允许一次"
+            "value": "仅允许这次"
           }
         }
       }
@@ -3092,7 +3092,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "几乎满了。代理很快就会自行压缩；现在就选择它保留的内容。"
+            "value": "几乎满了。智能体很快就会自行压缩；现在就选择它保留的内容。"
           }
         }
       }
@@ -3108,7 +3108,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "还写入代理的 IDENTITY.md。"
+            "value": "还写入智能体的 IDENTITY.md。"
           }
         }
       }
@@ -3156,7 +3156,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "始终忽略此帐户"
+            "value": "始终忽略此账号"
           }
         }
       }
@@ -3268,7 +3268,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "另一位代理"
+            "value": "另一位智能体"
           }
         }
       }
@@ -3316,7 +3316,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "回答代理问题正在等待批准："
+            "value": "回答智能体问题正在等待批准："
           }
         }
       }
@@ -3396,7 +3396,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "适用于每个代理"
+            "value": "适用于每个智能体"
           }
         }
       }
@@ -3444,7 +3444,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "审批历史"
+            "value": "审批记录"
           }
         }
       }
@@ -3460,7 +3460,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "审批历史记录不可用"
+            "value": "暂时无法查看审批记录"
           }
         }
       }
@@ -3476,7 +3476,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "批准历史记录需要operator.approvals 范围。在网关主机上批准此设备，然后重试。"
+            "value": "查看审批记录需要 operator.approvals 权限。请在运行 OpenClaw 的设备上授权后重试。"
           }
         }
       }
@@ -3492,7 +3492,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "批准历史..."
+            "value": "审批记录…"
           }
         }
       }
@@ -3524,7 +3524,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "批准"
+            "value": "允许"
           }
         }
       }
@@ -3556,7 +3556,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在您的网关上批准 Pincer"
+            "value": "在 OpenClaw 中批准 Pincer"
           }
         }
       }
@@ -3572,7 +3572,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在您的网关主机上批准 Pincer"
+            "value": "在运行 OpenClaw 的电脑上批准 Pincer"
           }
         }
       }
@@ -3604,7 +3604,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在网关主机上批准此设备："
+            "value": "请在运行 OpenClaw 的电脑上批准这台设备："
           }
         }
       }
@@ -3620,7 +3620,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "已批准"
+            "value": "已允许"
           }
         }
       }
@@ -3652,7 +3652,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "批准、拒绝和撤销设备需要全面管理。在“连接”下将其打开。"
+            "value": "批准、拒绝或撤销设备授权需要完整管理权限。请先在「连接」中开启。"
           }
         }
       }
@@ -3780,7 +3780,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "使用 /think 请求更深入的推理。展开思考部分来阅读它。"
+            "value": "输入 /think 可以请求更深入的思考。点击思考卡片即可展开查看。"
           }
         }
       }
@@ -3796,7 +3796,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "要求为代理（节点角色）运行命令。"
+            "value": "要求为智能体（节点角色）运行命令。"
           }
         }
       }
@@ -3988,7 +3988,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Auto 保留代理最初从其身份中获得的字符。风格和字符通过网关同步到您的其他设备。减少运动使它们保持静止。"
+            "value": "Auto 保留智能体最初从其身份中获得的字符。风格和字符通过网关同步到你的其他设备。减少运动使它们保持静止。"
           }
         }
       }
@@ -4004,7 +4004,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Auto 保留代理最初从其身份中获得的字符。这只会改变 Pincer 显示代理的方式。"
+            "value": "Auto 保留智能体最初从其身份中获得的字符。这只会改变 Pincer 显示智能体的方式。"
           }
         }
       }
@@ -4100,7 +4100,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "自动化按计划运行代理，例如早上简报或夜间检查。"
+            "value": "自动化按计划运行智能体，例如早上简报或夜间检查。"
           }
         }
       }
@@ -4324,7 +4324,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "书签..."
+            "value": "书签…"
           }
         }
       }
@@ -4372,7 +4372,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "分支机构"
+            "value": "分支"
           }
         }
       }
@@ -4388,7 +4388,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "分支机构需要更新的网关。"
+            "value": "此功能需要更新版本的 OpenClaw。"
           }
         }
       }
@@ -4468,7 +4468,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "通过代理"
+            "value": "通过智能体"
           }
         }
       }
@@ -4548,7 +4548,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "正在计算..."
+            "value": "正在计算…"
           }
         }
       }
@@ -4564,7 +4564,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "无法到达网关 · 在 %llds 后重试"
+            "value": "无法连接网关，%lld 秒后重试"
           }
         }
       }
@@ -4660,7 +4660,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "更改图标..."
+            "value": "更改图标…"
           }
         }
       }
@@ -4692,7 +4692,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "更改“常规”中的“快速捕获”快捷方式。"
+            "value": "更改“常规”中的“快速记录”快捷方式。"
           }
         }
       }
@@ -4740,7 +4740,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "更改将保留在其他未保存的设置中，直到您使用“查看并保存”。该服务器的其他设置将被保留。在原始配置中编辑它们。"
+            "value": "更改将保留在其他未保存的设置中，直到你使用“查看并保存”。该服务器的其他设置将被保留。在原始配置中编辑它们。"
           }
         }
       }
@@ -4756,7 +4756,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "更改网关设置需要完全管理访问权限。在“连接”下将其打开，然后在网关主机上批准此设备。"
+            "value": "要修改网关设置，请先在「连接」中开启完整管理权限，并在 OpenClaw 所在设备上批准授权。"
           }
         }
       }
@@ -4772,7 +4772,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "改变自动化需要完全管理访问权限。在“网关设置”→“连接”下将其打开，然后在网关主机上批准此设备。"
+            "value": "要修改自动化任务，请前往「网关设置 → 连接」开启完整管理权限，并在 OpenClaw 所在设备上批准。"
           }
         }
       }
@@ -4788,7 +4788,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "更改网关语音需要完全管理访问权限。请网关所有者批准将此设备用于此设备。"
+            "value": "要修改网关语音设置，需要完整管理权限。请让网关所有者为这台设备授权。"
           }
         }
       }
@@ -4948,7 +4948,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "聊天历史记录保存在此设备上，因此即使离线，也可以立即打开聊天，以便您可以搜索消息。您离线写的消息及其附件将在此处等待直至发送。"
+            "value": "聊天历史记录保存在此设备上，因此即使离线，也可以立即打开聊天，以便你可以搜索消息。你离线写的消息及其附件将在此处等待直至发送。"
           }
         }
       }
@@ -4996,7 +4996,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "聊天标题出现在 Spotlight 中。消息文本来自最后几条缓存的消息，并且永远不会离开此设备。"
+            "value": "聊天标题会显示在 Spotlight 搜索中。消息预览只来自本机缓存，不会被上传。"
           }
         }
       }
@@ -5028,7 +5028,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "通过 Mac、iPhone 和 iPad 与 OpenClaw 代理聊天。"
+            "value": "在 Mac、iPhone 和 iPad 上与 OpenClaw 智能体聊天。"
           }
         }
       }
@@ -5060,7 +5060,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "当您打开网关时，会再次从网关下载聊天内容，并重建消息搜索。您的网关上的任何内容都不会被删除。"
+            "value": "打开聊天后会重新从网关获取记录，并重建搜索索引。网关上的聊天记录不会被删除。"
           }
         }
       }
@@ -5140,7 +5140,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "每隔几秒检查一次..."
+            "value": "每隔几秒检查一次…"
           }
         }
       }
@@ -5156,7 +5156,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "正在检查密钥..."
+            "value": "正在检查密钥…"
           }
         }
       }
@@ -5172,7 +5172,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "正在检查..."
+            "value": "正在检查连接…"
           }
         }
       }
@@ -5188,7 +5188,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "选择文件..."
+            "value": "选择文件…"
           }
         }
       }
@@ -5236,7 +5236,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "选择聊天（⌘J 或 Tab）"
+            "value": "选择会话（⌘J 或 Tab）"
           }
         }
       }
@@ -5252,7 +5252,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "从侧边栏中选择聊天或开始新的聊天。"
+            "value": "从侧边栏选择一个会话，或开始新聊天。"
           }
         }
       }
@@ -5300,7 +5300,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "选择型号..."
+            "value": "选择模型…"
           }
         }
       }
@@ -5316,7 +5316,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "选择一个提供商并在下面进行设置。需要密钥的提供商会显示“需要密钥”，直到您添加密钥为止。"
+            "value": "选择一个提供商并在下面进行设置。需要密钥的提供商会显示“需要密钥”，直到你添加密钥为止。"
           }
         }
       }
@@ -5396,7 +5396,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "清除缓存..."
+            "value": "清除缓存…"
           }
         }
       }
@@ -5444,7 +5444,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "清除发件箱..."
+            "value": "清除发件箱…"
           }
         }
       }
@@ -6260,7 +6260,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "连接到网关以查看其代理。"
+            "value": "连接到网关以查看其智能体。"
           }
         }
       }
@@ -6372,7 +6372,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "连接到网关以查看该代理的工具。"
+            "value": "连接到网关以查看该智能体的工具。"
           }
         }
       }
@@ -6388,7 +6388,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "连接到网关以查看此代理。"
+            "value": "连接到网关以查看此智能体。"
           }
         }
       }
@@ -6484,7 +6484,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "连接到 %@"
+            "value": "已连接到 %@"
           }
         }
       }
@@ -6548,7 +6548,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "正在连接到 %@..."
+            "value": "正在连接 %@…"
           }
         }
       }
@@ -6708,7 +6708,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "无论如何继续"
+            "value": "仍要继续"
           }
         }
       }
@@ -7316,7 +7316,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "无法删除代理"
+            "value": "无法删除智能体"
           }
         }
       }
@@ -7492,7 +7492,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "无法连接"
+            "value": "连接失败"
           }
         }
       }
@@ -8068,7 +8068,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "有关命令、插件和系统更改的决定会在此处显示 30 天。待批准会出现在聊天中。"
+            "value": "这里会保留最近 30 天的命令、插件和系统操作审批记录。待审批的操作会直接显示在聊天中。"
           }
         }
       }
@@ -8228,7 +8228,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "所有代理的默认值"
+            "value": "所有智能体的默认值"
           }
         }
       }
@@ -8276,7 +8276,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "删除代理..."
+            "value": "删除智能体…"
           }
         }
       }
@@ -8324,7 +8324,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "删除组..."
+            "value": "删除组…"
           }
         }
       }
@@ -8420,7 +8420,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "删除..."
+            "value": "删除…"
           }
         }
       }
@@ -8436,7 +8436,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "被拒绝"
+            "value": "已拒绝"
           }
         }
       }
@@ -8500,7 +8500,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "详情..."
+            "value": "详情…"
           }
         }
       }
@@ -8532,7 +8532,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "设备 ID：%@..."
+            "value": "设备 ID：%@…"
           }
         }
       }
@@ -8580,7 +8580,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "设备配对操作需要操作员配对或完全管理。网关决定您可以管理哪些设备和请求。"
+            "value": "设备配对操作需要操作员配对或完整管理权限。网关决定你可以管理哪些设备和请求。"
           }
         }
       }
@@ -8676,7 +8676,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "用您的声音听写消息"
+            "value": "用你的声音听写消息"
           }
         }
       }
@@ -8772,7 +8772,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "目前无法使用您所用语言的听写功能。"
+            "value": "目前无法使用你所用语言的听写功能。"
           }
         }
       }
@@ -9092,7 +9092,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "您有 OpenClaw 网关吗？"
+            "value": "你已经运行 OpenClaw 了吗？"
           }
         }
       }
@@ -9220,7 +9220,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "每个代理都有一个小伙伴来显示它正在做什么。关闭保留首字母或表情符号。"
+            "value": "每个智能体都有一个小伙伴来显示它正在做什么。关闭保留首字母或表情符号。"
           }
         }
       }
@@ -9236,7 +9236,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "每个代理都有自己的身份、模型和工作空间。"
+            "value": "每个智能体都有独立的身份、模型和工作区。"
           }
         }
       }
@@ -9252,7 +9252,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "当代理第一次使用此服务器时，每个人都通过聊天进行连接。"
+            "value": "当智能体第一次使用此服务器时，每个人都通过聊天进行连接。"
           }
         }
       }
@@ -9268,7 +9268,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "每次运行都会在侧边栏的“自动化”下启动新的聊天。"
+            "value": "每次运行自动化任务都会在侧边栏「自动化任务」下新建会话。"
           }
         }
       }
@@ -9284,7 +9284,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "之前的消息已为代理进行了总结。它们仍然展示在这里。"
+            "value": "较早的消息已摘要压缩，供智能体继续理解上下文；原始消息仍可在这里查看。"
           }
         }
       }
@@ -9364,7 +9364,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "编辑连接..."
+            "value": "编辑连接…"
           }
         }
       }
@@ -9444,7 +9444,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "编辑代理需要全面管理"
+            "value": "编辑智能体需要完整管理权限"
           }
         }
       }
@@ -9460,7 +9460,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "编辑代理需要全面管理。在“连接”下将其打开，然后在网关主机上批准此设备。"
+            "value": "要编辑智能体，请先在「连接」中开启完整管理权限，并在运行 OpenClaw 的设备上批准授权。"
           }
         }
       }
@@ -9492,7 +9492,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "编辑..."
+            "value": "编辑…"
           }
         }
       }
@@ -10116,7 +10116,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "导出聊天..."
+            "value": "导出聊天…"
           }
         }
       }
@@ -10356,7 +10356,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "填满。压缩总结旧消息以释放空间。"
+            "value": "上下文快满了。压缩后会用摘要替代较早的消息，腾出空间。"
           }
         }
       }
@@ -10436,7 +10436,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在列表中找到 Pincer 并批准其请求 ID。"
+            "value": "在设备列表中找到 Pincer，批准对应的请求 ID。"
           }
         }
       }
@@ -10468,7 +10468,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "查找聊天"
+            "value": "查找会话"
           }
         }
       }
@@ -10484,7 +10484,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在聊天中查找"
+            "value": "搜索当前会话"
           }
         }
       }
@@ -10500,7 +10500,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在聊天中查找..."
+            "value": "搜索当前会话…"
           }
         }
       }
@@ -10516,7 +10516,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在日志中查找..."
+            "value": "在日志中查找…"
           }
         }
       }
@@ -10564,7 +10564,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "找到您的网关"
+            "value": "查找 OpenClaw 网关"
           }
         }
       }
@@ -10644,7 +10644,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "完成打开此聊天。"
+            "value": "完成后打开这个会话。"
           }
         }
       }
@@ -10740,7 +10740,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "为了您的安全，新设备必须在运行 OpenClaw 的机器上获得批准。在那里运行这个："
+            "value": "为了安全，需要在运行 OpenClaw 的电脑上批准这台设备。请在那台电脑执行："
           }
         }
       }
@@ -10756,7 +10756,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "为了您的安全，新设备需要您的同意。在网关主机上运行此命令："
+            "value": "为保护你的数据，请先在运行 OpenClaw 的电脑上执行以下命令，批准这台设备："
           }
         }
       }
@@ -10916,7 +10916,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "需要全面管理"
+            "value": "需要完整管理权限"
           }
         }
       }
@@ -10932,7 +10932,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "完全管理允许 Pincer 更改网关设置和代理。您可以稍后在 Connection 中将其打开。"
+            "value": "开启完整管理权限后，Pincer 才能修改网关设置和智能体。也可以稍后在连接设置中开启。"
           }
         }
       }
@@ -11012,7 +11012,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "网关日志需要operator.read范围。在网关主机上批准此设备，然后重试。"
+            "value": "查看网关日志需要 operator.read 权限。请在运行 OpenClaw 的设备上为这台手机授权后重试。"
           }
         }
       }
@@ -11028,7 +11028,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "网关日志..."
+            "value": "网关日志…"
           }
         }
       }
@@ -11140,7 +11140,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "网关语音设置..."
+            "value": "网关语音设置…"
           }
         }
       }
@@ -11220,7 +11220,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "网关日志由网关编辑，但它们仍然可以包含主机名、文件路径和消息内容。在分享之前先回顾一下它们。"
+            "value": "虽然网关会隐藏部分敏感信息，日志仍可能包含主机名、文件路径和消息内容。分享前请仔细检查。"
           }
         }
       }
@@ -11364,7 +11364,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "获取二维码..."
+            "value": "获取二维码…"
           }
         }
       }
@@ -11380,7 +11380,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "获取设备位置..."
+            "value": "获取设备位置…"
           }
         }
       }
@@ -11444,7 +11444,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "前往聊天"
+            "value": "进入聊天"
           }
         }
       }
@@ -11684,7 +11684,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "帮我选择"
+            "value": "如何选择？"
           }
         }
       }
@@ -11716,7 +11716,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "嗨，这是您的 Gateway 声音。"
+            "value": "嗨，这是你的 Gateway 声音。"
           }
         }
       }
@@ -11796,7 +11796,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "隐藏钳子"
+            "value": "隐藏Pincer"
           }
         }
       }
@@ -11844,7 +11844,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "隐藏思考步骤"
+            "value": "收起思考过程"
           }
         }
       }
@@ -11860,7 +11860,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "隐藏子代理运行"
+            "value": "收起子智能体任务"
           }
         }
       }
@@ -11924,7 +11924,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "代理的反应有多自由"
+            "value": "智能体的反应有多自由"
           }
         }
       }
@@ -11988,7 +11988,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "如果您更改了设置，请求 ID 可能已更改。运行 openclaw devices list 查看最新的设备。"
+            "value": "如果你刚修改过设置，请求 ID 可能已经变化。运行 openclaw devices list 查看最新请求。"
           }
         }
       }
@@ -12132,7 +12132,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "包括思考"
+            "value": "包含思考过程"
           }
         }
       }
@@ -12164,7 +12164,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "包括思考"
+            "value": "包含思考过程"
           }
         }
       }
@@ -12180,7 +12180,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "包括工具调用"
+            "value": "包含工具调用"
           }
         }
       }
@@ -12308,7 +12308,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "安装人员"
+            "value": "安装器"
           }
         }
       }
@@ -12324,7 +12324,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "安装程序在网关主机上运行以添加技能所需的内容。"
+            "value": "安装器会在 OpenClaw 所在设备上运行，为技能准备依赖环境。"
           }
         }
       }
@@ -12340,7 +12340,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "正在安装..."
+            "value": "正在安装…"
           }
         }
       }
@@ -12468,7 +12468,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "它停止运行，并且其运行历史记录将从网关中删除。它的聊天记录仍然存在。"
+            "value": "任务将停止运行，执行历史也会从网关删除；聊天记录会保留。"
           }
         }
       }
@@ -12484,7 +12484,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "它会添加到您未保存的更改中，并与它们一起保存。"
+            "value": "它会添加到你未保存的更改中，并与它们一起保存。"
           }
         }
       }
@@ -12612,7 +12612,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "跳转到聊天或运行命令..."
+            "value": "跳转到会话或运行命令…"
           }
         }
       }
@@ -13076,7 +13076,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "留空可让网关为此代理创建新工作区。"
+            "value": "留空可让网关为此智能体创建新工作区。"
           }
         }
       }
@@ -13092,7 +13092,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "让 %@ 向您的代理发送消息吗？"
+            "value": "让 %@ 向你的智能体发送消息吗？"
           }
         }
       }
@@ -13108,7 +13108,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "让此发件人向您的代理发送消息"
+            "value": "让此发件人向你的智能体发送消息"
           }
         }
       }
@@ -13140,7 +13140,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "就像 OpenClaw 的 Web UI 一样。图片的网站可以看到您的 IP 地址。"
+            "value": "就像 OpenClaw 的 Web UI 一样。图片的网站可以看到你的 IP 地址。"
           }
         }
       }
@@ -13220,7 +13220,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "与二维码链接..."
+            "value": "与二维码链接…"
           }
         }
       }
@@ -13236,7 +13236,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "列出子代理在其聊天下运行"
+            "value": "在会话下显示子智能体任务"
           }
         }
       }
@@ -13316,7 +13316,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "加载代理从网络链接的图像"
+            "value": "加载智能体从网络链接的图像"
           }
         }
       }
@@ -13332,7 +13332,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "加载较早的消息"
+            "value": "正在加载历史消息"
           }
         }
       }
@@ -13348,7 +13348,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "正在加载完整历史记录..."
+            "value": "正在加载完整历史记录…"
           }
         }
       }
@@ -13380,7 +13380,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "正在加载模型..."
+            "value": "正在加载模型…"
           }
         }
       }
@@ -13396,7 +13396,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "正在加载设置..."
+            "value": "正在加载设置…"
           }
         }
       }
@@ -13412,7 +13412,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "正在加载声音..."
+            "value": "正在加载声音…"
           }
         }
       }
@@ -13620,7 +13620,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "注销..."
+            "value": "注销…"
           }
         }
       }
@@ -13748,7 +13748,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "主要聊天"
+            "value": "主会话"
           }
         }
       }
@@ -13780,7 +13780,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "让他们成为命令所有者需要完全管理访问权限。"
+            "value": "让他们成为命令所有者需要完整管理权限。"
           }
         }
       }
@@ -13796,7 +13796,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "管理自动化..."
+            "value": "管理自动化…"
           }
         }
       }
@@ -13812,7 +13812,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "管理会话..."
+            "value": "管理会话…"
           }
         }
       }
@@ -13828,7 +13828,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "管理会话..."
+            "value": "管理会话…"
           }
         }
       }
@@ -13860,7 +13860,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "管理技能需要全面管理"
+            "value": "管理技能需要完整管理权限"
           }
         }
       }
@@ -14004,7 +14004,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "留言"
+            "value": "消息"
           }
         }
       }
@@ -14052,7 +14052,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "消息搜索需要转录本缓存，该缓存已关闭。"
+            "value": "消息搜索需要聊天记录缓存，请先在设置中开启缓存。"
           }
         }
       }
@@ -14084,7 +14084,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "此后的消息将移动到新分支。您倒回的消息将返回到作曲器中。"
+            "value": "此后的消息将移动到新分支。你倒回的消息将返回到输入框中。"
           }
         }
       }
@@ -14100,7 +14100,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "您在此处发送的消息将直接发送到您作为所有者的网关。"
+            "value": "这里发送的消息会以网关所有者的身份直接发给 OpenClaw。"
           }
         }
       }
@@ -14308,7 +14308,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "型号编号"
+            "value": "模型 ID"
           }
         }
       }
@@ -14324,7 +14324,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "型号 ID，例如十一_v4_turbo"
+            "value": "模型 ID，例如十一_v4_turbo"
           }
         }
       }
@@ -14452,7 +14452,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "我的网关正在运行"
+            "value": "已经运行 OpenClaw"
           }
         }
       }
@@ -14564,7 +14564,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "需要全面管理"
+            "value": "需要完整管理权限"
           }
         }
       }
@@ -14580,7 +14580,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "需要完全管理访问权限"
+            "value": "需要完整管理权限"
           }
         }
       }
@@ -14692,7 +14692,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "新代理"
+            "value": "新智能体"
           }
         }
       }
@@ -14724,7 +14724,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "新的自动化..."
+            "value": "新的自动化…"
           }
         }
       }
@@ -14772,7 +14772,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "群组中的新聊天..."
+            "value": "群组中的新聊天…"
           }
         }
       }
@@ -15060,7 +15060,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "无批准历史"
+            "value": "暂无审批记录"
           }
         }
       }
@@ -15124,7 +15124,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "无通道使用 DM 配对"
+            "value": "无频道使用 DM 配对"
           }
         }
       }
@@ -15140,7 +15140,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "还没有网关吗？通过示例代理和聊天探索 Pincer。没有任何东西离开这个设备。"
+            "value": "还没安装 OpenClaw？先体验示例聊天和智能体。演示数据只保存在本机。"
           }
         }
       }
@@ -15156,7 +15156,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "还没有网关"
+            "value": "尚未连接 OpenClaw"
           }
         }
       }
@@ -15236,7 +15236,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "没有代理。"
+            "value": "没有智能体。"
           }
         }
       }
@@ -15252,7 +15252,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "没有允许的命令。当您在批准时选择“**始终允许**”时，该命令将添加到此处。"
+            "value": "还没有始终允许的命令。审批时选择「始终允许」，相应命令会出现在这里。"
           }
         }
       }
@@ -15268,7 +15268,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "没有允许使用的工具。当您在工具批准时选择“**始终允许**”时，该工具将添加到此处。"
+            "value": "还没有始终允许的工具。审批时选择「始终允许」，相应工具会出现在这里。"
           }
         }
       }
@@ -15284,7 +15284,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "没有绑定。仅当它是默认代理或直接选择时，消息才会到达此代理。"
+            "value": "还没有消息路由规则。只有设为默认智能体或手动选择时，消息才会发给它。"
           }
         }
       }
@@ -15300,7 +15300,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "没有分支机构"
+            "value": "没有分支"
           }
         }
       }
@@ -15348,7 +15348,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "未选择聊天"
+            "value": "尚未选择会话"
           }
         }
       }
@@ -15476,7 +15476,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "没有消息匹配“%@”。"
+            "value": "没有找到包含「%@」的消息。"
           }
         }
       }
@@ -15492,7 +15492,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "没有可快退到的消息"
+            "value": "没有可以回溯的消息"
           }
         }
       }
@@ -15524,7 +15524,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "无可用型号"
+            "value": "暂无可用模型"
           }
         }
       }
@@ -16004,7 +16004,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "不是现任代理人"
+            "value": "不是现任智能体人"
           }
         }
       }
@@ -16148,7 +16148,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "还没发送。这是一个很大的上传，%@，需要等到您离开个人热点为止。"
+            "value": "还没发送。这是一个很大的上传，%@，需要等到你离开个人热点为止。"
           }
         }
       }
@@ -16356,7 +16356,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "默认关闭。反应可能无法跨渠道或网关互操作。"
+            "value": "默认关闭。反应可能无法跨频道或网关互操作。"
           }
         }
       }
@@ -16404,7 +16404,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "离线 — 重新连接时发送消息"
+            "value": "当前离线，重连后会自动发送"
           }
         }
       }
@@ -16548,7 +16548,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "仅批准您认可的设备。将指纹与设备等待时显示的指纹进行比较。"
+            "value": "仅批准你认可的设备。将指纹与设备等待时显示的指纹进行比较。"
           }
         }
       }
@@ -16564,7 +16564,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在没有完全管理的情况下，只能删除已存档的会话。"
+            "value": "在没有完整管理权限的情况下，只能删除已存档的会话。"
           }
         }
       }
@@ -16644,7 +16644,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "开放经纪人和模特"
+            "value": "打开「智能体与模型」"
           }
         }
       }
@@ -16692,7 +16692,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "打开聊天"
+            "value": "打开会话"
           }
         }
       }
@@ -16708,7 +16708,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在新窗口中打开聊天"
+            "value": "在新窗口中打开会话"
           }
         }
       }
@@ -16724,7 +16724,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "打开连接"
+            "value": "打开连接设置"
           }
         }
       }
@@ -16740,7 +16740,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "打开连接以启用完全管理。"
+            "value": "在连接设置中开启完整管理权限。"
           }
         }
       }
@@ -16756,7 +16756,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "打开连接..."
+            "value": "打开连接设置…"
           }
         }
       }
@@ -16772,7 +16772,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "开放健康网关"
+            "value": "查看网关运行状况"
           }
         }
       }
@@ -16788,7 +16788,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "打开网关语音设置..."
+            "value": "打开网关语音设置…"
           }
         }
       }
@@ -16820,7 +16820,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "打开登录项目设置..."
+            "value": "打开登录项目设置…"
           }
         }
       }
@@ -16852,7 +16852,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "打开钳子"
+            "value": "打开Pincer"
           }
         }
       }
@@ -16916,7 +16916,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "打开设置..."
+            "value": "打开设置…"
           }
         }
       }
@@ -16964,7 +16964,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "从任何应用程序打开一个小作曲家以发送到聊天。"
+            "value": "从任意 App 唤出快捷输入框，直接把内容发送到聊天。"
           }
         }
       }
@@ -17092,7 +17092,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "打开命令选项板可跳转到任何聊天、代理、模型或设置。"
+            "value": "打开命令选项板可跳转到任何聊天、智能体、模型或设置。"
           }
         }
       }
@@ -17124,7 +17124,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "OpenClaw 正在这台 Mac 上运行。"
+            "value": "OpenClaw 运行在这台 Mac 上。"
           }
         }
       }
@@ -17188,7 +17188,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "或者登录网关主机："
+            "value": "或者登录运行 OpenClaw 的设备："
           }
         }
       }
@@ -17460,7 +17460,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "配对设备"
+            "value": "已配对设备"
           }
         }
       }
@@ -17588,7 +17588,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "粘贴代码或 URL..."
+            "value": "粘贴代码或 URL…"
           }
         }
       }
@@ -17636,7 +17636,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "粘贴提供商显示的代码，或批准后发送给您的完整链接。"
+            "value": "粘贴提供商显示的代码，或批准后发送给你的完整链接。"
           }
         }
       }
@@ -17652,7 +17652,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "将您的 API 密钥粘贴到上面即可浏览您的声音。"
+            "value": "将你的 API 密钥粘贴到上面即可浏览你的声音。"
           }
         }
       }
@@ -17668,7 +17668,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "粘贴您的 ElevenLabs API 密钥以浏览语音。"
+            "value": "粘贴你的 ElevenLabs API 密钥以浏览语音。"
           }
         }
       }
@@ -17684,7 +17684,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "粘贴您的网关令牌。您只需执行一次此操作。"
+            "value": "粘贴 OpenClaw 的网关令牌，只需设置一次。"
           }
         }
       }
@@ -17716,7 +17716,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "网关主机上的路径。"
+            "value": "运行 OpenClaw 的设备上的路径。"
           }
         }
       }
@@ -17860,7 +17860,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "角色与渠道"
+            "value": "角色与频道"
           }
         }
       }
@@ -17940,7 +17940,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "选择您的默认代理和模型，查看技能，然后发送测试消息。跳过任何你喜欢的东西。"
+            "value": "选择默认智能体和模型，按需检查技能，再发一条消息测试。暂时不想设置的步骤可以跳过。"
           }
         }
       }
@@ -17988,7 +17988,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "钳子"
+            "value": "Pincer"
           }
         }
       }
@@ -18036,7 +18036,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pincer 连接到您在自己的计算机或服务器上运行的网关。"
+            "value": "Pincer 可以连接你在电脑或服务器上运行的 OpenClaw。"
           }
         }
       }
@@ -18068,7 +18068,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pincer 与 %2$@ 开始名为 %1$@ 的聊天。"
+            "value": "Pincer 将与 %2$@ 创建一个名为「%1$@」的会话。"
           }
         }
       }
@@ -18084,7 +18084,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pincer 会停止此帐户，直到您再次启动它或网关重新启动。发给它的消息不会得到回复。"
+            "value": "Pincer 会停止此账号，直到你再次启动它或网关重新启动。发给它的消息不会得到回复。"
           }
         }
       }
@@ -18100,7 +18100,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pincer 将连接到 %@"
+            "value": "将连接到 %@"
           }
         }
       }
@@ -18260,7 +18260,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "插件在您的网关主机上运行。打开或关闭、安装或拆卸它都会立即发生。"
+            "value": "插件运行在 OpenClaw 所在的设备上。启用、停用、安装和卸载操作会立即生效。"
           }
         }
       }
@@ -18356,7 +18356,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "正在准备附件..."
+            "value": "正在准备附件…"
           }
         }
       }
@@ -18404,7 +18404,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "按 %@ 跳转到任何聊天、代理、模型或设置。"
+            "value": "按 %@ 跳转到任何聊天、智能体、模型或设置。"
           }
         }
       }
@@ -18564,7 +18564,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "探针现在要求每个通道检查其连接。重新连接会停止帐户，然后再次启动。"
+            "value": "探针现在要求每个频道检查其连接。重新连接会停止账号，然后再次启动。"
           }
         }
       }
@@ -18580,7 +18580,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "探测：要求每个通道立即检查其连接"
+            "value": "探测：要求每个频道立即检查其连接"
           }
         }
       }
@@ -18612,7 +18612,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "探测通道..."
+            "value": "探测频道…"
           }
         }
       }
@@ -18772,7 +18772,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "代理提问"
+            "value": "智能体提问"
           }
         }
       }
@@ -18788,7 +18788,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "队列消息"
+            "value": "加入待发送队列"
           }
         }
       }
@@ -18836,7 +18836,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "排队的消息和失败的消息及其附件将从此设备中删除而不发送。聊天和缓存的文字记录不受影响。"
+            "value": "会从此设备删除待发送和发送失败的消息及附件，不会将它们发送出去；现有聊天和缓存不受影响。"
           }
         }
       }
@@ -18852,7 +18852,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "快速捕捉"
+            "value": "快速记录"
           }
         }
       }
@@ -18884,7 +18884,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "快速捕获、未读聊天、批准和网关状态，一键即可完成。"
+            "value": "快速记录、未读消息、操作审批和网关状态，一点即达。"
           }
         }
       }
@@ -18900,7 +18900,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "退出钳子"
+            "value": "退出Pincer"
           }
         }
       }
@@ -19060,7 +19060,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "大声朗读设置..."
+            "value": "大声朗读设置…"
           }
         }
       }
@@ -19252,7 +19252,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "重新连接帐户"
+            "value": "重新连接账号"
           }
         }
       }
@@ -19268,7 +19268,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "重新连接帐户 (%@)"
+            "value": "重新连接账号 (%@)"
           }
         }
       }
@@ -19300,7 +19300,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在 %1$lld 秒内重新连接（尝试 %2$lld）"
+            "value": "%1$lld 秒后重连（第 %2$lld 次尝试）"
           }
         }
       }
@@ -19476,7 +19476,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "重新生成上次回复"
+            "value": "重新生成上条回复"
           }
         }
       }
@@ -19540,7 +19540,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "重新链接二维码..."
+            "value": "重新链接二维码…"
           }
         }
       }
@@ -19572,7 +19572,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "重新加载钳子"
+            "value": "重新加载Pincer"
           }
         }
       }
@@ -19700,7 +19700,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "删除网关..."
+            "value": "删除网关…"
           }
         }
       }
@@ -19732,7 +19732,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "移除钥匙..."
+            "value": "移除钥匙…"
           }
         }
       }
@@ -19764,7 +19764,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "删除插件..."
+            "value": "删除插件…"
           }
         }
       }
@@ -19780,7 +19780,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "删除服务器..."
+            "value": "删除服务器…"
           }
         }
       }
@@ -20020,7 +20020,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "重命名组..."
+            "value": "重命名组…"
           }
         }
       }
@@ -20068,7 +20068,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "重命名服务器..."
+            "value": "重命名服务器…"
           }
         }
       }
@@ -20084,7 +20084,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "重命名..."
+            "value": "重命名…"
           }
         }
       }
@@ -20116,7 +20116,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "重命名节点需要完全管理。"
+            "value": "重命名节点需要完整管理权限。"
           }
         }
       }
@@ -20596,7 +20596,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "重新启动网关..."
+            "value": "重新启动网关…"
           }
         }
       }
@@ -20628,7 +20628,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "无论如何，现在重新启动..."
+            "value": "无论如何，现在重新启动…"
           }
         }
       }
@@ -20708,7 +20708,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "重新启动需要完全管理访问权限"
+            "value": "重新启动需要完整管理权限"
           }
         }
       }
@@ -20724,7 +20724,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "重新启动需要完全管理访问权限。"
+            "value": "重新启动需要完整管理权限。"
           }
         }
       }
@@ -20900,7 +20900,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "正在重试..."
+            "value": "正在重试…"
           }
         }
       }
@@ -21028,7 +21028,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "查看配对请求需要完全管理访问权限。"
+            "value": "查看配对请求需要完整管理权限。"
           }
         }
       }
@@ -21060,7 +21060,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "撤销该设备..."
+            "value": "撤销该设备…"
           }
         }
       }
@@ -21284,7 +21284,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在网关主机上运行此命令以查看它："
+            "value": "在运行 OpenClaw 的设备上运行此命令以查看它："
           }
         }
       }
@@ -21348,7 +21348,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "运行、暂停和编辑自动化需要完全管理访问权限（网关设置 → 连接）。"
+            "value": "运行、暂停和编辑自动化需要完整管理权限（网关设置 → 连接）。"
           }
         }
       }
@@ -21492,7 +21492,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "相同的Wi-Fi"
+            "value": "同一 Wi-Fi"
           }
         }
       }
@@ -21620,7 +21620,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "保存模型"
+            "value": "保存模型设置"
           }
         }
       }
@@ -21732,7 +21732,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "首先保存您的更改。"
+            "value": "首先保存你的更改。"
           }
         }
       }
@@ -21988,7 +21988,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "滚动到最新消息"
+            "value": "回到最新消息"
           }
         }
       }
@@ -22068,7 +22068,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "搜索消息..."
+            "value": "搜索消息…"
           }
         }
       }
@@ -22164,7 +22164,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "搜索聊天记录和代理"
+            "value": "搜索会话和智能体"
           }
         }
       }
@@ -22180,7 +22180,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "搜索聊天记录和代理..."
+            "value": "搜索会话和智能体…"
           }
         }
       }
@@ -22212,7 +22212,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "搜索“%@”的消息"
+            "value": "搜索包含「%@」的消息"
           }
         }
       }
@@ -22228,7 +22228,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在 %@ 中搜索消息..."
+            "value": "在 %@ 中搜索消息…"
           }
         }
       }
@@ -22244,7 +22244,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在 %@ 上的每个聊天中搜索消息。"
+            "value": "搜索 %@ 中的全部会话。"
           }
         }
       }
@@ -22324,7 +22324,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "正在寻找..."
+            "value": "正在寻找…"
           }
         }
       }
@@ -22548,7 +22548,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "正在发送..."
+            "value": "正在发送…"
           }
         }
       }
@@ -22564,7 +22564,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "已发送。等待您的代理..."
+            "value": "已发送。等待你的智能体…"
           }
         }
       }
@@ -22676,7 +22676,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "会话ID"
+            "value": "会话 ID"
           }
         }
       }
@@ -22724,7 +22724,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "会话使用..."
+            "value": "会话用量…"
           }
         }
       }
@@ -22772,7 +22772,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "设置网关..."
+            "value": "设置网关…"
           }
         }
       }
@@ -22788,7 +22788,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在网关上将通道的 dmPolicy 设置为“配对”，新的发件人将请求访问此处。"
+            "value": "在网关上将频道的 dmPolicy 设置为“配对”，新的发件人将请求访问此处。"
           }
         }
       }
@@ -22996,7 +22996,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "与代理共享位置上下文"
+            "value": "与智能体共享位置上下文"
           }
         }
       }
@@ -23124,7 +23124,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "显示 %lld 子代理运行"
+            "value": "显示 %lld 子智能体运行"
           }
         }
       }
@@ -23204,7 +23204,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在聚光灯下显示聊天"
+            "value": "在Spotlight下显示聊天"
           }
         }
       }
@@ -23412,7 +23412,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "显示思考步骤"
+            "value": "展开思考过程"
           }
         }
       }
@@ -23780,7 +23780,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "再次登录"
+            "value": "重新登录"
           }
         }
       }
@@ -23812,7 +23812,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "登录网关主机："
+            "value": "登录运行 OpenClaw 的设备："
           }
         }
       }
@@ -23828,7 +23828,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "登录您的网关"
+            "value": "验证网关身份"
           }
         }
       }
@@ -23860,7 +23860,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在网关主机上注销："
+            "value": "在运行 OpenClaw 的设备上注销："
           }
         }
       }
@@ -23908,7 +23908,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "登录未完成。"
+            "value": "身份验证未完成。"
           }
         }
       }
@@ -24004,7 +24004,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "正在登录..."
+            "value": "正在验证身份…"
           }
         }
       }
@@ -24084,7 +24084,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "技能安装到网关主机上的 %@ 工作区中。"
+            "value": "技能安装到运行 OpenClaw 的设备上的 %@ 工作区中。"
           }
         }
       }
@@ -24244,7 +24244,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "当您编辑时，有人在网关上更改了这些内容。选择要保留的值。"
+            "value": "当你编辑时，有人在网关上更改了这些内容。选择要保留的值。"
           }
         }
       }
@@ -24532,7 +24532,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "聚光灯"
+            "value": "Spotlight"
           }
         }
       }
@@ -24564,7 +24564,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "登录时启动 Pincer，以便快速捕获已准备就绪。"
+            "value": "登录 Mac 后自动启动 Pincer，随时使用「快速记录」。"
           }
         }
       }
@@ -24596,7 +24596,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "随时与您的代理开始聊天。"
+            "value": "随时与你的智能体开始聊天。"
           }
         }
       }
@@ -24708,7 +24708,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "%2$lld 的步骤 %1$lld · %3$@"
+            "value": "第 %1$lld/%2$lld 步 · %3$@"
           }
         }
       }
@@ -25092,7 +25092,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "切换分支机构需要完全管理访问权限。"
+            "value": "切换会话分支需要完整管理权限。"
           }
         }
       }
@@ -25220,7 +25220,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "尾鳞"
+            "value": "Tailscale"
           }
         }
       }
@@ -25236,7 +25236,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tailscale Serve 使用 HTTPS，因此通常应该是 wss://。仅将 ws:// 与 tailnet IP 和网关端口一起使用。"
+            "value": "使用 Tailscale Serve 时通常填 wss:// 地址。只有直接连接 Tailscale IP 和网关端口时才用 ws://。"
           }
         }
       }
@@ -25252,7 +25252,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "点击回复下的“聆听”，或使用命令面板中的“大声朗读最后回复”（其键盘快捷键）。按 Esc 或点击语音丸即可停止。自动使用网关的语音（如果可用）。当网关无法提供设备语音时，使用设备语音。新回复只能在您正在查看的聊天中读取，而不会在 VoiceOver 开启时读取。"
+            "value": "点击回复下的“聆听”，或使用命令面板中的“大声朗读最后回复”（其键盘快捷键）。按 Esc 或点击语音丸即可停止。自动使用网关的语音（如果可用）。当网关无法提供设备语音时，使用设备语音。新回复只能在你正在查看的聊天中读取，而不会在 VoiceOver 开启时读取。"
           }
         }
       }
@@ -25300,7 +25300,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "告诉客服人员您不想回答"
+            "value": "告诉智能体你不想回答"
           }
         }
       }
@@ -25396,7 +25396,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "测试..."
+            "value": "测试…"
           }
         }
       }
@@ -25620,7 +25620,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在您再次添加密钥之前，网关无法使用 %@。"
+            "value": "在你再次添加密钥之前，网关无法使用 %@。"
           }
         }
       }
@@ -25636,7 +25636,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "网关配置的模型为“%@”，该模型将被忽略。在这里选择一个型号来替换它。"
+            "value": "网关配置中的模型「%@」未生效。请在这里重新选择模型。"
           }
         }
       }
@@ -25652,7 +25652,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "网关无法完成代理数据的删除。再次删除重试。"
+            "value": "网关无法完成智能体数据的删除。再次删除重试。"
           }
         }
       }
@@ -25748,7 +25748,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "网关自行下载并安装插件。仅安装您信任的插件：它们在您的网关主机上运行。"
+            "value": "插件由 OpenClaw 自行下载并安装。插件会在你的电脑或服务器上运行，只安装你信任的插件。"
           }
         }
       }
@@ -25780,7 +25780,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "网关尚未授予该设备完全管理权。"
+            "value": "OpenClaw 尚未向这台设备授予完整管理权限。"
           }
         }
       }
@@ -25908,7 +25908,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "网关等待正在运行的回复和任务完成，然后重新启动。 Pincer 自行重新连接。"
+            "value": "OpenClaw 会等待当前回复和任务结束后重启，Pincer 随后自动重连。"
           }
         }
       }
@@ -25940,7 +25940,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "网关的调度程序已关闭，因此自动化仅在您启动时运行。"
+            "value": "网关的调度程序已关闭，因此自动化仅在你启动时运行。"
           }
         }
       }
@@ -25956,7 +25956,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "该代理本身不会做出反应。 👀 确认仍然显示是否已设置。"
+            "value": "该智能体本身不会做出反应。 👀 确认仍然显示是否已设置。"
           }
         }
       }
@@ -25972,7 +25972,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "代理正在等待您的答复"
+            "value": "智能体正在等待你的答复"
           }
         }
       }
@@ -25988,7 +25988,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "代理始终没有反应。"
+            "value": "智能体始终没有反应。"
           }
         }
       }
@@ -26004,7 +26004,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "代理始终没有反应。还关闭 👀 确认。"
+            "value": "智能体始终没有反应。还关闭 👀 确认。"
           }
         }
       }
@@ -26020,7 +26020,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "代理可以自由反应。"
+            "value": "智能体可以自由反应。"
           }
         }
       }
@@ -26036,7 +26036,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "当合适的时候，代理会不时地做出反应。"
+            "value": "当合适的时候，智能体会不时地做出反应。"
           }
         }
       }
@@ -26052,7 +26052,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "代理会在下一回合看到您的反应。"
+            "value": "智能体会在下一回合看到你的反应。"
           }
         }
       }
@@ -26068,7 +26068,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "自您打开网关以来在网关上所做的更改将被您的更改所替换。"
+            "value": "自你打开网关以来在网关上所做的更改将被你的更改所替换。"
           }
         }
       }
@@ -26084,7 +26084,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "聊天从该分支继续。当前分支将被保留，您可以切换回来。"
+            "value": "聊天从该分支继续。当前分支将被保留，你可以切换回来。"
           }
         }
       }
@@ -26100,7 +26100,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "网关上的命令策略已更改，因此您的更改未保存。显示最新版本。再次进行更改。"
+            "value": "网关上的命令策略已更改，因此你的更改未保存。显示最新版本。再次进行更改。"
           }
         }
       }
@@ -26148,7 +26148,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "该演示在此设备上运行模拟网关，并带有示例代理、聊天和回复。没有任何东西被发送到任何地方。"
+            "value": "该演示在此设备上运行模拟网关，并带有示例智能体、聊天和回复。没有任何东西被发送到任何地方。"
           }
         }
       }
@@ -26196,7 +26196,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "网关主机上包含此代理文件的文件夹。"
+            "value": "OpenClaw 所在设备上存放该智能体文件的目录。"
           }
         }
       }
@@ -26212,7 +26212,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "密钥保存在 Gateway 上，而不是 Pincer 中。 Pincer 仅在此页面打开时将其保留在内存中，以列出您的声音。"
+            "value": "密钥保存在 Gateway 上，而不是 Pincer 中。 Pincer 仅在此页面打开时将其保留在内存中，以列出你的声音。"
           }
         }
       }
@@ -26372,7 +26372,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "存储的值不是有效级别，因此代理使用 %@。"
+            "value": "存储的值不是有效级别，因此智能体使用 %@。"
           }
         }
       }
@@ -26388,7 +26388,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "文本作为系统事件到达客服人员的主聊天室。"
+            "value": "文本作为系统事件到达智能体的主聊天室。"
           }
         }
       }
@@ -26404,7 +26404,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "该代理可以使用的工具，以及允许或拒绝每个工具的策略。"
+            "value": "该智能体可以使用的工具，以及允许或拒绝每个工具的策略。"
           }
         }
       }
@@ -26436,7 +26436,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "主题设置重音、链接、头像和背景。默认值遵循您的系统强调色。"
+            "value": "主题设置重音、链接、头像和背景。默认值遵循你的系统强调色。"
           }
         }
       }
@@ -26468,7 +26468,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "他们将能够通过该帐户向代理发送 DM。要稍后撤销访问权限，请在网关上编辑频道的允许列表。"
+            "value": "他们将能够通过该账号向智能体发送 DM。要稍后撤销访问权限，请在网关上编辑频道的允许列表。"
           }
         }
       }
@@ -26580,7 +26580,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "此网关无法 %@ 通道。"
+            "value": "此网关无法 %@ 频道。"
           }
         }
       }
@@ -26644,7 +26644,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "该网关无法管理代理。更新 OpenClaw 以在此处创建和编辑代理。"
+            "value": "该网关无法管理智能体。更新 OpenClaw 以在此处创建和编辑智能体。"
           }
         }
       }
@@ -26756,7 +26756,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "该网关无法从 Pincer 登录。使用“openclaw mcp login <name>”登录网关主机。"
+            "value": "该网关无法从 Pincer 登录。使用“openclaw mcp login <name>”登录运行 OpenClaw 的设备。"
           }
         }
       }
@@ -26852,7 +26852,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "该网关不报告 MCP 状态。一旦代理连接到服务器，工具就会显示。"
+            "value": "该网关不报告 MCP 状态。一旦智能体连接到服务器，工具就会显示。"
           }
         }
       }
@@ -26868,7 +26868,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "此网关不报告通道状态，因此这些是来自“健康”的通道，只读。"
+            "value": "此网关不报告频道状态，因此这些是来自“健康”的频道，只读。"
           }
         }
       }
@@ -26884,7 +26884,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "该网关不报告通道状态。更新 OpenClaw 即可在此处查看。"
+            "value": "该网关不报告频道状态。更新 OpenClaw 即可在此处查看。"
           }
         }
       }
@@ -26948,7 +26948,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "该网关不支持通道配对请求。更新 OpenClaw 以在此处查看它们。"
+            "value": "该网关不支持频道配对请求。更新 OpenClaw 以在此处查看它们。"
           }
         }
       }
@@ -27012,7 +27012,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "该网关没有频道帐户。 Pincer 直接与您的代理交谈，因此您不需要任何代理。"
+            "value": "该网关没有频道账号。 Pincer 直接与你的智能体交谈，因此你不需要任何智能体。"
           }
         }
       }
@@ -27028,7 +27028,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "该网关还没有命令所有者。命令所有者可以从此通道运行仅限所有者的命令。"
+            "value": "该网关还没有命令所有者。命令所有者可以从此频道运行仅限所有者的命令。"
           }
         }
       }
@@ -27060,7 +27060,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "这台Mac"
+            "value": "这台 Mac"
           }
         }
       }
@@ -27156,7 +27156,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "这个装置"
+            "value": "这个设备"
           }
         }
       }
@@ -27172,7 +27172,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "该设备可以查看但不能更改此信息。打开连接以请求完全管理。"
+            "value": "该设备可以查看但不能更改此信息。打开连接以请求完整管理权限。"
           }
         }
       }
@@ -27188,7 +27188,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "该设备可以查看设置，但不能更改它们。打开连接以请求完全管理。"
+            "value": "该设备可以查看设置，但不能更改它们。打开连接以请求完整管理权限。"
           }
         }
       }
@@ -27236,7 +27236,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "目前还不允许该设备回答问题。在网关主机上批准其请求，然后重试。您还可以在控制 UI 或聊天来源的频道中应答。"
+            "value": "目前还不允许该设备回答问题。在运行 OpenClaw 的设备上批准其请求，然后重试。你还可以在控制 UI 或聊天来源的频道中应答。"
           }
         }
       }
@@ -27268,7 +27268,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "该装置已被撤销。"
+            "value": "这台设备的授权已被撤销。"
           }
         }
       }
@@ -27300,7 +27300,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "这会将最新版本从 ClawHub 下载到网关主机上。"
+            "value": "这会将最新版本从 ClawHub 下载到运行 OpenClaw 的设备上。"
           }
         }
       }
@@ -27348,7 +27348,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "该组由所有代理共享。"
+            "value": "该组由所有智能体共享。"
           }
         }
       }
@@ -27380,7 +27380,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "这是一个大型上传 (%@)，因此它会等待您关闭个人热点。无论如何，立即发送都会上传它。"
+            "value": "这是一个大型上传 (%@)，因此它会等待你关闭个人热点。无论如何，立即发送都会上传它。"
           }
         }
       }
@@ -27412,7 +27412,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "这是演示的模拟登录。没有使用任何帐户。"
+            "value": "这是演示的模拟登录。没有使用任何账号。"
           }
         }
       }
@@ -27428,7 +27428,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pincer 将这样大声朗读您的回复。"
+            "value": "Pincer 将这样大声朗读你的回复。"
           }
         }
       }
@@ -27444,7 +27444,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "该节点已被删除。"
+            "value": "这个节点已经移除。"
           }
         }
       }
@@ -27476,7 +27476,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "这将删除已保存的登录信息。您需要再次扫描二维码才能重新连接。"
+            "value": "这将删除已保存的登录信息。你需要再次扫描二维码才能重新连接。"
           }
         }
       }
@@ -27492,7 +27492,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "这将删除已保存的登录信息。您需要重新设置才能重新连接。"
+            "value": "这将删除已保存的登录信息。你需要重新设置才能重新连接。"
           }
         }
       }
@@ -28116,7 +28116,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "工具和政策..."
+            "value": "工具和政策…"
           }
         }
       }
@@ -28196,7 +28196,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "再试一次"
+            "value": "重试"
           }
         }
       }
@@ -28260,7 +28260,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "打开“连接”下的“完全管理”，然后在网关主机上批准此设备。"
+            "value": "请在「连接」中开启完整管理权限，再到运行 OpenClaw 的设备上批准授权。"
           }
         }
       }
@@ -28356,7 +28356,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "输入您的答案"
+            "value": "输入你的答案"
           }
         }
       }
@@ -28372,7 +28372,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在此输入您自己的答案"
+            "value": "在此输入你自己的答案"
           }
         }
       }
@@ -28724,7 +28724,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "来自 ClawHub 的更新..."
+            "value": "来自 ClawHub 的更新…"
           }
         }
       }
@@ -28772,7 +28772,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "使用和成本..."
+            "value": "使用和成本…"
           }
         }
       }
@@ -28916,7 +28916,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "使用“在聊天中查找”来搜索当前聊天。"
+            "value": "使用「搜索当前会话」查找消息。"
           }
         }
       }
@@ -29044,7 +29044,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "使用您的 Tailscale 服务名称 (wss://…ts.net) 或 tailnet IP (ws://100.x.y.z:18789)。普通 ws:// 仅适用于 Tailscale、LAN 和环回地址。"
+            "value": "可填 Tailscale Serve 域名（wss://…ts.net），或 Tailscale IP（ws://100.x.y.z:18789）。未加密的 ws:// 仅限局域网、Tailscale 网络和本机使用。"
           }
         }
       }
@@ -29204,7 +29204,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "查看和更改命令策略需要完全管理访问权限。在“连接”下将其打开，然后在网关主机上批准此设备。"
+            "value": "查看和更改命令策略需要完整管理权限。在“连接”下将其打开，然后在运行 OpenClaw 的设备上批准此设备。"
           }
         }
       }
@@ -29316,7 +29316,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "等待登录..."
+            "value": "等待登录…"
           }
         }
       }
@@ -29348,7 +29348,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "等待批准"
+            "value": "等待审批"
           }
         }
       }
@@ -29364,7 +29364,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "等待网关主机上的批准"
+            "value": "等待 OpenClaw 批准这台设备"
           }
         }
       }
@@ -29380,7 +29380,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "等待批准..."
+            "value": "等待设备授权…"
           }
         }
       }
@@ -29428,7 +29428,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "欢迎来到钳子"
+            "value": "欢迎使用 Pincer"
           }
         }
       }
@@ -29444,7 +29444,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "代理应该做什么？"
+            "value": "智能体应该做什么？"
           }
         }
       }
@@ -29492,7 +29492,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "启用后，Pincher 将共享最近的设备位置作为代理的上下文，与您的消息文本分开。网关可以在聊天历史中保留该上下文。报告的准确性来自设备，可能会因系统隐私设置而降低。 Pincer 仅在应用程序处于活动状态时请求一次性修复，如果最近没有可用的修复，则会发送不带位置的消息。命令不包括位置。关闭此功能会停止以后的捕获；排队的消息保留发送时捕获的上下文。"
+            "value": "启用后，Pincher 将共享最近的设备位置作为智能体的上下文，与你的消息文本分开。网关可以在聊天历史中保留该上下文。报告的准确性来自设备，可能会因系统隐私设置而降低。 Pincer 仅在应用程序处于活动状态时请求一次性修复，如果最近没有可用的修复，则会发送不带位置的消息。命令不包括位置。关闭此功能会停止以后的捕获；排队的消息保留发送时捕获的上下文。"
           }
         }
       }
@@ -29508,7 +29508,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "启用后，您的语音将在此设备上被识别，并且不会发送至 Apple。关闭后，Apple 的服务器可能会用于没有设备上模型的语言。"
+            "value": "启用后，你的语音将在此设备上被识别，并且不会发送至 Apple。关闭后，Apple 的服务器可能会用于没有设备上模型的语言。"
           }
         }
       }
@@ -29524,7 +29524,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "当有人向这些帐户之一发送消息时，他们的请求会显示在此处。"
+            "value": "当有人向这些账号之一发送消息时，他们的请求会显示在此处。"
           }
         }
       }
@@ -29540,7 +29540,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "当该代理委派工作时，其助手会出现在此处。"
+            "value": "当该智能体委派工作时，其助手会出现在此处。"
           }
         }
       }
@@ -29556,7 +29556,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "OpenClaw 在哪里运行？"
+            "value": "OpenClaw 运行在哪台设备上？"
           }
         }
       }
@@ -29572,7 +29572,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "哪些频道和聊天会路由到该客服人员。绑定在配置中进行管理。"
+            "value": "哪些频道和聊天会路由到该智能体。绑定在配置中进行管理。"
           }
         }
       }
@@ -29588,7 +29588,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "您的代理可以在网关主机上运行哪些命令，以及何时需要询问。"
+            "value": "控制智能体可以在 OpenClaw 所在设备上执行哪些命令，以及哪些操作必须先征得你的同意。"
           }
         }
       }
@@ -29844,7 +29844,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "您只能看到该设备。打开“连接”下的“完全管理”，然后在网关主机上批准此设备。"
+            "value": "你只能看到该设备。打开“连接”下的“完整管理权限”，然后在运行 OpenClaw 的设备上批准此设备。"
           }
         }
       }
@@ -29860,7 +29860,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "你可以阅读这个文件。打开“连接”下的“完全管理”，然后在网关主机上批准此设备。"
+            "value": "目前只能查看该文件。要编辑，请在「连接」中开启完整管理权限，并在 OpenClaw 所在设备上批准。"
           }
         }
       }
@@ -29876,7 +29876,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "您可以查看代理及其文件。打开“连接”下的“完全管理”，然后在网关主机上批准此设备。"
+            "value": "目前只能查看智能体及其文件。要修改内容，请在「连接」中开启完整管理权限，并在 OpenClaw 所在设备上批准。"
           }
         }
       }
@@ -29892,7 +29892,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "可以查看技能。打开“连接”下的“完全管理”，然后在网关主机上批准此设备。"
+            "value": "目前只能查看技能。要管理技能，请在「连接」中开启完整管理权限，并在 OpenClaw 所在设备上批准。"
           }
         }
       }
@@ -29908,7 +29908,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "您有 %lld 未保存的更改%@。"
+            "value": "你有 %lld 未保存的更改%@。"
           }
         }
       }
@@ -29924,7 +29924,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "保存后您需要重新登录。"
+            "value": "保存后你需要重新登录。"
           }
         }
       }
@@ -29972,7 +29972,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "您已连接"
+            "value": "连接成功"
           }
         }
       }
@@ -29988,7 +29988,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "您的网关位于尾网中的另一台设备上。在网关主机上打开 Tailscale Serve，然后使用其地址。"
+            "value": "如果 OpenClaw 在其他设备上，请先在那台设备启用 Tailscale Serve，再填入对应地址。"
           }
         }
       }
@@ -30004,7 +30004,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "您的网关位于该网络上并设置为接受来自该网络的连接。"
+            "value": "OpenClaw 与手机位于同一局域网，并已允许局域网设备连接。"
           }
         }
       }
@@ -30020,7 +30020,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "您的留言"
+            "value": "你的留言"
           }
         }
       }
@@ -30036,7 +30036,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "你的经纪人没有回答。您可以重试，或跳过并稍后再聊天。"
+            "value": "你的经纪人没有回答。你可以重试，或跳过并稍后再聊天。"
           }
         }
       }
@@ -30068,7 +30068,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "您对代理或工作区文件的更改尚未保存。"
+            "value": "你对智能体或工作区文件的更改尚未保存。"
           }
         }
       }
@@ -30084,7 +30084,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "您对命令策略的更改尚未保存。"
+            "value": "你对命令策略的更改尚未保存。"
           }
         }
       }
@@ -30100,7 +30100,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "如果您不保存，您的更改将会丢失。"
+            "value": "如果你不保存，你的更改将会丢失。"
           }
         }
       }
@@ -30116,7 +30116,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "您的设备没有“%@”范围。从具有该范围的网关再次批准它。"
+            "value": "你的设备没有“%@”范围。从具有该范围的网关再次批准它。"
           }
         }
       }
@@ -30132,7 +30132,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "您的设备缺少所需的范围。从具有该范围的网关再次批准它。"
+            "value": "你的设备缺少所需的范围。从具有该范围的网关再次批准它。"
           }
         }
       }
@@ -30148,7 +30148,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "您的编辑将被保留，直到您做出选择为止。"
+            "value": "你的编辑将被保留，直到你做出选择为止。"
           }
         }
       }
@@ -30164,7 +30164,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "您的编辑将被保留。"
+            "value": "你的编辑将被保留。"
           }
         }
       }
@@ -30180,7 +30180,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "您的消息显示在该名称下，无论它们来自哪个渠道。"
+            "value": "你的消息显示在该名称下，无论它们来自哪个频道。"
           }
         }
       }
@@ -30196,7 +30196,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "您的登录已过期。"
+            "value": "你的登录已过期。"
           }
         }
       }
@@ -30324,7 +30324,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "批准历史"
+            "value": "审批记录"
           }
         }
       }
@@ -30340,7 +30340,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "待批准"
+            "value": "等待审批"
           }
         }
       }
@@ -30356,7 +30356,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "无法批准"
+            "value": "审批不可用"
           }
         }
       }
@@ -30757,7 +30757,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "来自另一个代理"
+            "value": "来自另一个智能体"
           }
         }
       }
@@ -31269,7 +31269,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "该帐户已被禁用"
+            "value": "该账号已被禁用"
           }
         }
       }
@@ -31285,7 +31285,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "该帐户未配置"
+            "value": "该账号未配置"
           }
         }
       }
@@ -31301,7 +31301,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "该帐户未关联。首先登录"
+            "value": "该账号未关联。首先登录"
           }
         }
       }
@@ -31493,7 +31493,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "“%@”不再是此网关上的代理。"
+            "value": "“%@”不再是此网关上的智能体。"
           }
         }
       }
@@ -31558,6 +31558,406 @@
           "stringUnit": {
             "state": "translated",
             "value": "↩ 发送 · ⌘↩ 发送并打开 · esc 关闭"
+          }
+        }
+      }
+    },
+    "Find": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Find"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "查找网关"
+          }
+        }
+      }
+    },
+    "Sign in": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign in"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "登录"
+          }
+        }
+      }
+    },
+    "Set up": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set up"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "初始设置"
+          }
+        }
+      }
+    },
+    "Verify": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verify"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "验证连接"
+          }
+        }
+      }
+    },
+    "Get started": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Get started"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "开始使用"
+          }
+        }
+      }
+    },
+    "Enter your Gateway's address.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter your Gateway's address."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请输入网关地址。"
+          }
+        }
+      }
+    },
+    "That doesn't look like a Gateway address. Try something like wss://my-mac.tailnet.ts.net or ws://192.168.1.20:18789.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That doesn't look like a Gateway address. Try something like wss://my-mac.tailnet.ts.net or ws://192.168.1.20:18789."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "地址格式不正确。可以填写 wss://my-mac.tailnet.ts.net 或 ws://192.168.1.20:18789。"
+          }
+        }
+      }
+    },
+    "For safety, Pincer only uses unencrypted ws:// on this Mac, your local network, or Tailscale. Use a wss:// address instead.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "For safety, Pincer only uses unencrypted ws:// on this Mac, your local network, or Tailscale. Use a wss:// address instead."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "为保护数据安全，未加密的 ws:// 仅允许用于本机、局域网或 Tailscale。其他网络请使用 wss://。"
+          }
+        }
+      }
+    },
+    "Can't reach a Gateway at that address. Make sure OpenClaw is running (openclaw gateway status) and that this device can reach it.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Can't reach a Gateway at that address. Make sure OpenClaw is running (openclaw gateway status) and that this device can reach it."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法连接网关。请确认 OpenClaw 正在运行（openclaw gateway status），并检查手机与网关之间的网络。"
+          }
+        }
+      }
+    },
+    "Is Tailscale connected on this device?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Is Tailscale connected on this device?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请检查这台设备是否已连接 Tailscale。"
+          }
+        }
+      }
+    },
+    "Something answered, but it isn't an OpenClaw Gateway. Check the address and port (usually 18789).": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Something answered, but it isn't an OpenClaw Gateway. Check the address and port (usually 18789)."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这个地址能访问，但它不是 OpenClaw 网关。请检查地址和端口（默认 18789）。"
+          }
+        }
+      }
+    },
+    "Couldn't make a secure connection to that address. If you use Tailscale Serve, check that HTTPS is enabled for your tailnet.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't make a secure connection to that address. If you use Tailscale Serve, check that HTTPS is enabled for your tailnet."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法建立安全连接。如果网关使用自签名证书，请在「高级设置」填写 TLS 证书 SHA-256 指纹；如果使用 Tailscale Serve，请确认 HTTPS 已启用。"
+          }
+        }
+      }
+    },
+    "The Gateway's certificate doesn't match the fingerprint you entered.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The Gateway's certificate doesn't match the fingerprint you entered."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "网关证书与填写的 SHA-256 指纹不匹配。请核对证书或重新获取指纹。"
+          }
+        }
+      }
+    },
+    "That token didn't work. Copy it again with the command below and paste the whole thing.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That token didn't work. Copy it again with the command below and paste the whole thing."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "网关令牌无效。请使用下面的命令重新复制完整令牌。"
+          }
+        }
+      }
+    },
+    "This Gateway needs a token.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This Gateway needs a token."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这个网关需要令牌才能登录。"
+          }
+        }
+      }
+    },
+    "That password didn't work. Check it and try again.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That password didn't work. Check it and try again."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "密码不正确，请检查后重试。"
+          }
+        }
+      }
+    },
+    "This Gateway uses a password. Choose Use a password instead.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This Gateway uses a password. Choose Use a password instead."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这个网关使用密码验证。请选择「改用密码登录」。"
+          }
+        }
+      }
+    },
+    "This Gateway isn't set up for that sign-in method. Try the other one.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This Gateway isn't set up for that sign-in method. Try the other one."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "网关没有启用当前验证方式，请尝试另一种方式。"
+          }
+        }
+      }
+    },
+    "Too many tries. Wait a minute, then try again.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Too many tries. Wait a minute, then try again."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "尝试次数过多，请稍等一分钟再试。"
+          }
+        }
+      }
+    },
+    "This Gateway's version doesn't work with this Pincer. Update OpenClaw or Pincer.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This Gateway's version doesn't work with this Pincer. Update OpenClaw or Pincer."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "当前 OpenClaw 版本与 Pincer 不兼容。请更新其中一个应用。"
+          }
+        }
+      }
+    },
+    "The Gateway turned down this device. Go back and try again, or approve it with the command above.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The Gateway turned down this device. Go back and try again, or approve it with the command above."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OpenClaw 拒绝了这台设备。请返回重试，或在运行 OpenClaw 的电脑上执行上方命令批准它。"
+          }
+        }
+      }
+    },
+    "The request changed. Use this new command.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The request changed. Use this new command."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "授权请求已更新，请使用新的命令。"
+          }
+        }
+      }
+    },
+    "No Gateway needed. Explore sample agents and chats. Nothing leaves this device.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Gateway needed. Explore sample agents and chats. Nothing leaves this device."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无需连接 OpenClaw，也可以先体验示例智能体和聊天；演示数据仅保存在本机。"
+          }
+        }
+      }
+    },
+    "Your Gateway reported a problem. You can keep going and check it later.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your Gateway reported a problem. You can keep going and check it later."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OpenClaw 检测到异常。你可以先继续，稍后再查看详情。"
+          }
+        }
+      }
+    },
+    "Already use Pincer on another device with Full Management? You can approve this one there, in Gateway Settings → Devices.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Already use Pincer on another device with Full Management? You can approve this one there, in Gateway Settings → Devices."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "如果你在其他设备上的 Pincer 已获得完整管理权限，也可以前往「网关设置 → 设备」批准这台手机。"
           }
         }
       }
